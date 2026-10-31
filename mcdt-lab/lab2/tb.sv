@@ -122,20 +122,33 @@ module tb;
   assign mcdt_if.arb_acks[1] = tb.dut.inst_arbiter.a2s1_ack_o;
   assign mcdt_if.arb_acks[2] = tb.dut.inst_arbiter.a2s2_ack_o;
 
+  mcdt_root_test test;
   mcdt_basic_test basic_test;
   mcdt_burst_test burst_test;
   mcdt_fifo_full_test fifo_full_test;
-  string name;
+  mcdt_single_test single_test;
+  mcdt_alone_test alone_test;
+  mcdt_random_test random_test;
+  mcdt_pair_test pair_test;
+  string test_name;
 
   initial begin: test_selection
-    basic_test = new();
-    basic_test.set_interface(chnl0_if, chnl1_if, chnl2_if, mcdt_if);
-    // burst_test = new();
-    // burst_test.set_interface(chnl0_if, chnl1_if, chnl2_if, mcdt_if);
-    // fifo_full_test = new();
-    // fifo_full_test.set_interface(chnl0_if, chnl1_if, chnl2_if, mcdt_if);
+    // 通过 +TESTNAME=<test name> 选择要跑的测试用例，默认跑basic_test
+    if(!$value$plusargs("TESTNAME=%s", test_name)) test_name = "mcdt_basic_test";
+    case(test_name)
+      "mcdt_basic_test"    : begin basic_test    = new(); test = basic_test;    end
+      "mcdt_burst_test"    : begin burst_test    = new(); test = burst_test;    end
+      "mcdt_fifo_full_test": begin fifo_full_test = new(); test = fifo_full_test; end
+      "mcdt_single_test"   : begin single_test   = new(); test = single_test;   end
+      "mcdt_alone_test"    : begin alone_test    = new(); test = alone_test;    end
+      "mcdt_random_test"   : begin random_test   = new(); test = random_test;   end
+      "mcdt_pair_test"     : begin pair_test     = new(); test = pair_test;     end
+      default              : $fatal(1, "unknown test name \"%s\"", test_name);
+    endcase
+    $display("%0t running test %s", $time, test_name);
 
-    basic_test.run();
+    test.set_interface(chnl0_if, chnl1_if, chnl2_if, mcdt_if);
+    test.run();
   end
 
   initial begin: assertion_control

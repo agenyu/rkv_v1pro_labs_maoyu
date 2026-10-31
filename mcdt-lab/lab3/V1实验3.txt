@@ -1,0 +1,18 @@
+V1系列课程实验3
+Hi，在进行接下来的实验3之前，你其实已经经历了关于MCDT完整的功能验证，包括从功能点提取、测试平台搭建、测试用例实现（实验1）和验证量化（实验2）的过程。而我们在实验3的练习，重点在于：
+理解如何SV验证环境过渡到UVM验证环境的过程。
+认识SV验证环境从构建、组件连接、运行与UVM验证环境的相同处与不同处。
+能够绘制UVM的验证环境结构。
+以上的学习要点都已经在我们本周的主题“从SV到UVM的过渡”中给大家详细讲解了代码，希望大家可以对照着知识要点，再去回顾课程内容。
+接下来，我们需要将学习的TLM通信的方法（端口和FIFO）应用到实验代码中去，改造环境，使得在实验要求中相应组件之间的连接可以由之前的mailbox通信转换为TLM通信。同时，可以通过仿真时的选项+UVM_TESTNAME=测试名称来选择你定义的不同的测试类型。
+实验要求（TLM通信方法）
+将monitor与checker、reference model之间通信的mailbox替换为analysis port和analysis FIFO
+将mailbox替换为analysis FIFO
+在monitor中声明并且创建analysis port
+在env中连接monitor analysis port与checker/RM analysis import
+将monitor中写入transaction的方法替换为analysis port对应的方法
+将checker/RM中读出transaction的方法替换为analysis FIFO提供的方法
+执行mcdt_basic_test，检查以上的更新是否正确，仿真是否可以通过
+可以通过添加仿真选项来选择所要执行的测试用例
++UVM_TESTNAME=测试名称
+恭喜你！顺利通关喽！

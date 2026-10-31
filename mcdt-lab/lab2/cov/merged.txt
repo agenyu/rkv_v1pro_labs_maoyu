@@ -1,0 +1,1150 @@
+QuestaSim-64 vcover 2021.1 Coverage Utility 2021.01 Jan 19 2021
+Start time: 21:49:07 on Oct 29,2026
+vcover report -details cov/merged.ucdb 
+Coverage Report by instance with details
+
+=================================================================================
+=== Instance: /tb/dut/inst_slva_fifo_0
+=== Design Unit: work.slave_fifo
+=================================================================================
+Branch Coverage:
+    Enabled Coverage              Bins      Hits    Misses  Coverage
+    ----------------              ----      ----    ------  --------
+    Branches                        18        18         0   100.00%
+
+================================Branch Details================================
+
+Branch Coverage for instance /tb/dut/inst_slva_fifo_0
+
+    Line         Item                      Count     Source 
+    ----         ----                      -----     ------ 
+  File ./../mcdt/slave_fifo.v
+------------------------------------IF Branch------------------------------------
+    33                                     17211     Count coming in to IF
+    33              1                       8616     
+    34              1                       8595     
+Branch totals: 2 hits of 2 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    39                                       932     Count coming in to IF
+    39              1                         42     
+    40              1                        437     
+    41              1                        453     
+Branch totals: 3 hits of 3 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    47                                     24486     Count coming in to IF
+    47              1                         42     
+    50              1                      13488     
+                                           10956     All False Count
+Branch totals: 3 hits of 3 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    58                                     23893     Count coming in to IF
+    58              1                         42     
+    61              1                      13426     
+                                           10425     All False Count
+Branch totals: 3 hits of 3 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    69                                     26242     Count coming in to IF
+    69              1                         42     
+    70              1                      10129     
+    72              1                      16071     
+Branch totals: 3 hits of 3 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    78                                     29044     Count coming in to IF
+    78              1                      13426     
+                                           15618     All False Count
+Branch totals: 2 hits of 2 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    86                                     24465     Count coming in to IF
+    86              1                      13488     
+                                           10977     All False Count
+Branch totals: 2 hits of 2 branches = 100.00%
+
+
+Statement Coverage:
+    Enabled Coverage              Bins      Hits    Misses  Coverage
+    ----------------              ----      ----    ------  --------
+    Statements                      24        24         0   100.00%
+
+================================Statement Details================================
+
+Statement Coverage for instance /tb/dut/inst_slva_fifo_0 --
+
+    Line         Item                      Count     Source 
+    ----         ----                      -----     ------ 
+  File ./../mcdt/slave_fifo.v
+    24              1                      23238     
+    25              1                      23238     
+    26              1                      23238     
+    31              1                      17211     
+    33              1                       8616     
+    34              1                       8595     
+    37              1                        932     
+    39              1                         42     
+    40              1                        437     
+    41              1                        453     
+    45              1                      24486     
+    48              1                         42     
+    51              1                      13488     
+    56              1                      23893     
+    59              1                         42     
+    62              1                      13426     
+    67              1                      26242     
+    69              1                         42     
+    71              1                      10129     
+    72              1                      16071     
+    76              1                      29044     
+    79              1                      13426     
+    84              1                      24465     
+    87              1                      13488     
+Toggle Coverage:
+    Enabled Coverage              Bins      Hits    Misses  Coverage
+    ----------------              ----      ----    ------  --------
+    Toggles                        196       195         1    99.48%
+
+================================Toggle Details================================
+
+Toggle Coverage for instance /tb/dut/inst_slva_fifo_0 --
+
+                                              Node      1H->0L      0L->1H  "Coverage"
+                                              ---------------------------------------
+                                            rstn_i           0          21       50.00 
+
+Total Node Count     =         98 
+Toggled Node Count   =         97 
+Untoggled Node Count =          1 
+
+Toggle Coverage      =      99.48% (195 of 196 bins)
+
+=================================================================================
+=== Instance: /tb/dut/inst_slva_fifo_1
+=== Design Unit: work.slave_fifo
+=================================================================================
+Branch Coverage:
+    Enabled Coverage              Bins      Hits    Misses  Coverage
+    ----------------              ----      ----    ------  --------
+    Branches                        18        18         0   100.00%
+
+================================Branch Details================================
+
+Branch Coverage for instance /tb/dut/inst_slva_fifo_1
+
+    Line         Item                      Count     Source 
+    ----         ----                      -----     ------ 
+  File ./../mcdt/slave_fifo.v
+------------------------------------IF Branch------------------------------------
+    33                                     13781     Count coming in to IF
+    33              1                       6901     
+    34              1                       6880     
+Branch totals: 2 hits of 2 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    39                                      1310     Count coming in to IF
+    39              1                         42     
+    40              1                        626     
+    41              1                        642     
+Branch totals: 3 hits of 3 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    47                                     23065     Count coming in to IF
+    47              1                         42     
+    50              1                      12667     
+                                           10356     All False Count
+Branch totals: 3 hits of 3 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    58                                     22604     Count coming in to IF
+    58              1                         42     
+    61              1                      12586     
+                                            9976     All False Count
+Branch totals: 3 hits of 3 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    69                                     24824     Count coming in to IF
+    69              1                         42     
+    70              1                       9383     
+    72              1                      15399     
+Branch totals: 3 hits of 3 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    78                                     27102     Count coming in to IF
+    78              1                      12586     
+                                           14516     All False Count
+Branch totals: 2 hits of 2 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    86                                     23044     Count coming in to IF
+    86              1                      12667     
+                                           10377     All False Count
+Branch totals: 2 hits of 2 branches = 100.00%
+
+
+Statement Coverage:
+    Enabled Coverage              Bins      Hits    Misses  Coverage
+    ----------------              ----      ----    ------  --------
+    Statements                      24        24         0   100.00%
+
+================================Statement Details================================
+
+Statement Coverage for instance /tb/dut/inst_slva_fifo_1 --
+
+    Line         Item                      Count     Source 
+    ----         ----                      -----     ------ 
+  File ./../mcdt/slave_fifo.v
+    24              1                      21460     
+    25              1                      21460     
+    26              1                      21460     
+    31              1                      13781     
+    33              1                       6901     
+    34              1                       6880     
+    37              1                       1310     
+    39              1                         42     
+    40              1                        626     
+    41              1                        642     
+    45              1                      23065     
+    48              1                         42     
+    51              1                      12667     
+    56              1                      22604     
+    59              1                         42     
+    62              1                      12586     
+    67              1                      24824     
+    69              1                         42     
+    71              1                       9383     
+    72              1                      15399     
+    76              1                      27102     
+    79              1                      12586     
+    84              1                      23044     
+    87              1                      12667     
+Toggle Coverage:
+    Enabled Coverage              Bins      Hits    Misses  Coverage
+    ----------------              ----      ----    ------  --------
+    Toggles                        196       195         1    99.48%
+
+================================Toggle Details================================
+
+Toggle Coverage for instance /tb/dut/inst_slva_fifo_1 --
+
+                                              Node      1H->0L      0L->1H  "Coverage"
+                                              ---------------------------------------
+                                            rstn_i           0          21       50.00 
+
+Total Node Count     =         98 
+Toggled Node Count   =         97 
+Untoggled Node Count =          1 
+
+Toggle Coverage      =      99.48% (195 of 196 bins)
+
+=================================================================================
+=== Instance: /tb/dut/inst_slva_fifo_2
+=== Design Unit: work.slave_fifo
+=================================================================================
+Branch Coverage:
+    Enabled Coverage              Bins      Hits    Misses  Coverage
+    ----------------              ----      ----    ------  --------
+    Branches                        18        18         0   100.00%
+
+================================Branch Details================================
+
+Branch Coverage for instance /tb/dut/inst_slva_fifo_2
+
+    Line         Item                      Count     Source 
+    ----         ----                      -----     ------ 
+  File ./../mcdt/slave_fifo.v
+------------------------------------IF Branch------------------------------------
+    33                                     16047     Count coming in to IF
+    33              1                       8034     
+    34              1                       8013     
+Branch totals: 2 hits of 2 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    39                                      5830     Count coming in to IF
+    39              1                         42     
+    40              1                       2886     
+    41              1                       2902     
+Branch totals: 3 hits of 3 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    47                                     38778     Count coming in to IF
+    47              1                         42     
+    50              1                      19106     
+                                           19630     All False Count
+Branch totals: 3 hits of 3 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    58                                     36539     Count coming in to IF
+    58              1                         42     
+    61              1                      19079     
+                                           17418     All False Count
+Branch totals: 3 hits of 3 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    69                                     39964     Count coming in to IF
+    69              1                         42     
+    70              1                      16926     
+    72              1                      22996     
+Branch totals: 3 hits of 3 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    78                                     41734     Count coming in to IF
+    78              1                      19079     
+                                           22655     All False Count
+Branch totals: 2 hits of 2 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    86                                     38757     Count coming in to IF
+    86              1                      19106     
+                                           19651     All False Count
+Branch totals: 2 hits of 2 branches = 100.00%
+
+
+Statement Coverage:
+    Enabled Coverage              Bins      Hits    Misses  Coverage
+    ----------------              ----      ----    ------  --------
+    Statements                      24        24         0   100.00%
+
+================================Statement Details================================
+
+Statement Coverage for instance /tb/dut/inst_slva_fifo_2 --
+
+    Line         Item                      Count     Source 
+    ----         ----                      -----     ------ 
+  File ./../mcdt/slave_fifo.v
+    24              1                      32460     
+    25              1                      32460     
+    26              1                      32460     
+    31              1                      16047     
+    33              1                       8034     
+    34              1                       8013     
+    37              1                       5830     
+    39              1                         42     
+    40              1                       2886     
+    41              1                       2902     
+    45              1                      38778     
+    48              1                         42     
+    51              1                      19106     
+    56              1                      36539     
+    59              1                         42     
+    62              1                      19079     
+    67              1                      39964     
+    69              1                         42     
+    71              1                      16926     
+    72              1                      22996     
+    76              1                      41734     
+    79              1                      19079     
+    84              1                      38757     
+    87              1                      19106     
+Toggle Coverage:
+    Enabled Coverage              Bins      Hits    Misses  Coverage
+    ----------------              ----      ----    ------  --------
+    Toggles                        196       195         1    99.48%
+
+================================Toggle Details================================
+
+Toggle Coverage for instance /tb/dut/inst_slva_fifo_2 --
+
+                                              Node      1H->0L      0L->1H  "Coverage"
+                                              ---------------------------------------
+                                            rstn_i           0          21       50.00 
+
+Total Node Count     =         98 
+Toggled Node Count   =         97 
+Untoggled Node Count =          1 
+
+Toggle Coverage      =      99.48% (195 of 196 bins)
+
+=================================================================================
+=== Instance: /tb/dut/inst_arbiter
+=== Design Unit: work.arbiter
+=================================================================================
+Branch Coverage:
+    Enabled Coverage              Bins      Hits    Misses  Coverage
+    ----------------              ----      ----    ------  --------
+    Branches                        31        30         1    96.77%
+
+================================Branch Details================================
+
+Branch Coverage for instance /tb/dut/inst_arbiter
+
+    Line         Item                      Count     Source 
+    ----         ----                      -----     ------ 
+  File ./../mcdt/arbiter.v
+------------------------------------IF Branch------------------------------------
+    44                                     40431     Count coming in to IF
+    44              1                         42     
+    45              1                      40389     
+Branch totals: 2 hits of 2 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    50                                     44341     Count coming in to IF
+    50              1                         63     
+    51              1                      44278     
+Branch totals: 2 hits of 2 branches = 100.00%
+
+------------------------------------CASE Branch------------------------------------
+    52                                     44278     Count coming in to CASE
+    53              1                       6633     
+    58              1                      10539     
+    63              1                       9517     
+    68              1                      17589     
+    72              1                    ***0***     
+Branch totals: 4 hits of 5 branches = 80.00%
+
+------------------------------------IF Branch------------------------------------
+    53                                      6633     Count coming in to IF
+    53              2                        394     
+    54              1                        168     
+    55              1                       2753     
+    56              1                       3318     
+Branch totals: 4 hits of 4 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    58                                     10539     Count coming in to IF
+    58              2                       6427     
+    59              1                       3427     
+    60              1                        356     
+    61              1                        329     
+Branch totals: 4 hits of 4 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    63                                      9517     Count coming in to IF
+    63              2                       8404     
+    64              1                        823     
+    65              1                        147     
+    66              1                        143     
+Branch totals: 4 hits of 4 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    68                                     17589     Count coming in to IF
+    68              2                       9112     
+    69              1                       2791     
+    70              1                       2859     
+    71              1                       2827     
+Branch totals: 4 hits of 4 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    82                                     48472     Count coming in to IF
+    82              1                         21     
+    87              1                      48451     
+Branch totals: 2 hits of 2 branches = 100.00%
+
+------------------------------------CASE Branch------------------------------------
+    88                                     48451     Count coming in to CASE
+    89              1                      13422     
+    94              1                      12582     
+    99              1                      19075     
+    105             1                       3372     
+Branch totals: 4 hits of 4 branches = 100.00%
+
+
+Statement Coverage:
+    Enabled Coverage              Bins      Hits    Misses  Coverage
+    ----------------              ----      ----    ------  --------
+    Statements                      39        38         1    97.43%
+
+================================Statement Details================================
+
+Statement Coverage for instance /tb/dut/inst_arbiter --
+
+    Line         Item                      Count     Source 
+    ----         ----                      -----     ------ 
+  File ./../mcdt/arbiter.v
+    42              1                      40431     
+    44              1                         42     
+    45              1                      40389     
+    48              1                      44341     
+    50              1                         63     
+    53              1                        394     
+    54              1                        168     
+    55              1                       2753     
+    56              1                       3318     
+    58              1                       6427     
+    59              1                       3427     
+    60              1                        356     
+    61              1                        329     
+    63              1                       8404     
+    64              1                        823     
+    65              1                        147     
+    66              1                        143     
+    68              1                       9112     
+    69              1                       2791     
+    70              1                       2859     
+    71              1                       2827     
+    72              1                    ***0***     
+    76              1                      36678     
+    80              1                      48472     
+    83              1                         21     
+    84              1                         21     
+    85              1                         21     
+    90              1                      13422     
+    91              1                      13422     
+    92              1                      13422     
+    95              1                      12582     
+    96              1                      12582     
+    97              1                      12582     
+    100             1                      19075     
+    101             1                      19075     
+    102             1                      19075     
+    106             1                       3372     
+    107             1                       3372     
+    108             1                       3372     
+Toggle Coverage:
+    Enabled Coverage              Bins      Hits    Misses  Coverage
+    ----------------              ----      ----    ------  --------
+    Toggles                        366       365         1    99.72%
+
+================================Toggle Details================================
+
+Toggle Coverage for instance /tb/dut/inst_arbiter --
+
+                                              Node      1H->0L      0L->1H  "Coverage"
+                                              ---------------------------------------
+                                            rstn_i           0          21       50.00 
+
+Total Node Count     =        183 
+Toggled Node Count   =        182 
+Untoggled Node Count =          1 
+
+Toggle Coverage      =      99.72% (365 of 366 bins)
+
+=================================================================================
+=== Instance: /tb/dut
+=== Design Unit: work.mcdt
+=================================================================================
+Toggle Coverage:
+    Enabled Coverage              Bins      Hits    Misses  Coverage
+    ----------------              ----      ----    ------  --------
+    Toggles                        524       523         1    99.80%
+
+================================Toggle Details================================
+
+Toggle Coverage for instance /tb/dut --
+
+                                              Node      1H->0L      0L->1H  "Coverage"
+                                              ---------------------------------------
+                                            rstn_i           0          21       50.00 
+
+Total Node Count     =        262 
+Toggled Node Count   =        261 
+Untoggled Node Count =          1 
+
+Toggle Coverage      =      99.80% (523 of 524 bins)
+
+=================================================================================
+=== Instance: /tb/chnl0_if
+=== Design Unit: work.chnl_intf
+=================================================================================
+
+Assertion Coverage:
+    Assertions                       1         1         0   100.00%
+--------------------------------------------------------------------------------------------------------------------------------
+Name                 File(Line)                   Failure      Pass     Vacuous    Disable    Attempt     Active Peak Active ATV
+                                                  Count        Count    Count      Count      Count       Count  Count          
+--------------------------------------------------------------------------------------------------------------------------------
+/tb/chnl0_if/assert__p_fifo_full_ready_low
+                     ./tb.sv(26)                        0      11761      40864          0      52625          0          13 off
+
+Directive Coverage:
+    Directives                       3         3         0   100.00%
+
+DIRECTIVE COVERAGE:
+--------------------------------------------------------------------------------------------
+Name                                     Design Design   Lang File(Line)      Hits Status    
+                                         Unit   UnitType                                     
+--------------------------------------------------------------------------------------------
+/tb/chnl0_if/cover__p_write_and_read     chnl_intf Verilog  SVA  ./tb.sv(44)     3960 Covered   
+/tb/chnl0_if/cover__p_read_only          chnl_intf Verilog  SVA  ./tb.sv(38)     1759 Covered   
+/tb/chnl0_if/cover__p_write_only         chnl_intf Verilog  SVA  ./tb.sv(32)     9524 Covered   
+
+=================================================================================
+=== Instance: /tb/chnl1_if
+=== Design Unit: work.chnl_intf
+=================================================================================
+
+Assertion Coverage:
+    Assertions                       1         1         0   100.00%
+--------------------------------------------------------------------------------------------------------------------------------
+Name                 File(Line)                   Failure      Pass     Vacuous    Disable    Attempt     Active Peak Active ATV
+                                                  Count        Count    Count      Count      Count       Count  Count          
+--------------------------------------------------------------------------------------------------------------------------------
+/tb/chnl1_if/assert__p_fifo_full_ready_low
+                     ./tb.sv(26)                        0       9576      43049          0      52625          0          12 off
+
+Directive Coverage:
+    Directives                       3         3         0   100.00%
+
+DIRECTIVE COVERAGE:
+--------------------------------------------------------------------------------------------
+Name                                     Design Design   Lang File(Line)      Hits Status    
+                                         Unit   UnitType                                     
+--------------------------------------------------------------------------------------------
+/tb/chnl1_if/cover__p_write_and_read     chnl_intf Verilog  SVA  ./tb.sv(44)     3933 Covered   
+/tb/chnl1_if/cover__p_read_only          chnl_intf Verilog  SVA  ./tb.sv(38)     2262 Covered   
+/tb/chnl1_if/cover__p_write_only         chnl_intf Verilog  SVA  ./tb.sv(32)     8730 Covered   
+
+=================================================================================
+=== Instance: /tb/chnl2_if
+=== Design Unit: work.chnl_intf
+=================================================================================
+
+Assertion Coverage:
+    Assertions                       1         1         0   100.00%
+--------------------------------------------------------------------------------------------------------------------------------
+Name                 File(Line)                   Failure      Pass     Vacuous    Disable    Attempt     Active Peak Active ATV
+                                                  Count        Count    Count      Count      Count       Count  Count          
+--------------------------------------------------------------------------------------------------------------------------------
+/tb/chnl2_if/assert__p_fifo_full_ready_low
+                     ./tb.sv(26)                        0       9347      43278          0      52625          0          14 off
+
+Directive Coverage:
+    Directives                       3         3         0   100.00%
+
+DIRECTIVE COVERAGE:
+--------------------------------------------------------------------------------------------
+Name                                     Design Design   Lang File(Line)      Hits Status    
+                                         Unit   UnitType                                     
+--------------------------------------------------------------------------------------------
+/tb/chnl2_if/cover__p_write_and_read     chnl_intf Verilog  SVA  ./tb.sv(44)     8316 Covered   
+/tb/chnl2_if/cover__p_read_only          chnl_intf Verilog  SVA  ./tb.sv(38)     6253 Covered   
+/tb/chnl2_if/cover__p_write_only         chnl_intf Verilog  SVA  ./tb.sv(32)     10789 Covered   
+
+=================================================================================
+=== Instance: /tb/mcdt_if
+=== Design Unit: work.mcdt_intf
+=================================================================================
+
+Assertion Coverage:
+    Assertions                       1         1         0   100.00%
+--------------------------------------------------------------------------------------------------------------------------------
+Name                 File(Line)                   Failure      Pass     Vacuous    Disable    Attempt     Active Peak Active ATV
+                                                  Count        Count    Count      Count      Count       Count  Count          
+--------------------------------------------------------------------------------------------------------------------------------
+/tb/mcdt_if/assert__p_arbitration_grant
+                     ./tb.sv(63)                        0      48423       4202          0      52625          0          21 off
+
+=================================================================================
+=== Instance: /mcdt_pkg
+=== Design Unit: work.mcdt_pkg
+=================================================================================
+
+Assertion Coverage:
+    Assertions                      13        13         0   100.00%
+--------------------------------------------------------------------------------------------------------------------------------
+Name                 File(Line)                   Failure      Pass     Vacuous    Disable    Attempt     Active Peak Active ATV
+                                                  Count        Count    Count      Count      Count       Count  Count          
+--------------------------------------------------------------------------------------------------------------------------------
+/mcdt_pkg/chnl_generator/send_trans/immed__142
+                     ./mcdt_pkg.sv(142)                 0       3840          0          0       3840          0           0 off
+/mcdt_pkg/chnl_generator/send_trans/immed__132
+                     ./mcdt_pkg.sv(132)                 0       3849          0          0       3849          0           0 off
+/mcdt_pkg/mcdt_basic_test/do_config/immed__507
+                     ./mcdt_pkg.sv(507)                 0          3          0          0          3          0           0 off
+/mcdt_pkg/mcdt_basic_test/do_config/immed__505
+                     ./mcdt_pkg.sv(505)                 0          3          0          0          3          0           0 off
+/mcdt_pkg/mcdt_basic_test/do_config/immed__503
+                     ./mcdt_pkg.sv(503)                 0          3          0          0          3          0           0 off
+/mcdt_pkg/mcdt_burst_test/do_config/#anonblk#163209767#518#2#/#ublk#163209767#518/immed__519
+                     ./mcdt_pkg.sv(519)                 0          9          0          0          9          0           0 off
+/mcdt_pkg/mcdt_fifo_full_test/do_config/#anonblk#163209767#536#2#/#ublk#163209767#536/immed__537
+                     ./mcdt_pkg.sv(537)                 0          9          0          0          9          0           0 off
+/mcdt_pkg/mcdt_single_test/do_config/#anonblk#163209767#603#2#/#ublk#163209767#603/immed__604
+                     ./mcdt_pkg.sv(604)                 0          9          0          0          9          0           0 off
+/mcdt_pkg/mcdt_alone_test/do_config/#anonblk#163209767#631#2#/#ublk#163209767#632/immed__633
+                     ./mcdt_pkg.sv(633)                 0          3          0          0          3          0           0 off
+/mcdt_pkg/mcdt_alone_test/do_config/#anonblk#163209767#631#2#/#ublk#163209767#641/immed__642
+                     ./mcdt_pkg.sv(642)                 0          6          0          0          6          0           0 off
+/mcdt_pkg/mcdt_random_test/do_config/#anonblk#163209767#669#2#/#ublk#163209767#669/immed__670
+                     ./mcdt_pkg.sv(670)                 0          9          0          0          9          0           0 off
+/mcdt_pkg/mcdt_pair_test/do_config/#anonblk#163209767#699#2#/#ublk#163209767#699/#ublk#163209767#706/immed__707
+                     ./mcdt_pkg.sv(707)                 0          6          0          0          6          0           0 off
+/mcdt_pkg/mcdt_pair_test/do_config/#anonblk#163209767#699#2#/#ublk#163209767#699/#ublk#163209767#715/immed__717
+                     ./mcdt_pkg.sv(717)                 0          3          0          0          3          0           0 off
+
+Covergroup Coverage:
+    Covergroups                      4        na        na    94.95%
+        Coverpoints/Crosses         12        na        na        na
+            Covergroup Bins         76        72         4    94.73%
+----------------------------------------------------------------------------------------------------------
+Covergroup                                             Metric       Goal       Bins    Status               
+                                                                                                         
+----------------------------------------------------------------------------------------------------------
+ TYPE /mcdt_pkg/mcdt_coverage/cg_fifo_state            92.30%        100          -    Uncovered            
+    covered/total bins:                                    21         22          -                      
+    missing/total bins:                                     1         22          -                      
+    % Hit:                                             95.45%        100          -                      
+    Coverpoint fifo0                                    0.00%        100          -    ZERO                 
+        covered/total bins:                                 0          0          -                      
+        missing/total bins:                                 0          0          -                      
+        % Hit:                                        100.00%        100          -                      
+    Coverpoint fifo1                                    0.00%        100          -    ZERO                 
+        covered/total bins:                                 0          0          -                      
+        missing/total bins:                                 0          0          -                      
+        % Hit:                                        100.00%        100          -                      
+    Coverpoint fifo2                                    0.00%        100          -    ZERO                 
+        covered/total bins:                                 0          0          -                      
+        missing/total bins:                                 0          0          -                      
+        % Hit:                                        100.00%        100          -                      
+    Cross fifos                                        92.30%        100          -    Uncovered            
+        covered/total bins:                                12         13          -                      
+        missing/total bins:                                 1         13          -                      
+        % Hit:                                         92.30%        100          -                      
+ Covergroup instance \/mcdt_pkg::mcdt_coverage::cg_fifo_state  
+                                                       92.30%        100          -    Uncovered            
+    covered/total bins:                                    21         22          -                      
+    missing/total bins:                                     1         22          -                      
+    % Hit:                                             95.45%        100          -                      
+    Coverpoint fifo0 [1]                              100.00%        100          -    Covered              
+        covered/total bins:                                 3          3          -                      
+        missing/total bins:                                 0          3          -                      
+        % Hit:                                        100.00%        100          -                      
+        bin empty                                       23751          1          -    Covered              
+        bin full                                        13553          1          -    Covered              
+        bin others                                      15300          1          -    Covered              
+    Coverpoint fifo1 [1]                              100.00%        100          -    Covered              
+        covered/total bins:                                 3          3          -                      
+        missing/total bins:                                 0          3          -                      
+        % Hit:                                        100.00%        100          -                      
+        bin empty                                       25412          1          -    Covered              
+        bin full                                        11178          1          -    Covered              
+        bin others                                      16014          1          -    Covered              
+    Coverpoint fifo2 [1]                              100.00%        100          -    Covered              
+        covered/total bins:                                 3          3          -                      
+        missing/total bins:                                 0          3          -                      
+        % Hit:                                        100.00%        100          -                      
+        bin empty                                       13615          1          -    Covered              
+        bin full                                        12949          1          -    Covered              
+        bin others                                      26040          1          -    Covered              
+    Cross fifos                                        92.30%        100          -    Uncovered            
+        covered/total bins:                                12         13          -                      
+        missing/total bins:                                 1         13          -                      
+        % Hit:                                         92.30%        100          -                      
+        Auto, Default and User Defined Bins:
+            bin fifo0_empty                             23751          1          -    Covered              
+            bin fifo0_full                              13553          1          -    Covered              
+            bin fifo0_others                            15300          1          -    Covered              
+            bin fifo1_empty                             25412          1          -    Covered              
+            bin fifo1_full                              11178          1          -    Covered              
+            bin fifo1_others                            16014          1          -    Covered              
+            bin fifo2_empty                             13615          1          -    Covered              
+            bin fifo2_full                              12949          1          -    Covered              
+            bin fifo2_others                            26040          1          -    Covered              
+            bin f0full_f1full                            4135          1          -    Covered              
+            bin f0full_f2full                            4755          1          -    Covered              
+            bin f1full_f2full                            4278          1          -    Covered              
+            bin all_fifo_full                               0          1          -    ZERO                 
+ TYPE /mcdt_pkg/mcdt_coverage/cg_channel_data         100.00%        100          -    Covered              
+    covered/total bins:                                    28         28          -                      
+    missing/total bins:                                     0         28          -                      
+    % Hit:                                            100.00%        100          -                      
+    Coverpoint chnl0                                  100.00%        100          -    Covered              
+        covered/total bins:                                 5          5          -                      
+        missing/total bins:                                 0          5          -                      
+        % Hit:                                        100.00%        100          -                      
+    Coverpoint chnl1                                  100.00%        100          -    Covered              
+        covered/total bins:                                 5          5          -                      
+        missing/total bins:                                 0          5          -                      
+        % Hit:                                        100.00%        100          -                      
+    Coverpoint chnl2                                  100.00%        100          -    Covered              
+        covered/total bins:                                 5          5          -                      
+        missing/total bins:                                 0          5          -                      
+        % Hit:                                        100.00%        100          -                      
+    Cross chnls                                       100.00%        100          -    Covered              
+        covered/total bins:                                13         13          -                      
+        missing/total bins:                                 0         13          -                      
+        % Hit:                                        100.00%        100          -                      
+ Covergroup instance \/mcdt_pkg::mcdt_coverage::cg_channel_data  
+                                                      100.00%        100          -    Covered              
+    covered/total bins:                                    28         28          -                      
+    missing/total bins:                                     0         28          -                      
+    % Hit:                                            100.00%        100          -                      
+    Coverpoint chnl0                                  100.00%        100          -    Covered              
+        covered/total bins:                                 5          5          -                      
+        missing/total bins:                                 0          5          -                      
+        % Hit:                                        100.00%        100          -                      
+        bin valid                                       25249          1          -    Covered              
+        bin burst[1[*2]]                                22426          1          -    Covered              
+        bin burst[1[*4]]                                19451          1          -    Covered              
+        bin burst[1[*8]]                                15175          1          -    Covered              
+        bin single                                        918          1          -    Covered              
+    Coverpoint chnl1                                  100.00%        100          -    Covered              
+        covered/total bins:                                 5          5          -                      
+        missing/total bins:                                 0          5          -                      
+        % Hit:                                        100.00%        100          -                      
+        bin valid                                       22243          1          -    Covered              
+        bin burst[1[*2]]                                18503          1          -    Covered              
+        bin burst[1[*4]]                                16003          1          -    Covered              
+        bin burst[1[*8]]                                12907          1          -    Covered              
+        bin single                                       2009          1          -    Covered              
+    Coverpoint chnl2                                  100.00%        100          -    Covered              
+        covered/total bins:                                 5          5          -                      
+        missing/total bins:                                 0          5          -                      
+        % Hit:                                        100.00%        100          -                      
+        bin valid                                       28453          1          -    Covered              
+        bin burst[1[*2]]                                16256          1          -    Covered              
+        bin burst[1[*4]]                                12071          1          -    Covered              
+        bin burst[1[*8]]                                 9017          1          -    Covered              
+        bin single                                       8774          1          -    Covered              
+    Cross chnls                                       100.00%        100          -    Covered              
+        covered/total bins:                                13         13          -                      
+        missing/total bins:                                 0         13          -                      
+        % Hit:                                        100.00%        100          -                      
+        Auto, Default and User Defined Bins:
+            bin chnl0_valid                              9841          1          -    Covered              
+            bin chnl0_burst                              9329          1          -    Covered              
+            bin chnl0_single                              290          1          -    Covered              
+            bin chnl1_valid                              9150          1          -    Covered              
+            bin chnl1_burst                              8200          1          -    Covered              
+            bin chnl1_single                              981          1          -    Covered              
+            bin chnl2_valid                              9434          1          -    Covered              
+            bin chnl2_burst                              7012          1          -    Covered              
+            bin chnl2_single                              697          1          -    Covered              
+            bin c0vld_c1vld                              9011          1          -    Covered              
+            bin c0vld_c2vld                              9295          1          -    Covered              
+            bin c1vld_c2vld                              8800          1          -    Covered              
+            bin all_chnl_vld                             8664          1          -    Covered              
+ TYPE /mcdt_pkg/mcdt_coverage/cg_arbitration          100.00%        100          -    Covered              
+    covered/total bins:                                     7          7          -                      
+    missing/total bins:                                     0          7          -                      
+    % Hit:                                            100.00%        100          -                      
+    Coverpoint req                                    100.00%        100          -    Covered              
+        covered/total bins:                                 7          7          -                      
+        missing/total bins:                                 0          7          -                      
+        % Hit:                                        100.00%        100          -                      
+        bin req1[1]                                      1442          1          -    Covered              
+        bin req1[2]                                      1358          1          -    Covered              
+        bin req1[4]                                       526          1          -    Covered              
+        bin req2[3]                                      1647          1          -    Covered              
+        bin req2[5]                                      6526          1          -    Covered              
+        bin req2[6]                                      5540          1          -    Covered              
+        bin req3                                        16441          1          -    Covered              
+ TYPE /mcdt_pkg/mcdt_coverage/cg_arbiter_data          87.50%        100          -    Uncovered            
+    covered/total bins:                                    16         19          -                      
+    missing/total bins:                                     3         19          -                      
+    % Hit:                                             84.21%        100          -                      
+    Coverpoint valid                                  100.00%        100          -    Covered              
+        covered/total bins:                                 2          2          -                      
+        missing/total bins:                                 0          2          -                      
+        % Hit:                                        100.00%        100          -                      
+    Coverpoint id                                     100.00%        100          -    Covered              
+        covered/total bins:                                 9          9          -                      
+        missing/total bins:                                 0          9          -                      
+        % Hit:                                        100.00%        100          -                      
+    Cross validXid                                     62.50%        100          -    Uncovered            
+        covered/total bins:                                 5          8          -                      
+        missing/total bins:                                 3          8          -                      
+        % Hit:                                         62.50%        100          -                      
+ Covergroup instance \/mcdt_pkg::mcdt_coverage::cg_arbiter_data  
+                                                       87.50%        100          -    Uncovered            
+    covered/total bins:                                    16         19          -                      
+    missing/total bins:                                     3         19          -                      
+    % Hit:                                             84.21%        100          -                      
+    Coverpoint valid                                  100.00%        100          -    Covered              
+        covered/total bins:                                 2          2          -                      
+        missing/total bins:                                 0          2          -                      
+        % Hit:                                        100.00%        100          -                      
+        bin burst                                       41729          1          -    Covered              
+        bin single                                       3347          1          -    Covered              
+    Coverpoint id                                     100.00%        100          -    Covered              
+        covered/total bins:                                 9          9          -                      
+        missing/total bins:                                 0          9          -                      
+        % Hit:                                        100.00%        100          -                      
+        bin same[0=>0]                                   3560          1          -    Covered              
+        bin same[1=>1]                                   3309          1          -    Covered              
+        bin same[2=>2]                                   4872          1          -    Covered              
+        bin diff[0=>2]                                   3100          1          -    Covered              
+        bin diff[0=>1]                                   6415          1          -    Covered              
+        bin diff[1=>2]                                   8348          1          -    Covered              
+        bin diff[1=>0]                                    775          1          -    Covered              
+        bin diff[2=>1]                                   2679          1          -    Covered              
+        bin diff[2=>0]                                   8671          1          -    Covered              
+    Cross validXid                                     62.50%        100          -    Uncovered            
+        covered/total bins:                                 5          8          -                      
+        missing/total bins:                                 3          8          -                      
+        % Hit:                                         62.50%        100          -                      
+        Auto, Default and User Defined Bins:
+            bin valid_burst                             41729          1          -    Covered              
+            bin valid_single                                0          1          -    ZERO                 
+            bin id_same                                 11741          1          -    Covered              
+            bin id_diff                                 29988          1          -    Covered              
+            bin same_id_burst                           11741          1          -    Covered              
+            bin same_id_single                              0          1          -    ZERO                 
+            bin diff_id_burst                           29988          1          -    Covered              
+            bin diff_id_single                              0          1          -    ZERO                 
+
+COVERGROUP COVERAGE:
+----------------------------------------------------------------------------------------------------------
+Covergroup                                             Metric       Goal       Bins    Status               
+                                                                                                         
+----------------------------------------------------------------------------------------------------------
+ TYPE /mcdt_pkg/mcdt_coverage/cg_fifo_state            92.30%        100          -    Uncovered            
+    covered/total bins:                                    21         22          -                      
+    missing/total bins:                                     1         22          -                      
+    % Hit:                                             95.45%        100          -                      
+    Coverpoint fifo0                                    0.00%        100          -    ZERO                 
+        covered/total bins:                                 0          0          -                      
+        missing/total bins:                                 0          0          -                      
+        % Hit:                                        100.00%        100          -                      
+    Coverpoint fifo1                                    0.00%        100          -    ZERO                 
+        covered/total bins:                                 0          0          -                      
+        missing/total bins:                                 0          0          -                      
+        % Hit:                                        100.00%        100          -                      
+    Coverpoint fifo2                                    0.00%        100          -    ZERO                 
+        covered/total bins:                                 0          0          -                      
+        missing/total bins:                                 0          0          -                      
+        % Hit:                                        100.00%        100          -                      
+    Cross fifos                                        92.30%        100          -    Uncovered            
+        covered/total bins:                                12         13          -                      
+        missing/total bins:                                 1         13          -                      
+        % Hit:                                         92.30%        100          -                      
+ Covergroup instance \/mcdt_pkg::mcdt_coverage::cg_fifo_state  
+                                                       92.30%        100          -    Uncovered            
+    covered/total bins:                                    21         22          -                      
+    missing/total bins:                                     1         22          -                      
+    % Hit:                                             95.45%        100          -                      
+    Coverpoint fifo0 [1]                              100.00%        100          -    Covered              
+        covered/total bins:                                 3          3          -                      
+        missing/total bins:                                 0          3          -                      
+        % Hit:                                        100.00%        100          -                      
+        bin empty                                       23751          1          -    Covered              
+        bin full                                        13553          1          -    Covered              
+        bin others                                      15300          1          -    Covered              
+    Coverpoint fifo1 [1]                              100.00%        100          -    Covered              
+        covered/total bins:                                 3          3          -                      
+        missing/total bins:                                 0          3          -                      
+        % Hit:                                        100.00%        100          -                      
+        bin empty                                       25412          1          -    Covered              
+        bin full                                        11178          1          -    Covered              
+        bin others                                      16014          1          -    Covered              
+    Coverpoint fifo2 [1]                              100.00%        100          -    Covered              
+        covered/total bins:                                 3          3          -                      
+        missing/total bins:                                 0          3          -                      
+        % Hit:                                        100.00%        100          -                      
+        bin empty                                       13615          1          -    Covered              
+        bin full                                        12949          1          -    Covered              
+        bin others                                      26040          1          -    Covered              
+    Cross fifos                                        92.30%        100          -    Uncovered            
+        covered/total bins:                                12         13          -                      
+        missing/total bins:                                 1         13          -                      
+        % Hit:                                         92.30%        100          -                      
+        Auto, Default and User Defined Bins:
+            bin fifo0_empty                             23751          1          -    Covered              
+            bin fifo0_full                              13553          1          -    Covered              
+            bin fifo0_others                            15300          1          -    Covered              
+            bin fifo1_empty                             25412          1          -    Covered              
+            bin fifo1_full                              11178          1          -    Covered              
+            bin fifo1_others                            16014          1          -    Covered              
+            bin fifo2_empty                             13615          1          -    Covered              
+            bin fifo2_full                              12949          1          -    Covered              
+            bin fifo2_others                            26040          1          -    Covered              
+            bin f0full_f1full                            4135          1          -    Covered              
+            bin f0full_f2full                            4755          1          -    Covered              
+            bin f1full_f2full                            4278          1          -    Covered              
+            bin all_fifo_full                               0          1          -    ZERO                 
+ TYPE /mcdt_pkg/mcdt_coverage/cg_channel_data         100.00%        100          -    Covered              
+    covered/total bins:                                    28         28          -                      
+    missing/total bins:                                     0         28          -                      
+    % Hit:                                            100.00%        100          -                      
+    Coverpoint chnl0                                  100.00%        100          -    Covered              
+        covered/total bins:                                 5          5          -                      
+        missing/total bins:                                 0          5          -                      
+        % Hit:                                        100.00%        100          -                      
+    Coverpoint chnl1                                  100.00%        100          -    Covered              
+        covered/total bins:                                 5          5          -                      
+        missing/total bins:                                 0          5          -                      
+        % Hit:                                        100.00%        100          -                      
+    Coverpoint chnl2                                  100.00%        100          -    Covered              
+        covered/total bins:                                 5          5          -                      
+        missing/total bins:                                 0          5          -                      
+        % Hit:                                        100.00%        100          -                      
+    Cross chnls                                       100.00%        100          -    Covered              
+        covered/total bins:                                13         13          -                      
+        missing/total bins:                                 0         13          -                      
+        % Hit:                                        100.00%        100          -                      
+ Covergroup instance \/mcdt_pkg::mcdt_coverage::cg_channel_data  
+                                                      100.00%        100          -    Covered              
+    covered/total bins:                                    28         28          -                      
+    missing/total bins:                                     0         28          -                      
+    % Hit:                                            100.00%        100          -                      
+    Coverpoint chnl0                                  100.00%        100          -    Covered              
+        covered/total bins:                                 5          5          -                      
+        missing/total bins:                                 0          5          -                      
+        % Hit:                                        100.00%        100          -                      
+        bin valid                                       25249          1          -    Covered              
+        bin burst[1[*2]]                                22426          1          -    Covered              
+        bin burst[1[*4]]                                19451          1          -    Covered              
+        bin burst[1[*8]]                                15175          1          -    Covered              
+        bin single                                        918          1          -    Covered              
+    Coverpoint chnl1                                  100.00%        100          -    Covered              
+        covered/total bins:                                 5          5          -                      
+        missing/total bins:                                 0          5          -                      
+        % Hit:                                        100.00%        100          -                      
+        bin valid                                       22243          1          -    Covered              
+        bin burst[1[*2]]                                18503          1          -    Covered              
+        bin burst[1[*4]]                                16003          1          -    Covered              
+        bin burst[1[*8]]                                12907          1          -    Covered              
+        bin single                                       2009          1          -    Covered              
+    Coverpoint chnl2                                  100.00%        100          -    Covered              
+        covered/total bins:                                 5          5          -                      
+        missing/total bins:                                 0          5          -                      
+        % Hit:                                        100.00%        100          -                      
+        bin valid                                       28453          1          -    Covered              
+        bin burst[1[*2]]                                16256          1          -    Covered              
+        bin burst[1[*4]]                                12071          1          -    Covered              
+        bin burst[1[*8]]                                 9017          1          -    Covered              
+        bin single                                       8774          1          -    Covered              
+    Cross chnls                                       100.00%        100          -    Covered              
+        covered/total bins:                                13         13          -                      
+        missing/total bins:                                 0         13          -                      
+        % Hit:                                        100.00%        100          -                      
+        Auto, Default and User Defined Bins:
+            bin chnl0_valid                              9841          1          -    Covered              
+            bin chnl0_burst                              9329          1          -    Covered              
+            bin chnl0_single                              290          1          -    Covered              
+            bin chnl1_valid                              9150          1          -    Covered              
+            bin chnl1_burst                              8200          1          -    Covered              
+            bin chnl1_single                              981          1          -    Covered              
+            bin chnl2_valid                              9434          1          -    Covered              
+            bin chnl2_burst                              7012          1          -    Covered              
+            bin chnl2_single                              697          1          -    Covered              
+            bin c0vld_c1vld                              9011          1          -    Covered              
+            bin c0vld_c2vld                              9295          1          -    Covered              
+            bin c1vld_c2vld                              8800          1          -    Covered              
+            bin all_chnl_vld                             8664          1          -    Covered              
+ TYPE /mcdt_pkg/mcdt_coverage/cg_arbitration          100.00%        100          -    Covered              
+    covered/total bins:                                     7          7          -                      
+    missing/total bins:                                     0          7          -                      
+    % Hit:                                            100.00%        100          -                      
+    Coverpoint req                                    100.00%        100          -    Covered              
+        covered/total bins:                                 7          7          -                      
+        missing/total bins:                                 0          7          -                      
+        % Hit:                                        100.00%        100          -                      
+        bin req1[1]                                      1442          1          -    Covered              
+        bin req1[2]                                      1358          1          -    Covered              
+        bin req1[4]                                       526          1          -    Covered              
+        bin req2[3]                                      1647          1          -    Covered              
+        bin req2[5]                                      6526          1          -    Covered              
+        bin req2[6]                                      5540          1          -    Covered              
+        bin req3                                        16441          1          -    Covered              
+ TYPE /mcdt_pkg/mcdt_coverage/cg_arbiter_data          87.50%        100          -    Uncovered            
+    covered/total bins:                                    16         19          -                      
+    missing/total bins:                                     3         19          -                      
+    % Hit:                                             84.21%        100          -                      
+    Coverpoint valid                                  100.00%        100          -    Covered              
+        covered/total bins:                                 2          2          -                      
+        missing/total bins:                                 0          2          -                      
+        % Hit:                                        100.00%        100          -                      
+    Coverpoint id                                     100.00%        100          -    Covered              
+        covered/total bins:                                 9          9          -                      
+        missing/total bins:                                 0          9          -                      
+        % Hit:                                        100.00%        100          -                      
+    Cross validXid                                     62.50%        100          -    Uncovered            
+        covered/total bins:                                 5          8          -                      
+        missing/total bins:                                 3          8          -                      
+        % Hit:                                         62.50%        100          -                      
+ Covergroup instance \/mcdt_pkg::mcdt_coverage::cg_arbiter_data  
+                                                       87.50%        100          -    Uncovered            
+    covered/total bins:                                    16         19          -                      
+    missing/total bins:                                     3         19          -                      
+    % Hit:                                             84.21%        100          -                      
+    Coverpoint valid                                  100.00%        100          -    Covered              
+        covered/total bins:                                 2          2          -                      
+        missing/total bins:                                 0          2          -                      
+        % Hit:                                        100.00%        100          -                      
+        bin burst                                       41729          1          -    Covered              
+        bin single                                       3347          1          -    Covered              
+    Coverpoint id                                     100.00%        100          -    Covered              
+        covered/total bins:                                 9          9          -                      
+        missing/total bins:                                 0          9          -                      
+        % Hit:                                        100.00%        100          -                      
+        bin same[0=>0]                                   3560          1          -    Covered              
+        bin same[1=>1]                                   3309          1          -    Covered              
+        bin same[2=>2]                                   4872          1          -    Covered              
+        bin diff[0=>2]                                   3100          1          -    Covered              
+        bin diff[0=>1]                                   6415          1          -    Covered              
+        bin diff[1=>2]                                   8348          1          -    Covered              
+        bin diff[1=>0]                                    775          1          -    Covered              
+        bin diff[2=>1]                                   2679          1          -    Covered              
+        bin diff[2=>0]                                   8671          1          -    Covered              
+    Cross validXid                                     62.50%        100          -    Uncovered            
+        covered/total bins:                                 5          8          -                      
+        missing/total bins:                                 3          8          -                      
+        % Hit:                                         62.50%        100          -                      
+        Auto, Default and User Defined Bins:
+            bin valid_burst                             41729          1          -    Covered              
+            bin valid_single                                0          1          -    ZERO                 
+            bin id_same                                 11741          1          -    Covered              
+            bin id_diff                                 29988          1          -    Covered              
+            bin same_id_burst                           11741          1          -    Covered              
+            bin same_id_single                              0          1          -    ZERO                 
+            bin diff_id_burst                           29988          1          -    Covered              
+            bin diff_id_single                              0          1          -    ZERO                 
+
+ [1] - Does not contribute coverage as weight is 0
+
+TOTAL COVERGROUP COVERAGE: 94.95%  COVERGROUP TYPES: 4
+
+DIRECTIVE COVERAGE:
+--------------------------------------------------------------------------------------------
+Name                                     Design Design   Lang File(Line)      Hits Status    
+                                         Unit   UnitType                                     
+--------------------------------------------------------------------------------------------
+/tb/chnl0_if/cover__p_write_and_read     chnl_intf Verilog  SVA  ./tb.sv(44)     3960 Covered   
+/tb/chnl0_if/cover__p_read_only          chnl_intf Verilog  SVA  ./tb.sv(38)     1759 Covered   
+/tb/chnl0_if/cover__p_write_only         chnl_intf Verilog  SVA  ./tb.sv(32)     9524 Covered   
+/tb/chnl1_if/cover__p_write_and_read     chnl_intf Verilog  SVA  ./tb.sv(44)     3933 Covered   
+/tb/chnl1_if/cover__p_read_only          chnl_intf Verilog  SVA  ./tb.sv(38)     2262 Covered   
+/tb/chnl1_if/cover__p_write_only         chnl_intf Verilog  SVA  ./tb.sv(32)     8730 Covered   
+/tb/chnl2_if/cover__p_write_and_read     chnl_intf Verilog  SVA  ./tb.sv(44)     8316 Covered   
+/tb/chnl2_if/cover__p_read_only          chnl_intf Verilog  SVA  ./tb.sv(38)     6253 Covered   
+/tb/chnl2_if/cover__p_write_only         chnl_intf Verilog  SVA  ./tb.sv(32)     10789 Covered   
+
+TOTAL DIRECTIVE COVERAGE: 100.00%  COVERS: 9
+
+ASSERTION RESULTS:
+--------------------------------------------------------------------------------------------------------------------------------
+Name                 File(Line)                   Failure      Pass     Vacuous    Disable    Attempt     Active Peak Active ATV
+                                                  Count        Count    Count      Count      Count       Count  Count          
+--------------------------------------------------------------------------------------------------------------------------------
+/tb/chnl0_if/assert__p_fifo_full_ready_low
+                     ./tb.sv(26)                        0      11761      40864          0      52625          0          13 off
+/tb/chnl1_if/assert__p_fifo_full_ready_low
+                     ./tb.sv(26)                        0       9576      43049          0      52625          0          12 off
+/tb/chnl2_if/assert__p_fifo_full_ready_low
+                     ./tb.sv(26)                        0       9347      43278          0      52625          0          14 off
+/tb/mcdt_if/assert__p_arbitration_grant
+                     ./tb.sv(63)                        0      48423       4202          0      52625          0          21 off
+/mcdt_pkg/chnl_generator/send_trans/immed__142
+                     ./mcdt_pkg.sv(142)                 0       3840          0          0       3840          0           0 off
+/mcdt_pkg/chnl_generator/send_trans/immed__132
+                     ./mcdt_pkg.sv(132)                 0       3849          0          0       3849          0           0 off
+/mcdt_pkg/mcdt_basic_test/do_config/immed__507
+                     ./mcdt_pkg.sv(507)                 0          3          0          0          3          0           0 off
+/mcdt_pkg/mcdt_basic_test/do_config/immed__505
+                     ./mcdt_pkg.sv(505)                 0          3          0          0          3          0           0 off
+/mcdt_pkg/mcdt_basic_test/do_config/immed__503
+                     ./mcdt_pkg.sv(503)                 0          3          0          0          3          0           0 off
+/mcdt_pkg/mcdt_burst_test/do_config/#anonblk#163209767#518#2#/#ublk#163209767#518/immed__519
+                     ./mcdt_pkg.sv(519)                 0          9          0          0          9          0           0 off
+/mcdt_pkg/mcdt_fifo_full_test/do_config/#anonblk#163209767#536#2#/#ublk#163209767#536/immed__537
+                     ./mcdt_pkg.sv(537)                 0          9          0          0          9          0           0 off
+/mcdt_pkg/mcdt_single_test/do_config/#anonblk#163209767#603#2#/#ublk#163209767#603/immed__604
+                     ./mcdt_pkg.sv(604)                 0          9          0          0          9          0           0 off
+/mcdt_pkg/mcdt_alone_test/do_config/#anonblk#163209767#631#2#/#ublk#163209767#632/immed__633
+                     ./mcdt_pkg.sv(633)                 0          3          0          0          3          0           0 off
+/mcdt_pkg/mcdt_alone_test/do_config/#anonblk#163209767#631#2#/#ublk#163209767#641/immed__642
+                     ./mcdt_pkg.sv(642)                 0          6          0          0          6          0           0 off
+/mcdt_pkg/mcdt_random_test/do_config/#anonblk#163209767#669#2#/#ublk#163209767#669/immed__670
+                     ./mcdt_pkg.sv(670)                 0          9          0          0          9          0           0 off
+/mcdt_pkg/mcdt_pair_test/do_config/#anonblk#163209767#699#2#/#ublk#163209767#699/#ublk#163209767#706/immed__707
+                     ./mcdt_pkg.sv(707)                 0          6          0          0          6          0           0 off
+/mcdt_pkg/mcdt_pair_test/do_config/#anonblk#163209767#699#2#/#ublk#163209767#699/#ublk#163209767#715/immed__717
+                     ./mcdt_pkg.sv(717)                 0          3          0          0          3          0           0 off
+
+Total Coverage By Instance (filtered view): 98.79%
+
+End time: 21:49:07 on Oct 29,2026, Elapsed time: 0:00:00
+Errors: 0, Warnings: 0

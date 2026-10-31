@@ -1,0 +1,16 @@
+V1系列课程实验4
+Hi，终于进入到我们最后一个实验啦！在实验3中，我们已经能够充分应用UVM的核心特性，构建起来UVM环境的框架了，请同学们在开始完成实验4之前，先从实验3代码回顾一下内容：
+UVM验证环境中一共有多少种组件类型（uvm_component）？
+提供的代码中出现了哪些phase方法？
+UVM环境中的interface指针如何从TB传递到各个组件当中？
+相比于SV验证环境的构建、连接、运行过程，UVM对应的这些过程有什么相同点和不同点？
+组件之间通过TLM端口通信与SV通过mailbox通信的相同点和不同点？
+在回顾了实验3中的实现细节以后，我们再转入到实验4当中，来结合我们本周的视频课程理解，如何将generator和driver之间通过mailbox的通信关系过渡为从sequence经过sequencer再到driver的通信过程（双向通信）。
+同时再思考，之前在test层对各个generator的并行控制（随机化和发送激励）如何拆分到了两个类中？sequence如何承担了产生和随机化激励的责任，而sequencer又是如何将挂载到其上的sequence item（来自于sequence）传递到driver呢？
+在理解了sequence、sequencer与driver三者的通信以后，最后再认识virtual sequence的组织作用、virtual sequencer的路由作用以及它们在测试过程中的总控作用，即virtual sequence对于仿真开始、测试内容和仿真结束的控制。
+在学习并且掌握了以上内容之后，你就可以完成下面的实验要求啦。
+实验要求（测试序列）
+参考mcdt_basic_virtual_sequence与mcdt_basic_test之间的对应关系，将剩余的mcdt_burst_test和mcdt_fifo_full_test也剥离为virtual sequence与对应的test。
+将之前为了满足覆盖率而实现的其它test也按照以上的要求进行剥离。
+在完成以上的virtual sequence与test关系剥离之后，更新后的测试用例可以通过，且合并后的覆盖率可以满足之前的要求。
+恭喜你！顺利通关喽！

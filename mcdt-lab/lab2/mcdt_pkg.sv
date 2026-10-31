@@ -11,9 +11,15 @@ package mcdt_pkg;
     rand int pkt_nidles;
     bit rsp;
     local static int obj_id = 0;
+    // 数据内容"带通道标签"的编码开关：
+    //   0(默认)=数据内容按照 C000_0000 + (ch_id<<24) + (pkt_id<<8) + i 生成，
+    //           方便在波形和log里区分数据来自哪个通道；
+    //   1=关闭该编码约束，改用全随机数据，专门用来把32位数据总线的
+    //     每一位都翻转一遍(toggle覆盖率)，否则常数高位(bit31:26)永远不翻转。
+    static bit random_data_en = 0;
     constraint cstr{
       soft data.size inside {[4:8]};
-      foreach(data[i]) data[i] == 'hC000_0000 + (this.ch_id<<24) + (this.pkt_id<<8) + i;
+      if(!random_data_en) foreach(data[i]) data[i] == 'hC000_0000 + (this.ch_id<<24) + (this.pkt_id<<8) + i;
       soft ch_id == 0;
       soft pkt_id == 0;
       data_nidles inside {[0:2]};
@@ -494,11 +500,11 @@ package mcdt_pkg;
     endfunction
     virtual function void do_config();
       super.do_config();
-      assert(gen[0].randomize() with {ntrans==100; data_nidles==0; pkt_nidles==1; data_size==8;})
+      assert(gen[0].randomize() with {ch_id==0; ntrans==100; data_nidles==0; pkt_nidles==1; data_size==8;})
         else $fatal("[RNDFAIL] gen[0] randomization failure!");
-      assert(gen[1].randomize() with {ntrans==50; data_nidles inside {[1:2]}; pkt_nidles inside {[3:5]}; data_size==6;})
+      assert(gen[1].randomize() with {ch_id==1; ntrans==50; data_nidles inside {[1:2]}; pkt_nidles inside {[3:5]}; data_size==6;})
         else $fatal("[RNDFAIL] gen[1] randomization failure!");
-      assert(gen[2].randomize() with {ntrans==80; data_nidles inside {[0:1]}; pkt_nidles inside {[1:2]}; data_size==32;})
+      assert(gen[2].randomize() with {ch_id==2; ntrans==80; data_nidles inside {[0:1]}; pkt_nidles inside {[1:2]}; data_size==32;})
         else $fatal("[RNDFAIL] gen[2] randomization failure!");
     endfunction
   endclass: mcdt_basic_test
@@ -509,12 +515,15 @@ package mcdt_pkg;
     endfunction
     virtual function void do_config();
       super.do_config();
-      assert(gen[0].randomize() with {ntrans inside {[80:100]}; data_nidles==0; pkt_nidles==1; data_size inside {8, 16, 32};})
-        else $fatal("[RNDFAIL] gen[0] randomization failure!");
-      assert(gen[1].randomize() with {ntrans inside {[80:100]}; data_nidles==0; pkt_nidles==1; data_size inside {8, 16, 32};})
-        else $fatal("[RNDFAIL] gen[1] randomization failure!");
-      assert(gen[2].randomize() with {ntrans inside {[80:100]}; data_nidles==0; pkt_nidles==1; data_size inside {8, 16, 32};})
-        else $fatal("[RNDFAIL] gen[2] randomization failure!");
+      foreach(gen[i]) begin
+        assert(gen[i].randomize() with {ch_id == local::i;
+                                        ntrans inside {[80:100]};
+                                        data_nidles == 0;
+                                        pkt_nidles == 1;
+                                        data_size inside {8, 16, 32};
+                                       })
+          else $fatal("[RNDFAIL] gen[%0d] randomization failure!", i);
+      end
     endfunction
   endclass: mcdt_burst_test
 
@@ -524,12 +533,15 @@ package mcdt_pkg;
     endfunction
     virtual function void do_config();
       super.do_config();
-      assert(gen[0].randomize() with {ntrans inside {[1000:2000]}; data_nidles==0; pkt_nidles==1; data_size inside {8, 16, 32};})
-        else $fatal("[RNDFAIL] gen[0] randomization failure!");
-      assert(gen[1].randomize() with {ntrans inside {[1000:2000]}; data_nidles==0; pkt_nidles==1; data_size inside {8, 16, 32};})
-        else $fatal("[RNDFAIL] gen[1] randomization failure!");
-      assert(gen[2].randomize() with {ntrans inside {[1000:2000]}; data_nidles==0; pkt_nidles==1; data_size inside {8, 16, 32};})
-        else $fatal("[RNDFAIL] gen[2] randomization failure!");
+      foreach(gen[i]) begin
+        assert(gen[i].randomize() with {ch_id == local::i;
+                                        ntrans inside {[1000:2000]};
+                                        data_nidles == 0;
+                                        pkt_nidles == 1;
+                                        data_size inside {8, 16, 32};
+                                       })
+          else $fatal("[RNDFAIL] gen[%0d] randomization failure!", i);
+      end
     endfunction
 
     // get all of 3 channles slave ready signals as a 3-bits vector
@@ -573,6 +585,141 @@ package mcdt_pkg;
       $finish();
     endtask
   endclass: mcdt_fifo_full_test
+
+  //------------------------------------------------------------------
+  // 覆盖率补充用例 1：单拍包（single beat packet）
+  // 目的：
+  //   1) 命中 cg_channel_data 中 chnlX.single 的 (0 => 1 => 0) 转移
+  //   2) 命中 cg_arbiter_data.valid 中 single 的 (0 => 1) 转移
+  //   3) 命中 p_read_only 覆盖点：FIFO只有读没有写（ch_valid为低但ack有效）
+  // 做法：包内只有1个数据(data_size==1)，包之间留较长的空闲(pkt_nidles 6~10)
+  //------------------------------------------------------------------
+  class mcdt_single_test extends mcdt_root_test;
+    function new(string name = "mcdt_single_test");
+      super.new(name);
+    endfunction
+    virtual function void do_config();
+      super.do_config();
+      foreach(gen[i]) begin
+        assert(gen[i].randomize() with {ch_id == local::i;
+                                        ntrans inside {[40:60]};
+                                        data_nidles == 0;
+                                        pkt_nidles inside {[6:10]};
+                                        data_size == 1;
+                                       })
+          else $fatal("[RNDFAIL] gen[%0d] randomization failure!", i);
+      end
+    endfunction
+  endclass: mcdt_single_test
+
+  //------------------------------------------------------------------
+  // 覆盖率补充用例 2：单一通道独占（single active channel）
+  // 目的：命中 cg_arbiter_data.id 中 same 的 (0=>0)/(1=>1)/(2=>2) 转移
+  // 做法：+CHID=<0|1|2> 指定"主角"通道，它长时间连续发包；
+  //       另外两个通道只发2~5个短包，很快就退出发送，
+  //       此后arbiter每次都只能授权主角通道，于是产生同ID连续输出的转移
+  //------------------------------------------------------------------
+  class mcdt_alone_test extends mcdt_root_test;
+    int chid = 0;
+    function new(string name = "mcdt_alone_test");
+      super.new(name);
+    endfunction
+    virtual function void do_config();
+      super.do_config();
+      void'($value$plusargs("CHID=%0d", chid));
+      $display("%s: channel %0d is the only active channel", this.name, chid);
+      foreach(gen[i]) begin
+        if(i == chid) begin
+          assert(gen[i].randomize() with {ch_id == local::i;
+                                          ntrans inside {[200:300]};
+                                          data_nidles == 0;
+                                          pkt_nidles == 1;
+                                          data_size inside {8, 16, 32};
+                                         })
+            else $fatal("[RNDFAIL] gen[%0d] randomization failure!", i);
+        end
+        else begin
+          assert(gen[i].randomize() with {ch_id == local::i;
+                                          ntrans inside {[2:5]};
+                                          data_nidles == 0;
+                                          pkt_nidles == 1;
+                                          data_size == 4;
+                                         })
+            else $fatal("[RNDFAIL] gen[%0d] randomization failure!", i);
+        end
+      end
+    endfunction
+  endclass: mcdt_alone_test
+
+  //------------------------------------------------------------------
+  // 覆盖率补充用例 3：全随机数据（toggle覆盖率专项）
+  // 目的：常规用例的数据内容被编码成 'hC000_0000 + (ch_id<<24) + (pkt_id<<8) + i，
+  //       高字节恒为C0、bit31:26是常数，数据总线上这些位永远不会翻转，
+  //       所以toggle覆盖率被卡在60%出头。这里把编码约束关掉，
+  //       让DUT的数据通路吃到真正的32位随机数，把每一位的0->1/1->0都翻一遍。
+  // 说明：DUT对数据内容透明，数据只走"通路"不参与逻辑，所以换数据不影响功能检查。
+  //------------------------------------------------------------------
+  class mcdt_random_test extends mcdt_root_test;
+    function new(string name = "mcdt_random_test");
+      super.new(name);
+    endfunction
+    virtual function void do_config();
+      super.do_config();
+      chnl_trans::random_data_en = 1;
+      foreach(gen[i]) begin
+        assert(gen[i].randomize() with {ch_id == local::i;
+                                        ntrans inside {[40:60]};
+                                        data_nidles inside {[0:1]};
+                                        pkt_nidles inside {[1:2]};
+                                        data_size inside {[4:32]};
+                                       })
+          else $fatal("[RNDFAIL] gen[%0d] randomization failure!", i);
+      end
+    endfunction
+  endclass: mcdt_random_test
+
+  //------------------------------------------------------------------
+  // 覆盖率补充用例 4：两通道配对（只让两个通道同时活跃）
+  //   +CHPAIR=0 -> ch0+ch1 ; 1 -> ch1+ch2 ; 2 -> ch0+ch2
+  // 目的：
+  //   1) 命中 cg_arbitration.req 里 req2 的三个"两路同时请求"的bin
+  //      (三个通道一起发时req永远是'b111，两路请求的组合反而撞不上)
+  //   2) 命中 cg_arbiter_data.id 里 diff 的对角转移，例如 (1=>0)：
+  //      只有"ch0和ch1有请求、ch2没请求"时，轮询状态机才会从GRANT1回到GRANT0
+  //------------------------------------------------------------------
+  class mcdt_pair_test extends mcdt_root_test;
+    int chpair = 0;
+    function new(string name = "mcdt_pair_test");
+      super.new(name);
+    endfunction
+    virtual function void do_config();
+      super.do_config();
+      void'($value$plusargs("CHPAIR=%0d", chpair));
+      $display("%s: chpair=%0d", this.name, chpair);
+      foreach(gen[i]) begin
+        bit active;
+        case(chpair)
+          0: active = (i < 2);        // ch0 + ch1
+          1: active = (i > 0);        // ch1 + ch2
+          default: active = (i != 1); // ch0 + ch2
+        endcase
+        if(active) begin
+          assert(gen[i].randomize() with {ch_id == local::i;
+                                          ntrans inside {[80:120]};
+                                          data_nidles == 0;
+                                          pkt_nidles == 1;
+                                          data_size inside {8, 16, 32};
+                                         })
+            else $fatal("[RNDFAIL] gen[%0d] randomization failure!", i);
+        end
+        else begin
+          // 不活跃的通道一个包都不发
+          assert(gen[i].randomize() with {ch_id == local::i; ntrans == 0;})
+            else $fatal("[RNDFAIL] gen[%0d] randomization failure!", i);
+        end
+      end
+    endfunction
+  endclass: mcdt_pair_test
 
 endpackage
 

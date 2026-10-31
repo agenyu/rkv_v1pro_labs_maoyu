@@ -1,0 +1,2 @@
+var g_data = {"7":["work.arbiter",97.97,1],"1":["work.chnl_intf",100.00,1],"5":["work.mcdt",99.80,1],"2":["work.mcdt_intf",100.00,1],"3":["work.mcdt_pkg",97.47,1],"6":["work.slave_fifo",99.82,1]};
+processDuLinks(g_data);

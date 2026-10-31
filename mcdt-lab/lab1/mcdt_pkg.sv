@@ -351,11 +351,13 @@ package mcdt_pkg;
     endfunction
     virtual function void do_config();
       super.do_config();
-      assert(gen[0].randomize() with {ntrans==100; data_nidles==0; pkt_nidles==1; data_size==8;})
+      // 每个generator绑定自己的通道号，这样数据内容里就带上了通道标签，
+      // checker/monitor可以通过data的高字节区分数据来自哪个channel
+      assert(gen[0].randomize() with {ch_id==0; ntrans==100; data_nidles==0; pkt_nidles==1; data_size==8;})
         else $fatal("[RNDFAIL] gen[0] randomization failure!");
-      assert(gen[1].randomize() with {ntrans==50; data_nidles inside {[1:2]}; pkt_nidles inside {[3:5]}; data_size==6;})
+      assert(gen[1].randomize() with {ch_id==1; ntrans==50; data_nidles inside {[1:2]}; pkt_nidles inside {[3:5]}; data_size==6;})
         else $fatal("[RNDFAIL] gen[1] randomization failure!");
-      assert(gen[2].randomize() with {ntrans==80; data_nidles inside {[0:1]}; pkt_nidles inside {[1:2]}; data_size==32;})
+      assert(gen[2].randomize() with {ch_id==2; ntrans==80; data_nidles inside {[0:1]}; pkt_nidles inside {[1:2]}; data_size==32;})
         else $fatal("[RNDFAIL] gen[2] randomization failure!");
     endfunction
   endclass: mcdt_basic_test
@@ -371,7 +373,20 @@ package mcdt_pkg;
       super.do_config();
       
       // TODO user code to be implemented below
-      
+      // BURST发送的要求：三个通道都要"背靠背"地连续发包
+      //   data_nidles == 0 : 一个包内部数据之间不留空拍(ch_valid连续有效)
+      //   pkt_nidles  == 1 : 相邻两个包之间只留1个空拍(ch_valid拉低1拍)
+      //   ntrans in [80:100] : 每个通道发包数足够多，保证波形上能看到长突发
+      //   data_size in {8,16,32} : 包长在三种典型长度之间随机
+      foreach(gen[i]) begin
+        assert(gen[i].randomize() with {ch_id == local::i;
+                                        ntrans inside {[80:100]};
+                                        data_nidles == 0;
+                                        pkt_nidles == 1;
+                                        data_size inside {8, 16, 32};
+                                       })
+          else $fatal("[RNDFAIL] gen[%0d] randomization failure!", i);
+      end
     endfunction
   endclass: mcdt_burst_test
 
@@ -388,7 +403,18 @@ package mcdt_pkg;
       super.do_config();
       
       // TODO user code to be implemented below
-      
+      // 让三个通道"无限"地连续发数据：只需要保证搬移速度(1拍1个)远小于写入速度(3拍3个)，
+      // 3个32深度的FIFO迟早会被同时写满；ntrans给得很大是为了保证在FIFO写满之前
+      // generator不会自己先跑完(真正停止测试由gen_stop_callback()负责)
+      foreach(gen[i]) begin
+        assert(gen[i].randomize() with {ch_id == local::i;
+                                        ntrans inside {[1000:2000]};
+                                        data_nidles == 0;
+                                        pkt_nidles == 1;
+                                        data_size inside {8, 16, 32};
+                                       })
+          else $fatal("[RNDFAIL] gen[%0d] randomization failure!", i);
+      end
     endfunction
 
     // get all of 3 channles slave ready signals as a 3-bits vector
@@ -404,13 +430,36 @@ package mcdt_pkg;
       $display("gen_stop_callback enterred");
       
       // TODO user code to be implemented below
-      
+      // 停止条件：至少两个通道的FIFO同时满了(ready拉低)
+      //   ready==1 表示FIFO还能收数据，ready==0 表示FIFO满
+      //   所以"ready为高的通道数 <= 1" 就等价于"至少2个通道ready为低"
+      @(posedge agents[0].vif.rstn);          // 复位期间ready无意义，先等复位结束
+      forever begin
+        @(posedge agents[0].vif.clk);
+        chnl_ready_flags = this.get_chnl_ready_flags();
+        if($countones(chnl_ready_flags) <= 1) break;
+      end
+
+      // 条件满足后用事件把run()里的gen_threads整体disable掉，
+      // 这样generator不会再产生新的包，DUT可以在停止激励之后把FIFO里剩下的数据吐完
+      $display("%s: stop 3 generators running, ready flags = 'b%03b", this.name, chnl_ready_flags);
+      -> this.gen_stop_e;
     endtask
 
     virtual task run_stop_callback();
       $display("run_stop_callback enterred");
 
       // TODO user code to be implemented below
+      // 这里不能再用run_stop_flags.get(3)等generator自己举手，
+      // 因为generator是被强制disable掉的，不会执行到run_stop_flags.put()
+      // 改成：等三个FIFO的余量都回到32(margin==6'h20)，即DUT把残留数据全部搬空
+      $display("%s: waiting DUT transfering all of data", this.name);
+      fork
+        wait(agents[0].vif.ch_margin == 'h20);
+        wait(agents[1].vif.ch_margin == 'h20);
+        wait(agents[2].vif.ch_margin == 'h20);
+      join
+      $display("%s: 3 channel fifos have transferred all data", this.name);
 
       $display($sformatf("*****************%s finished********************", this.name));
       $finish();

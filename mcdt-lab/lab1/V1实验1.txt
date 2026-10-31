@@ -1,0 +1,21 @@
+V1系列课程实验1
+Hi，经过路桑对实验1有关代码的介绍，大家已经能够对验证环境结构有个基本的认识了。在展开实验之前，请大家再思考验证环境构建的步骤：
+定义有关的验证环境组件（stimulator，monitor，checker等）
+构建验证环境的层次（通过new()函数）
+对已经创建的验证组件实例进行连接（通过new()函数）
+自顶向下传递interface指针（通过set_interface()函数）
+自顶向下触发各个验证组件的运行（通过run()任务）
+在验证环境组件起来以后，我们还需要回顾激励是如何发送的、接口数据是如何被捕捉到的以及数据是如何比较的，这又关系到三个重要的验证组件的实现，即回顾：
+generator与stimulator之间通过mailbox的激励发送和返回（握手过程）。
+monitor通过interface指针监测到硬件信号数据按照时序协议将数据写入到transaction并且最终发送至checker中的mailbox。
+待checker从输入端monitor和输出端monitor均接收到数据以后开始数据比较。
+所以，了解了环境如何构建和运行，我们就进入到了验证小白进入验证岗位以后要做的第一件事情，如何参考已有的测试用例来实现新的测试用例，以此来测试指定的功能。
+实验要求（实现测试用例）
+理解mcdf_root_test::gen_stop_callback()和mcdf_root_test::run_stop_callback()的作用。
+按照实验代码中的要求，实现测试用例mcdf_burst_test，并且在波形中检查三个通道的激励是否按照符合BURST发送要求。
+实现测试用例mcdf_fifo_full_test，在满足至少有两个channel的ready信号同时拉低时，并且channel FIFO中的数据全部从MCDT送出时，才可以停止测试。
+请在仿真中添加额外的仿真选项
+-solvefaildebug // 为了给出更多随机化失败的调试信息
+-sv_seed  NUMBER // 可调整随机种子值为NUMBER
+-classdebug // 为了显示更多与类/对象调试有关的信息
+恭喜你！顺利通关喽！

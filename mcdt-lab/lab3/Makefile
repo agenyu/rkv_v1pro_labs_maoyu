@@ -5,7 +5,7 @@ TB        ?= tb
 SEED      ?= 1
 SIMDIR    ?= .
 LIBDIR    ?= .
-PKG       ?= mcdt_pkg_ref.sv
+PKG       ?= mcdt_pkg.sv
 TESTNAME  ?= mcdt_basic_test
 
 DFILES    = $(SIMDIR)/../mcdt/arbiter.v \

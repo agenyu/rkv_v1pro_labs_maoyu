@@ -124,6 +124,7 @@ module tb;
   assign mcdt_if.arb_acks[2] = tb.dut.inst_arbiter.a2s2_ack_o;
 
   initial begin: test_selection
+    string test_name;
     uvm_config_db#(virtual chnl_intf)::set(uvm_root::get(), "uvm_test_top.env.agents[0]", "vif", chnl0_if);
     uvm_config_db#(virtual chnl_intf)::set(uvm_root::get(), "uvm_test_top.env.agents[1]", "vif", chnl1_if);
     uvm_config_db#(virtual chnl_intf)::set(uvm_root::get(), "uvm_test_top.env.agents[2]", "vif", chnl2_if);
@@ -132,7 +133,9 @@ module tb;
     uvm_config_db#(virtual chnl_intf)::set(uvm_root::get(), "uvm_test_top.env.cvrg", "chnl_vifs[1]", chnl1_if);
     uvm_config_db#(virtual chnl_intf)::set(uvm_root::get(), "uvm_test_top.env.cvrg", "chnl_vifs[2]", chnl2_if);
     uvm_config_db#(virtual mcdt_intf)::set(uvm_root::get(), "uvm_test_top.env.cvrg", "mcdt_vif", mcdt_if);
-    run_test("mcdt_basic_test");
+    // 支持通过仿真选项 +UVM_TESTNAME=<test name> 选择测试用例，默认basic_test
+    if(!$value$plusargs("UVM_TESTNAME=%s", test_name)) test_name = "mcdt_basic_test";
+    run_test(test_name);
   end
 
   initial begin: assertion_control

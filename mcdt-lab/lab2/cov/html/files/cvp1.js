@@ -1,0 +1,2 @@
+var g_data = {"25":["empty","full","others"],"26":["empty","full","others"],"27":["empty","full","others"],"35":["valid","burst[1[*2]]","burst[1[*4]]","burst[1[*8]]","single"],"36":["valid","burst[1[*2]]","burst[1[*4]]","burst[1[*8]]","single"],"37":["valid","burst[1[*2]]","burst[1[*4]]","burst[1[*8]]","single"],"40":["req1[1]","req1[2]","req1[4]","req2[3]","req2[5]","req2[6]","req3"],"46":["burst","single"],"47":["same[0=>0]","same[1=>1]","same[2=>2]","diff[0=>2]","diff[0=>1]","diff[1=>2]","diff[1=>0]","diff[2=>1]","diff[2=>0]"]};
+processCoverpointsMapData(g_data);

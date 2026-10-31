@@ -1,0 +1,2 @@
+var g_data = {"12":[11,"inst_slva_fifo_0",1],"13":[11,"inst_slva_fifo_1",1],"14":[11,"inst_slva_fifo_2",1],"15":[11,"inst_arbiter",1],"11":[10,"dut",1],"16":[10,"chnl0_if",1],"17":[10,"chnl1_if",1],"18":[10,"chnl2_if",1],"19":[10,"mcdt_if",1],"10":[-1,"tb",1],"21":[-1,"mcdt_pkg",1]};
+processInstLinks(g_data);

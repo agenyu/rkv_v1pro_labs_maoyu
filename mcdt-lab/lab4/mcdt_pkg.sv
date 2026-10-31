@@ -2,6 +2,11 @@ package mcdt_pkg;
   import uvm_pkg::*;
   `include "uvm_macros.svh"
 
+  // 全局停止标志：virtual sequence在满足停止条件后把它置1，
+  // 挂在sequencer上的chnl_data_sequence会在当前包发完后自动退出，
+  // 这样就不需要用disable fork去强杀sequence(强杀容易让sequencer状态不干净)
+  bit chnl_seq_stop = 0;
+
   // channel sequence item
   class chnl_trans extends uvm_sequence_item;
     rand bit[31:0] data[];
@@ -10,10 +15,13 @@ package mcdt_pkg;
     rand int data_nidles;
     rand int pkt_nidles;
     bit rsp;
+    // 数据内容"带通道标签"的编码开关(0=按 C000_0000+(ch<<24)+(pkt<<8)+i 生成，
+    // 1=关闭编码约束用全随机数据，专门用于toggle覆盖率)
+    static bit random_data_en = 0;
 
     constraint cstr{
       soft data.size inside {[4:32]};
-      foreach(data[i]) data[i] == 'hC000_0000 + (this.ch_id<<24) + (this.pkt_id<<8) + i;
+      if(!random_data_en) foreach(data[i]) data[i] == 'hC000_0000 + (this.ch_id<<24) + (this.pkt_id<<8) + i;
       soft ch_id == 0;
       soft pkt_id == 0;
       soft data_nidles inside {[0:2]};
@@ -137,7 +145,12 @@ package mcdt_pkg;
     endfunction
 
     task body();
-      repeat(ntrans) send_trans();
+      // 每发一个包之前检查一次全局停止标志，
+      // 便于fifo_full这类"条件满足就收手"的用例优雅退出
+      repeat(ntrans) begin
+        if(chnl_seq_stop) break;
+        send_trans();
+      end
     endtask
 
     task send_trans();
@@ -461,6 +474,9 @@ package mcdt_pkg;
   class mcdt_virtual_sequencer extends uvm_sequencer #(uvm_sequence_item);
     chnl_sequencer chnl_sqrs[3];
     virtual mcdt_intf mcdt_vif;
+    // 除了mcdt_vif，virtual sequencer还持有3个通道的虚接口，
+    // 这样virtual sequence才能直接观察ready/margin这些"状态类"信号
+    virtual chnl_intf chnl_vifs[3];
     `uvm_component_utils(mcdt_virtual_sequencer)
     function new (string name = "mcdt_virtual_sequencer", uvm_component parent);
       super.new(name, parent);
@@ -468,7 +484,12 @@ package mcdt_pkg;
     function void build_phase(uvm_phase phase);
       super.build_phase(phase);
       if(!uvm_config_db#(virtual mcdt_intf)::get(this,"","mcdt_vif", mcdt_vif)) begin
-        `uvm_fatal("GETVIF","cannot get vif handle from config DB")
+        `uvm_fatal("GETVIF","cannot get mcdt_vif handle from config DB")
+      end
+      foreach(chnl_vifs[i]) begin
+        if(!uvm_config_db#(virtual chnl_intf)::get(this,"",$sformatf("chnl_vifs[%0d]",i), chnl_vifs[i])) begin
+          `uvm_fatal("GETVIF","cannot get chnl_vif handle from config DB")
+        end
       end
     endfunction
   endclass
@@ -518,6 +539,7 @@ package mcdt_pkg;
 
     virtual task body();
       `uvm_info(get_type_name(), "=====================STARTED=====================", UVM_LOW)
+      chnl_seq_stop = 0;              // 每个vseq开始前清掉全局停止标志
       this.do_data();
       `uvm_info(get_type_name(), "=====================FINISHED=====================", UVM_LOW)
     endtask
@@ -529,6 +551,48 @@ package mcdt_pkg;
 
     task wait_cycles(int n);
       repeat(n) @(posedge p_sequencer.mcdt_vif.clk);
+    endtask
+
+    // 等三个通道FIFO里的残留数据全部被arbiter搬空（margin回到32，即6'h20）
+    task wait_all_fifo_drain();
+      fork
+        wait(p_sequencer.chnl_vifs[0].ch_margin == 'h20);
+        wait(p_sequencer.chnl_vifs[1].ch_margin == 'h20);
+        wait(p_sequencer.chnl_vifs[2].ch_margin == 'h20);
+      join
+      // arbiter的输出是打拍输出，FIFO空之后还会有最后一拍数据出现在mcdt接口上，
+      // 再等几拍让monitor把它收走、checker把它比完
+      this.wait_cycles(5);
+      `uvm_info(get_type_name(), "3 channel fifos have transferred all data", UVM_LOW)
+    endtask
+
+    // 等至少两个通道的FIFO写满：ready为高的通道数<=1 等价于 至少2个通道ready为低
+    task wait_two_chnl_fifo_full();
+      bit[2:0] ready_flags;
+      forever begin
+        @(posedge p_sequencer.mcdt_vif.clk);
+        ready_flags = {p_sequencer.chnl_vifs[2].ch_ready,
+                       p_sequencer.chnl_vifs[1].ch_ready,
+                       p_sequencer.chnl_vifs[0].ch_ready};
+        if($countones(ready_flags) <= 1) begin
+          `uvm_info(get_type_name(), $sformatf("fifo full detected, ready flags = 'b%03b", ready_flags), UVM_LOW)
+          break;
+        end
+      end
+    endtask
+
+    // 手动创建并启动一条channel data sequence，包数可以按用例需要配置，
+    // 不用为每种包数组合写一份`uvm_do_on_with约束
+    task start_chnl_seq(int idx, int ntrans, int ch_id);
+      chnl_data_sequence seq = chnl_data_sequence::type_id::create($sformatf("chnl_seq_%0d", idx));
+      if(!seq.randomize() with {ntrans == local::ntrans;
+                                ch_id == local::ch_id;
+                                data_nidles == 0;
+                                pkt_nidles == 1;
+                                data_size inside {8, 16, 32};}) begin
+        `uvm_fatal("RNDFAIL", $sformatf("channel %0d sequence randomization failure", idx))
+      end
+      seq.start(p_sequencer.chnl_sqrs[idx]);
     endtask
   endclass
 
@@ -550,7 +614,9 @@ package mcdt_pkg;
       super.end_of_elaboration_phase(phase);
       uvm_root::get().set_report_verbosity_level_hier(UVM_HIGH);
       uvm_root::get().set_report_max_quit_count(1);
-      uvm_root::get().set_timeout(10ms);
+      // NOTE: UVM内部的timeout是按仿真精度(1ps)去和$time比较的，
+      //       所以这里写10s实际等价于10ms的仿真时间，作为跑飞的兜底
+      uvm_root::get().set_timeout(10s);
     endfunction
 
     task run_phase(uvm_phase phase);
@@ -585,7 +651,8 @@ package mcdt_pkg;
         `uvm_do_on_with(chnl_data_seq, p_sequencer.chnl_sqrs[2], 
                         {ntrans== 80; ch_id==2; data_nidles inside {[0:1]}; pkt_nidles inside {[1:2]}; data_size==32;})
       join
-      #10us; // wait until all data haven been transfered through MCDF
+      // 等DUT把FIFO里剩下的数据搬完，保证checker把该比的数据都比完
+      this.wait_all_fifo_drain();
     endtask
   endclass
 
@@ -601,8 +668,30 @@ package mcdt_pkg;
     endtask
   endclass: mcdt_basic_test
 
-  // TODO: please add mcdt_burst_virtual_sequence and update
-  // mcdt_burst_test 
+  //------------------------------------------------------------------
+  // burst测试的剥离：virtual sequence负责"发什么"，test只负责"跑哪个vseq"
+  //------------------------------------------------------------------
+  class mcdt_burst_virtual_sequence extends mcdt_root_virtual_sequence;
+    `uvm_object_utils(mcdt_burst_virtual_sequence)
+    function new (string name = "mcdt_burst_virtual_sequence");
+      super.new(name);
+    endfunction
+    task do_data();
+      @(posedge p_sequencer.mcdt_vif.rstn);
+      this.wait_cycles(10);
+      // 三个通道都背靠背发长包：data_nidles==0(包内无空拍)，pkt_nidles==1(包间1拍)
+      fork
+        `uvm_do_on_with(chnl_data_seq, p_sequencer.chnl_sqrs[0],
+                        {ntrans inside {[80:100]}; ch_id==0; data_nidles==0; pkt_nidles==1; data_size inside {8,16,32};})
+        `uvm_do_on_with(chnl_data_seq, p_sequencer.chnl_sqrs[1],
+                        {ntrans inside {[80:100]}; ch_id==1; data_nidles==0; pkt_nidles==1; data_size inside {8,16,32};})
+        `uvm_do_on_with(chnl_data_seq, p_sequencer.chnl_sqrs[2],
+                        {ntrans inside {[80:100]}; ch_id==2; data_nidles==0; pkt_nidles==1; data_size inside {8,16,32};})
+      join
+      this.wait_all_fifo_drain();
+    endtask
+  endclass
+
   class mcdt_burst_test extends mcdt_root_test;
     `uvm_component_utils(mcdt_burst_test)
 
@@ -610,19 +699,41 @@ package mcdt_pkg;
       super.new(name, parent);
     endfunction
 
-    // virtual function void do_config();
-    //   super.do_config();
-    //   assert(gens[0].randomize() with {ntrans inside {[80:100]}; data_nidles==0; pkt_nidles==1; data_size inside {8, 16, 32};})
-    //     else `uvm_fatal("RNDFAIL", "gen[0] randomization failure!") 
-    //   assert(gens[1].randomize() with {ntrans inside {[80:100]}; data_nidles==0; pkt_nidles==1; data_size inside {8, 16, 32};})
-    //     else `uvm_fatal("RNDFAIL", "gen[1] randomization failure!") 
-    //   assert(gens[2].randomize() with {ntrans inside {[80:100]}; data_nidles==0; pkt_nidles==1; data_size inside {8, 16, 32};})
-    //     else `uvm_fatal("RNDFAIL", "gen[2] randomization failure!") 
-    // endfunction
+    task run_top_virtual_sequence();
+      mcdt_burst_virtual_sequence top_seq = new();
+      top_seq.start(env.virt_sqr);
+    endtask
   endclass: mcdt_burst_test
 
-  // TODO: please add mcdt_fifo_full_virtual_sequence and update
-  // mcdt_fifo_full_test
+  //------------------------------------------------------------------
+  // fifo_full测试的剥离：
+  //   停止条件写在virtual sequence里——两个通道的FIFO同时写满后，
+  //   先把全局停止标志置1让三条data sequence收手，再等DUT把残留数据搬空
+  //------------------------------------------------------------------
+  class mcdt_fifo_full_virtual_sequence extends mcdt_root_virtual_sequence;
+    `uvm_object_utils(mcdt_fifo_full_virtual_sequence)
+    function new (string name = "mcdt_fifo_full_virtual_sequence");
+      super.new(name);
+    endfunction
+    task do_data();
+      @(posedge p_sequencer.mcdt_vif.rstn);
+      this.wait_cycles(10);
+      fork
+        `uvm_do_on_with(chnl_data_seq, p_sequencer.chnl_sqrs[0],
+                        {ntrans inside {[1000:2000]}; ch_id==0; data_nidles==0; pkt_nidles==1; data_size inside {8,16,32};})
+        `uvm_do_on_with(chnl_data_seq, p_sequencer.chnl_sqrs[1],
+                        {ntrans inside {[1000:2000]}; ch_id==1; data_nidles==0; pkt_nidles==1; data_size inside {8,16,32};})
+        `uvm_do_on_with(chnl_data_seq, p_sequencer.chnl_sqrs[2],
+                        {ntrans inside {[1000:2000]}; ch_id==2; data_nidles==0; pkt_nidles==1; data_size inside {8,16,32};})
+        begin
+          this.wait_two_chnl_fifo_full();
+          chnl_seq_stop = 1;    // 停止激励：让三条data sequence发完当前包后退出
+        end
+      join
+      this.wait_all_fifo_drain();
+    endtask
+  endclass
+
   class mcdt_fifo_full_test extends mcdt_root_test;
     `uvm_component_utils(mcdt_fifo_full_test)
 
@@ -630,27 +741,166 @@ package mcdt_pkg;
       super.new(name, parent);
     endfunction
 
-    // virtual function void do_config();
-    //   super.do_config();
-    //   assert(gens[0].randomize() with {ntrans inside {[1000:2000]}; data_nidles==0; pkt_nidles==1; data_size inside {8, 16, 32};})
-    //     else `uvm_fatal("RNDFAIL", "gen[0] randomization failure!") 
-    //   assert(gens[1].randomize() with {ntrans inside {[1000:2000]}; data_nidles==0; pkt_nidles==1; data_size inside {8, 16, 32};})
-    //     else `uvm_fatal("RNDFAIL", "gen[1] randomization failure!") 
-    //   assert(gens[2].randomize() with {ntrans inside {[1000:2000]}; data_nidles==0; pkt_nidles==1; data_size inside {8, 16, 32};})
-    //     else `uvm_fatal("RNDFAIL", "gen[2] randomization failure!") 
-    // endfunction
-
-    // virtual task run_stop_callback();
-    //   `uvm_info(get_type_name(), "run_stop_callback enterred", UVM_HIGH)
-    //   `uvm_info(get_type_name(), "waiting DUT transfering all of data", UVM_HIGH)
-    //   fork
-    //     wait(env.agents[0].vif.ch_margin == 'h20);
-    //     wait(env.agents[1].vif.ch_margin == 'h20);
-    //     wait(env.agents[2].vif.ch_margin == 'h20);
-    //   join
-    //   `uvm_info(get_type_name(), "3 channel fifos have transferred all data", UVM_HIGH)
-    // endtask
+    task run_top_virtual_sequence();
+      mcdt_fifo_full_virtual_sequence top_seq = new();
+      top_seq.start(env.virt_sqr);
+    endtask
   endclass: mcdt_fifo_full_test
+
+  //------------------------------------------------------------------
+  // 覆盖率补充用例1(single beat)：包内只有1拍数据，用于命中
+  //   cg_channel_data 的 single (0=>1=>0)、cg_arbiter_data.valid 的 single (0=>1)
+  //------------------------------------------------------------------
+  class mcdt_single_virtual_sequence extends mcdt_root_virtual_sequence;
+    `uvm_object_utils(mcdt_single_virtual_sequence)
+    function new (string name = "mcdt_single_virtual_sequence");
+      super.new(name);
+    endfunction
+    task do_data();
+      @(posedge p_sequencer.mcdt_vif.rstn);
+      this.wait_cycles(10);
+      fork
+        `uvm_do_on_with(chnl_data_seq, p_sequencer.chnl_sqrs[0],
+                        {ntrans inside {[40:60]}; ch_id==0; data_nidles==0; pkt_nidles inside {[6:10]}; data_size==1;})
+        `uvm_do_on_with(chnl_data_seq, p_sequencer.chnl_sqrs[1],
+                        {ntrans inside {[40:60]}; ch_id==1; data_nidles==0; pkt_nidles inside {[6:10]}; data_size==1;})
+        `uvm_do_on_with(chnl_data_seq, p_sequencer.chnl_sqrs[2],
+                        {ntrans inside {[40:60]}; ch_id==2; data_nidles==0; pkt_nidles inside {[6:10]}; data_size==1;})
+      join
+      this.wait_all_fifo_drain();
+    endtask
+  endclass
+
+  class mcdt_single_test extends mcdt_root_test;
+    `uvm_component_utils(mcdt_single_test)
+
+    function new(string name = "mcdt_single_test", uvm_component parent);
+      super.new(name, parent);
+    endfunction
+
+    task run_top_virtual_sequence();
+      mcdt_single_virtual_sequence top_seq = new();
+      top_seq.start(env.virt_sqr);
+    endtask
+  endclass: mcdt_single_test
+
+  //------------------------------------------------------------------
+  // 覆盖率补充用例2(单一通道独占)：+CHID=<0|1|2> 指定主角通道，
+  //   另外两个通道只发很少的包，之后arbiter只能授权主角通道，
+  //   用于命中 cg_arbiter_data.id 的 same 转移 (0=>0)/(1=>1)/(2=>2)
+  //------------------------------------------------------------------
+  class mcdt_alone_virtual_sequence extends mcdt_root_virtual_sequence;
+    int chid = 0;
+    `uvm_object_utils(mcdt_alone_virtual_sequence)
+    function new (string name = "mcdt_alone_virtual_sequence");
+      super.new(name);
+    endfunction
+
+    // 主角/配角通道的包数不同，用start_chnl_seq按通道分别配置
+    task do_data();
+      void'($value$plusargs("CHID=%0d", chid));
+      @(posedge p_sequencer.mcdt_vif.rstn);
+      this.wait_cycles(10);
+      `uvm_info(get_type_name(), $sformatf("channel %0d is the only active channel", chid), UVM_LOW)
+      // 主角通道发很多包，另外两个通道只发3个包就退出发送，
+      // 之后arbiter的请求只剩主角通道，于是轮询状态机每次都停在同一路
+      fork
+        start_chnl_seq(0, (chid==0) ? 200 : 3, 0);
+        start_chnl_seq(1, (chid==1) ? 200 : 3, 1);
+        start_chnl_seq(2, (chid==2) ? 200 : 3, 2);
+      join
+      this.wait_all_fifo_drain();
+    endtask
+  endclass
+
+  class mcdt_alone_test extends mcdt_root_test;
+    `uvm_component_utils(mcdt_alone_test)
+
+    function new(string name = "mcdt_alone_test", uvm_component parent);
+      super.new(name, parent);
+    endfunction
+
+    task run_top_virtual_sequence();
+      mcdt_alone_virtual_sequence top_seq = new();
+      top_seq.start(env.virt_sqr);
+    endtask
+  endclass: mcdt_alone_test
+
+  //------------------------------------------------------------------
+  // 覆盖率补充用例3(全随机数据)：把数据内容编码约束关掉，
+  //   用32位随机数把数据总线每一位都翻转一遍，用于补toggle覆盖率
+  //------------------------------------------------------------------
+  class mcdt_random_virtual_sequence extends mcdt_root_virtual_sequence;
+    `uvm_object_utils(mcdt_random_virtual_sequence)
+    function new (string name = "mcdt_random_virtual_sequence");
+      super.new(name);
+    endfunction
+    task do_data();
+      chnl_trans::random_data_en = 1;
+      @(posedge p_sequencer.mcdt_vif.rstn);
+      this.wait_cycles(10);
+      fork
+        `uvm_do_on_with(chnl_data_seq, p_sequencer.chnl_sqrs[0],
+                        {ntrans inside {[40:60]}; ch_id==0; data_nidles inside {[0:1]}; pkt_nidles inside {[1:2]}; data_size inside {[4:32]};})
+        `uvm_do_on_with(chnl_data_seq, p_sequencer.chnl_sqrs[1],
+                        {ntrans inside {[40:60]}; ch_id==1; data_nidles inside {[0:1]}; pkt_nidles inside {[1:2]}; data_size inside {[4:32]};})
+        `uvm_do_on_with(chnl_data_seq, p_sequencer.chnl_sqrs[2],
+                        {ntrans inside {[40:60]}; ch_id==2; data_nidles inside {[0:1]}; pkt_nidles inside {[1:2]}; data_size inside {[4:32]};})
+      join
+      this.wait_all_fifo_drain();
+    endtask
+  endclass
+
+  class mcdt_random_test extends mcdt_root_test;
+    `uvm_component_utils(mcdt_random_test)
+
+    function new(string name = "mcdt_random_test", uvm_component parent);
+      super.new(name, parent);
+    endfunction
+
+    task run_top_virtual_sequence();
+      mcdt_random_virtual_sequence top_seq = new();
+      top_seq.start(env.virt_sqr);
+    endtask
+  endclass: mcdt_random_test
+
+  //------------------------------------------------------------------
+  // 覆盖率补充用例4(两通道配对)：+CHPAIR=0(ch0+ch1) / 1(ch1+ch2) / 2(ch0+ch2)
+  //   只让两个通道同时活跃，用于命中 cg_arbitration.req2 的三组两路请求，
+  //   以及 cg_arbiter_data.id 的对角转移(如 1=>0: GRANT1直接回到GRANT0)
+  //------------------------------------------------------------------
+  class mcdt_pair_virtual_sequence extends mcdt_root_virtual_sequence;
+    int chpair = 0;
+    `uvm_object_utils(mcdt_pair_virtual_sequence)
+    function new (string name = "mcdt_pair_virtual_sequence");
+      super.new(name);
+    endfunction
+    task do_data();
+      void'($value$plusargs("CHPAIR=%0d", chpair));
+      @(posedge p_sequencer.mcdt_vif.rstn);
+      this.wait_cycles(10);
+      `uvm_info(get_type_name(), $sformatf("channel pair = %0d", chpair), UVM_LOW)
+      fork
+        start_chnl_seq(0, ((chpair==0) || (chpair==2)) ? 120 : 0, 0);
+        start_chnl_seq(1, ((chpair==0) || (chpair==1)) ? 120 : 0, 1);
+        start_chnl_seq(2, ((chpair==1) || (chpair==2)) ? 120 : 0, 2);
+      join
+      this.wait_all_fifo_drain();
+    endtask
+  endclass
+
+  class mcdt_pair_test extends mcdt_root_test;
+    `uvm_component_utils(mcdt_pair_test)
+
+    function new(string name = "mcdt_pair_test", uvm_component parent);
+      super.new(name, parent);
+    endfunction
+
+    task run_top_virtual_sequence();
+      mcdt_pair_virtual_sequence top_seq = new();
+      top_seq.start(env.virt_sqr);
+    endtask
+  endclass: mcdt_pair_test
 
 endpackage
 

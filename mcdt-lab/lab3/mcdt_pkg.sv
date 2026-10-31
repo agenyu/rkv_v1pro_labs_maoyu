@@ -182,12 +182,14 @@ package mcdt_pkg;
   // channel monitor
   class chnl_monitor extends uvm_monitor;
     virtual chnl_intf intf;
-    mailbox #(mon_data_t) mon_mb;
+    // LAB3: mailbox -> analysis port，monitor只负责"广播"事务
+    uvm_analysis_port #(mon_data_t) mon_ana_port;
 
     `uvm_component_utils(chnl_monitor)
 
     function new(string name="chnl_monitor", uvm_component parent);
       super.new(name, parent);
+      mon_ana_port = new("mon_ana_port", this);
     endfunction
 
     function void set_interface(virtual chnl_intf intf);
@@ -206,7 +208,7 @@ package mcdt_pkg;
       forever begin
         @(posedge intf.clk iff (intf.ch_valid==='b1 && intf.ch_ready==='b1));
         m.data = intf.ch_data;
-        mon_mb.put(m);
+        mon_ana_port.write(m);
         `uvm_info(get_type_name(), $sformatf("monitored channel data 'h%8x", m.data), UVM_HIGH)
       end
     endtask
@@ -243,12 +245,14 @@ package mcdt_pkg;
   
   class mcdt_monitor extends uvm_monitor;
     virtual mcdt_intf intf;
-    mailbox #(mon_data_t) mon_mb;
+    // LAB3: mailbox -> analysis port
+    uvm_analysis_port #(mon_data_t) mon_ana_port;
 
     `uvm_component_utils(mcdt_monitor)
 
     function new(string name="mcdt_monitor", uvm_component parent);
       super.new(name, parent);
+      mon_ana_port = new("mon_ana_port", this);
     endfunction
 
     task run_phase(uvm_phase phase);
@@ -269,7 +273,7 @@ package mcdt_pkg;
         @(posedge intf.clk iff intf.mcdt_val==='b1);
         m.data = intf.mcdt_data;
         m.id = intf.mcdt_id;
-        mon_mb.put(m);
+        mon_ana_port.write(m);
         `uvm_info(get_type_name(), $sformatf("monitored channel data 'h%8x", m.data), UVM_HIGH)
       end
     endtask
@@ -278,15 +282,16 @@ package mcdt_pkg;
   class mcdt_checker extends uvm_scoreboard;
     int error_count;
     int cmp_count;
-    mailbox #(mon_data_t) in_mbs[3];
-    mailbox #(mon_data_t) out_mb;
+    // LAB3: mailbox -> analysis FIFO，checker以"被动接收"的方式取事务
+    uvm_tlm_analysis_fifo #(mon_data_t) in_tlm_fifos[3];
+    uvm_tlm_analysis_fifo #(mon_data_t) out_tlm_fifo;
 
     `uvm_component_utils(mcdt_checker)
 
     function new (string name = "mcdt_checker", uvm_component parent);
       super.new(name, parent);
-      foreach(this.in_mbs[i]) this.in_mbs[i] = new();
-      this.out_mb = new();
+      foreach(in_tlm_fifos[i]) in_tlm_fifos[i] = new($sformatf("in_tlm_fifos[%0d]", i), this);
+      out_tlm_fifo = new("out_tlm_fifo", this);
       this.error_count = 0;
       this.cmp_count = 0;
     endfunction
@@ -298,11 +303,11 @@ package mcdt_pkg;
     task do_data_compare();
       mon_data_t im, om;
       forever begin
-        out_mb.get(om);
+        out_tlm_fifo.get(om);
         case(om.id)
-          0: in_mbs[0].get(im);
-          1: in_mbs[1].get(im);
-          2: in_mbs[2].get(im);
+          0: in_tlm_fifos[0].get(im);
+          1: in_tlm_fifos[1].get(im);
+          2: in_tlm_fifos[2].get(im);
           default: `uvm_fatal(get_type_name(), $sformatf("id %0d is not available", om.id))
         endcase
         if(om.data != im.data) begin
@@ -485,9 +490,11 @@ package mcdt_pkg;
     function void connect_phase(uvm_phase phase);
       super.connect_phase(phase);
       foreach(agents[i]) begin
-        this.agents[i].monitor.mon_mb = this.chker.in_mbs[i];
+        // LAB3: 用analysis port直连checker里analysis FIFO的export，
+        //       取代原先"把checker的mailbox句柄赋给monitor"的做法
+        this.agents[i].monitor.mon_ana_port.connect(this.chker.in_tlm_fifos[i].analysis_export);
       end
-      this.mcdt_mon.mon_mb = this.chker.out_mb;
+      this.mcdt_mon.mon_ana_port.connect(this.chker.out_tlm_fifo.analysis_export);
     endfunction
   endclass
 
@@ -522,7 +529,9 @@ package mcdt_pkg;
       super.end_of_elaboration_phase(phase);
       uvm_root::get().set_report_verbosity_level_hier(UVM_HIGH);
       uvm_root::get().set_report_max_quit_count(1);
-      uvm_root::get().set_timeout(10ms);
+      // NOTE: UVM内部的timeout是按仿真精度(1ps)去和$time比较的，
+      //       所以这里写10s实际等价于10ms的仿真时间，作为跑飞的兜底
+      uvm_root::get().set_timeout(10s);
     endfunction
 
     virtual function void do_config();
