@@ -72,20 +72,25 @@ module tb;
   chnl_intf chnl2_if(.*);
   mcdt_intf mcdt_if(.*);
 
+  mcdt_root_test test;
   mcdt_basic_test basic_test;
   mcdt_burst_test burst_test;
   mcdt_fifo_full_test fifo_full_test;
-  string name;
+  string test_name;
 
   initial begin 
-    basic_test = new();
-    basic_test.set_interface(chnl0_if, chnl1_if, chnl2_if, mcdt_if);
-    burst_test = new();
-    burst_test.set_interface(chnl0_if, chnl1_if, chnl2_if, mcdt_if);
-    fifo_full_test = new();
-    fifo_full_test.set_interface(chnl0_if, chnl1_if, chnl2_if, mcdt_if);
+    // 通过 +TESTNAME=<test name> 选择要跑的测试用例，默认跑basic_test
+    if(!$value$plusargs("TESTNAME=%s", test_name)) test_name = "mcdt_basic_test";
+    case(test_name)
+      "mcdt_basic_test"    : begin basic_test    = new(); test = basic_test;    end
+      "mcdt_burst_test"    : begin burst_test    = new(); test = burst_test;    end
+      "mcdt_fifo_full_test": begin fifo_full_test = new(); test = fifo_full_test; end
+      default              : $fatal(1, "unknown test name \"%s\"", test_name);
+    endcase
+    $display("%0t running test %s", $time, test_name);
 
-    fifo_full_test.run();
+    test.set_interface(chnl0_if, chnl1_if, chnl2_if, mcdt_if);
+    test.run();
   end
 endmodule
 
