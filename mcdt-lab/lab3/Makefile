@@ -20,7 +20,7 @@ VFILES    = $(SIMDIR)/$(PKG) \
 # Environment variables
 #############################
 VCOMP     = vlog -work $(LIBDIR)/work -cover bst -sv -timescale=1ns/1ps -l comp.log +incdir+$(SIMDIR)/../mcdt
-RUN       = vsim -work $(LIBDIR)/work -voptargs=+acc -classdebug -solvefaildebug -msgmode both -uvmcontrol=all -assertdebug -assertcounts $(TB) -l run.log -cover -cvgperinstance -cvgmergeinstances +sv_seed=$(SEED) +UVM_TESTNAME=$(TESTNAME)
+RUN       = vsim -work $(LIBDIR)/work -voptargs=+acc -classdebug -solvefaildebug -msgmode both -assertdebug -assertcounts $(TB) -l run.log -cover -cvgperinstance -cvgmergeinstances +sv_seed=$(SEED) +UVM_TESTNAME=$(TESTNAME)
 
 comp:
 	$(VCOMP) $(DFILES) $(VFILES)

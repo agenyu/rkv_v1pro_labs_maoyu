@@ -29,7 +29,7 @@ VCOMP_V   = vlog -work $(LIBDIR)/work -sv -timescale=1ns/1ps -l comp_tb.log +inc
 
 RUN_BASE  = vsim -c -voptargs=+acc -work $(LIBDIR)/work $(TB) \
             -coverage -cvgperinstance -cvgmergeinstances \
-            -classdebug -solvefaildebug -msgmode both -uvmcontrol=all \
+            -classdebug -solvefaildebug -msgmode both \
             -assertdebug -assertcounts
 
 comp:
