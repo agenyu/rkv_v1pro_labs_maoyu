@@ -1,0 +1,2 @@
+var g_data = {"19":{"pr":"/ppa_pkg","ty":2,"dui":3,"dun":"work.ppa_pkg","cvgs":[{"h":["\\/ppa_pkg::coverage_collector::cg_ppa ",2,1,27,20],"cov":[24,24,100.00],"opts":{"goal":"100","per_instance":"true"}},{"h":["/ppa_pkg/coverage_collector/cg_ppa",1,1,20],"cov":[24,24,100.00],"opts":{"goal":"100","merge_instance":"true"}}]}};
+processCovergroupsData(g_data);

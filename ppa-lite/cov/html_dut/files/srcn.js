@@ -1,0 +1,2 @@
+var g_data = ["","./rtl/ppa_top.sv","./rtl/apb_slave_if.sv","./rtl/packet_sram.sv","./rtl/packet_proc_core.sv","D:/questasim64_2021.1/win64/../verilog_src/std/std.sv","./tb/ppa_if.sv","./tb/ppa_pkg.sv","./tb/tb.sv","UNKNOWN","questa_internal_coverage_item_objects"];
+processSrcNamesData(g_data);

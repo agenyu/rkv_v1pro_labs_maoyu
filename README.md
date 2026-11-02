@@ -49,6 +49,9 @@ AI 大模型在软件编程领域的快速落地，以及国内外 IC 公司对�
 1. **课程练习代码示例**：随堂演示的 SystemVerilog 语言特性与验证方法
 2. **参考实验代码**：MCDT（Memory Controller Data Transfer）模块的验证环境示例
 
+仓库根目录的 `ppa-lite/` 为 2026 秋季 PPA-Lite 正式仿真验证工程，包含
+Lab1–Lab4 完成代码、统一回归、功能覆盖率、五类代码覆盖率、testplan 和实验报告。
+
 > **注意**：PPA-Lite 项目（即本课程的最终综合实验）的设计代码与验证代码由参与课程实验的同学们自行开发完成。待课程结束后，我们将甄选优秀的 PPA-Lite 作业代码并入本仓库，供后续同学参考学习。
 
 ---
@@ -57,6 +60,7 @@ AI 大模型在软件编程领域的快速落地，以及国内外 IC 公司对�
 
 ```
 rkv_v1pro_labs/
+├── ppa-lite/               # 2026 秋季 PPA-Lite 正式实验工程
 ├── lecture/                 # 课程讲义配套代码示例
 │   ├── lec1/               # 第1讲：SystemVerilog 基础
 │   │   ├── data_type.sv           # 数据类型
@@ -136,6 +140,15 @@ rkv_v1pro_labs/
 cd lecture/lec1
 make comp
 make run
+```
+
+以正式 PPA-Lite 工程为例：
+
+```bash
+cd ppa-lite
+make smoke
+make regress SEEDS="1 2 3"
+make report
 ```
 
 以 `mcdt-lab/lab1` 为例：

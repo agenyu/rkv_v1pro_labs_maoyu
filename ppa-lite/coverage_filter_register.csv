@@ -1,0 +1,3 @@
+object,object_type,item_count,reason,conclusion,evidence
+/tb/u_lab1_m1,Testbench M1 helper,624,Standalone M1 used only for Lab1 RES_* stub checks.,Excluded from DUT coverage denominator.,make report -> /tb/dut scope
+/tb/u_m3_standalone,Testbench M3 helper,435,Standalone M3 used only for Lab2 module-level checks without M1.,Excluded from DUT coverage denominator.,make report -> /tb/dut scope

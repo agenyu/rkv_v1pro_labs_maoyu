@@ -1,0 +1,2 @@
+var g_data = {"21":["min_len","short_len","mid_len","max_len","under","over"],"22":["type1","type2","type4","type8","bad"],"23":["ok","len_e","typ_e","chk_e","multi"],"24":["check","bypass"],"25":["ok","err"],"28":["min_len","short_len","mid_len","max_len","under","over"],"29":["type1","type2","type4","type8","bad"],"30":["ok","len_e","typ_e","chk_e","multi"],"31":["check","bypass"],"32":["ok","err"]};
+processCoverpointsMapData(g_data);

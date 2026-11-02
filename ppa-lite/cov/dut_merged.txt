@@ -1,0 +1,825 @@
+QuestaSim-64 vcover 2021.1 Coverage Utility 2021.01 Jan 19 2021
+Start time: 10:25:48 on Nov 02,2026
+vcover report -details cov/dut_merged.ucdb 
+Coverage Report by instance with details
+
+=================================================================================
+=== Instance: /tb/dut/u_m1
+=== Design Unit: work.apb_slave_if
+=================================================================================
+Branch Coverage:
+    Enabled Coverage              Bins      Hits    Misses  Coverage
+    ----------------              ----      ----    ------  --------
+    Branches                        65        62         3    95.38%
+
+================================Branch Details================================
+
+Branch Coverage for instance /tb/dut/u_m1
+
+    Line         Item                      Count     Source 
+    ----         ----                      -----     ------ 
+  File ./rtl/apb_slave_if.sv
+------------------------------------CASE Branch------------------------------------
+    93                                       757     Count coming in to CASE
+    94              1                    ***0***     
+    94              2                    ***0***     
+    94              3                        352     
+    94              4                          3     
+    94              5                         15     
+    95              1                    ***0***     
+    95              2                         78     
+    95              3                         78     
+    95              4                         75     
+    96              1                         75     
+    96              2                         75     
+    97              1                          6     
+Branch totals: 9 hits of 12 branches = 75.00%
+
+------------------------------------CASE Branch------------------------------------
+    102                                      522     Count coming in to CASE
+    103             1                        294     
+    103             2                        102     
+    103             3                         12     
+    103             4                          9     
+    103             5                         99     
+    105             1                          6     
+Branch totals: 6 hits of 6 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    112                                     6694     Count coming in to IF
+    112             1                       2320     
+                                            4374     All False Count
+Branch totals: 2 hits of 2 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    113                                     2320     Count coming in to IF
+    113             1                       1041     
+    118             1                        522     
+    127             1                          6     
+                                             751     All False Count
+Branch totals: 4 hits of 4 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    114                                     1041     Count coming in to IF
+    114             1                        891     
+                                             150     All False Count
+Branch totals: 2 hits of 2 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    119                                      522     Count coming in to IF
+    119             1                          6     
+    122             1                          6     
+                                             510     All False Count
+Branch totals: 3 hits of 3 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    135                                     2608     Count coming in to IF
+    135             1                       1086     
+    138             1                       1522     
+Branch totals: 2 hits of 2 branches = 100.00%
+
+------------------------------------CASE Branch------------------------------------
+    139                                     1522     Count coming in to CASE
+    140             1                        408     
+    141             1                        120     
+    142             1                        373     
+    143             1                         27     
+    144             1                         18     
+    145             1                        141     
+    146             1                         78     
+    147             1                         78     
+    148             1                         75     
+    149             1                         75     
+    150             1                         78     
+    151             1                         51     
+Branch totals: 12 hits of 12 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    157                                     4978     Count coming in to IF
+    157             1                         90     
+    169             1                       4888     
+Branch totals: 2 hits of 2 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    173                                     4888     Count coming in to IF
+    173             1                        201     
+                                            4687     All False Count
+Branch totals: 2 hits of 2 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    176                                     4888     Count coming in to IF
+    176             1                        102     
+                                            4786     All False Count
+Branch totals: 2 hits of 2 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    180                                     4888     Count coming in to IF
+    180             1                         12     
+                                            4876     All False Count
+Branch totals: 2 hits of 2 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    184                                     4888     Count coming in to IF
+    184             1                         99     
+                                            4789     All False Count
+Branch totals: 2 hits of 2 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    188                                     4888     Count coming in to IF
+    188             1                         90     
+                                            4798     All False Count
+Branch totals: 2 hits of 2 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    189                                       90     Count coming in to IF
+    189             1                         12     
+                                              78     All False Count
+Branch totals: 2 hits of 2 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    192                                       90     Count coming in to IF
+    192             1                          9     
+                                              81     All False Count
+Branch totals: 2 hits of 2 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    197                                     4888     Count coming in to IF
+    197             1                          9     
+                                            4879     All False Count
+Branch totals: 2 hits of 2 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    198                                        9     Count coming in to IF
+    198             1                          3     
+                                               6     All False Count
+Branch totals: 2 hits of 2 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    201                                        9     Count coming in to IF
+    201             1                          6     
+                                               3     All False Count
+Branch totals: 2 hits of 2 branches = 100.00%
+
+
+Condition Coverage:
+    Enabled Coverage              Bins   Covered    Misses  Coverage
+    ----------------              ----      ----    ------  --------
+    Conditions                      18        18         0   100.00%
+
+================================Condition Details================================
+
+Condition Coverage for instance /tb/dut/u_m1 --
+
+  File ./rtl/apb_slave_if.sv
+----------------Focused Condition View-------------------
+Line       122 Item    1  (((start_o ~| start_accept_pulse_r) && (PADDR == 0)) && PWDATA[1])
+Condition totals: 4 of 4 input terms covered = 100.00%
+
+----------------Focused Condition View-------------------
+Line       173 Item    1  (write_access && (PADDR == 0))
+Condition totals: 2 of 2 input terms covered = 100.00%
+
+----------------Focused Condition View-------------------
+Line       176 Item    1  (write_access && (PADDR == 4))
+Condition totals: 2 of 2 input terms covered = 100.00%
+
+----------------Focused Condition View-------------------
+Line       180 Item    1  (write_access && (PADDR == 12))
+Condition totals: 2 of 2 input terms covered = 100.00%
+
+----------------Focused Condition View-------------------
+Line       184 Item    1  (write_access && (PADDR == 20))
+Condition totals: 2 of 2 input terms covered = 100.00%
+
+----------------Focused Condition View-------------------
+Line       188 Item    1  (done_i && ~done_d)
+Condition totals: 2 of 2 input terms covered = 100.00%
+
+----------------Focused Condition View-------------------
+Line       192 Item    1  (err_irq_en_r && error_all)
+Condition totals: 2 of 2 input terms covered = 100.00%
+
+----------------Focused Condition View-------------------
+Line       197 Item    1  (write_access && (PADDR == 16))
+Condition totals: 2 of 2 input terms covered = 100.00%
+
+
+Expression Coverage:
+    Enabled Coverage              Bins   Covered    Misses  Coverage
+    ----------------              ----      ----    ------  --------
+    Expressions                     26        26         0   100.00%
+
+================================Expression Details================================
+
+Expression Coverage for instance /tb/dut/u_m1 --
+
+  File ./rtl/apb_slave_if.sv
+----------------Focused Expression View-----------------
+Line       70 Item    1  (PSEL && PENABLE)
+Expression totals: 2 of 2 input terms covered = 100.00%
+
+----------------Focused Expression View-----------------
+Line       71 Item    1  (access && PWRITE)
+Expression totals: 2 of 2 input terms covered = 100.00%
+
+----------------Focused Expression View-----------------
+Line       72 Item    1  ((PADDR >= 64) && (PADDR <= 92))
+Expression totals: 2 of 2 input terms covered = 100.00%
+
+----------------Focused Expression View-----------------
+Line       73 Item    1  ((length_error_i || type_error_i) || chk_error_i)
+Expression totals: 3 of 3 input terms covered = 100.00%
+
+----------------Focused Expression View-----------------
+Line       74 Item    1  ((write_access && (PADDR == 0)) && PWDATA[1])
+Expression totals: 3 of 3 input terms covered = 100.00%
+
+----------------Focused Expression View-----------------
+Line       75 Item    1  (PWDATA[0] || ctrl_enable_r)
+Expression totals: 2 of 2 input terms covered = 100.00%
+
+----------------Focused Expression View-----------------
+Line       78 Item    1  ((start_req && start_enabled) && ~busy_i)
+Expression totals: 3 of 3 input terms covered = 100.00%
+
+----------------Focused Expression View-----------------
+Line       81 Item    1  ((write_access && pkt_mem_window) && ~busy_i)
+Expression totals: 3 of 3 input terms covered = 100.00%
+
+----------------Focused Expression View-----------------
+Line       82 Item    1  (((PSEL && ~PENABLE) && ~PWRITE) && pkt_mem_window)
+Expression totals: 4 of 4 input terms covered = 100.00%
+
+----------------Focused Expression View-----------------
+Line       90 Item    1  (done_irq_sta_r || err_irq_sta_r)
+Expression totals: 2 of 2 input terms covered = 100.00%
+
+
+Statement Coverage:
+    Enabled Coverage              Bins      Hits    Misses  Coverage
+    ----------------              ----      ----    ------  --------
+    Statements                      59        59         0   100.00%
+
+================================Statement Details================================
+
+Statement Coverage for instance /tb/dut/u_m1 --
+
+    Line         Item                      Count     Source 
+    ----         ----                      -----     ------ 
+  File ./rtl/apb_slave_if.sv
+    70              1                       6627     
+    71              1                       7111     
+    72              1                       1911     
+    73              1                        111     
+    74              1                       4695     
+    75              1                        625     
+    78              1                        687     
+    79              1                       1881     
+    81              1                       3180     
+    82              1                       6867     
+    90              1                         99     
+    96              1                        751     
+    97              1                          6     
+    104             1                        516     
+    106             1                          6     
+    110             1                       6694     
+    111             1                       6694     
+    115             1                        891     
+    120             1                          6     
+    124             1                          6     
+    128             1                          6     
+    133             1                       2608     
+    134             1                       2608     
+    136             1                       1086     
+    140             1                        408     
+    141             1                        120     
+    142             1                        373     
+    143             1                         27     
+    144             1                         18     
+    145             1                        141     
+    146             1                         78     
+    147             1                         78     
+    148             1                         75     
+    149             1                         75     
+    150             1                         78     
+    151             1                         51     
+    156             1                       4978     
+    158             1                         90     
+    159             1                         90     
+    160             1                         90     
+    161             1                         90     
+    162             1                         90     
+    163             1                         90     
+    164             1                         90     
+    165             1                         90     
+    166             1                         90     
+    167             1                         90     
+    170             1                       4888     
+    171             1                       4888     
+    174             1                        201     
+    177             1                        102     
+    178             1                        102     
+    181             1                         12     
+    182             1                         12     
+    185             1                         99     
+    190             1                         12     
+    193             1                          9     
+    199             1                          3     
+    202             1                          6     
+Toggle Coverage:
+    Enabled Coverage              Bins      Hits    Misses  Coverage
+    ----------------              ----      ----    ------  --------
+    Toggles                        456       436        20    95.61%
+
+================================Toggle Details================================
+
+Toggle Coverage for instance /tb/dut/u_m1 --
+
+                                              Node      1H->0L      0L->1H                          "Coverage"
+                                              ---------------------------------------------------------------
+                                        PADDR[0-1]           0           0                                0.00 
+                                       PADDR[7-11]           0           0                                0.00 
+                                            PREADY           0           0                                0.00 
+                                 res_pkt_type_i[4]           0           0                                0.00 
+                                 res_pkt_type_i[6]           0           0                                0.00 
+
+Total Node Count     =        228 
+Toggled Node Count   =        218 
+Untoggled Node Count =         10 
+
+Toggle Coverage      =      95.61% (436 of 456 bins)
+
+=================================================================================
+=== Instance: /tb/dut/u_m2
+=== Design Unit: work.packet_sram
+=================================================================================
+Branch Coverage:
+    Enabled Coverage              Bins      Hits    Misses  Coverage
+    ----------------              ----      ----    ------  --------
+    Branches                         9         9         0   100.00%
+
+================================Branch Details================================
+
+Branch Coverage for instance /tb/dut/u_m2
+
+    Line         Item                      Count     Source 
+    ----         ----                      -----     ------ 
+  File ./rtl/packet_sram.sv
+------------------------------------IF Branch------------------------------------
+    21                                      3855     Count coming in to IF
+    21              1                         90     
+    26              1                        888     
+                                            2877     All False Count
+Branch totals: 3 hits of 3 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    32                                      3375     Count coming in to IF
+    32              1                         90     
+    36              1                       3285     
+Branch totals: 2 hits of 2 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    37                                      3285     Count coming in to IF
+    37              1                        394     
+                                            2891     All False Count
+Branch totals: 2 hits of 2 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    40                                      3285     Count coming in to IF
+    40              1                        150     
+                                            3135     All False Count
+Branch totals: 2 hits of 2 branches = 100.00%
+
+
+Statement Coverage:
+    Enabled Coverage              Bins      Hits    Misses  Coverage
+    ----------------              ----      ----    ------  --------
+    Statements                      10        10         0   100.00%
+
+================================Statement Details================================
+
+Statement Coverage for instance /tb/dut/u_m2 --
+
+    Line         Item                      Count     Source 
+    ----         ----                      -----     ------ 
+  File ./rtl/packet_sram.sv
+    20              1                       3855     
+    22              1                         90     
+    22              2                        720     
+    23              1                        720     
+    27              1                        888     
+    31              1                       3375     
+    33              1                         90     
+    34              1                         90     
+    38              1                        394     
+    41              1                        150     
+Toggle Coverage:
+    Enabled Coverage              Bins      Hits    Misses  Coverage
+    ----------------              ----      ----    ------  --------
+    Toggles                        278       214        64    76.97%
+
+================================Toggle Details================================
+
+Toggle Coverage for instance /tb/dut/u_m2 --
+
+                                              Node      1H->0L      0L->1H                          "Coverage"
+                                              ---------------------------------------------------------------
+                                           i[0-31]           0           0                                0.00 
+
+Total Node Count     =        139 
+Toggled Node Count   =        107 
+Untoggled Node Count =         32 
+
+Toggle Coverage      =      76.97% (214 of 278 bins)
+
+=================================================================================
+=== Instance: /tb/dut/u_m3
+=== Design Unit: work.packet_proc_core
+=================================================================================
+Branch Coverage:
+    Enabled Coverage              Bins      Hits    Misses  Coverage
+    ----------------              ----      ----    ------  --------
+    Branches                        29        27         2    93.10%
+
+================================Branch Details================================
+
+Branch Coverage for instance /tb/dut/u_m3
+
+    Line         Item                      Count     Source 
+    ----         ----                      -----     ------ 
+  File ./rtl/packet_proc_core.sv
+------------------------------------IF Branch------------------------------------
+    65                                       391     Count coming in to IF
+    65              1                         11     
+    68              1                        139     
+    71              1                        241     
+Branch totals: 3 hits of 3 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    77                                       298     Count coming in to IF
+    77              1                         21     
+    80              1                        277     
+Branch totals: 2 hits of 2 branches = 100.00%
+
+------------------------------------CASE Branch------------------------------------
+    89                                        93     Count coming in to CASE
+    90              1                         20     
+    91              1                         15     
+    92              1                         22     
+    93              1                         27     
+    94              1                          9     
+Branch totals: 5 hits of 5 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    99                                      1169     Count coming in to IF
+    99              1                         90     
+    119             1                         93     
+    139             1                        986     
+Branch totals: 3 hits of 3 branches = 100.00%
+
+------------------------------------CASE Branch------------------------------------
+    140                                      986     Count coming in to CASE
+    141             1                         78     
+    147             1                        785     
+    223             1                        123     
+    230             1                    ***0***     
+Branch totals: 3 hits of 4 branches = 75.00%
+
+------------------------------------IF Branch------------------------------------
+    148                                      785     Count coming in to IF
+    148             1                        394     
+    152             1                        391     
+                                         ***0***     All False Count
+Branch totals: 2 hits of 3 branches = 66.66%
+
+------------------------------------IF Branch------------------------------------
+    166                                      391     Count coming in to IF
+    166             1                         93     
+    183             1                        298     
+Branch totals: 2 hits of 2 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    186                                     1192     Count coming in to IF
+    186             1                       1130     
+                                              62     All False Count
+Branch totals: 2 hits of 2 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    195                                      391     Count coming in to IF
+    195             1                         93     
+    208             1                         79     
+    214             1                        219     
+Branch totals: 3 hits of 3 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    196                                       93     Count coming in to IF
+    196             1                         11     
+    202             1                         82     
+Branch totals: 2 hits of 2 branches = 100.00%
+
+
+Condition Coverage:
+    Enabled Coverage              Bins   Covered    Misses  Coverage
+    ----------------              ----      ----    ------  --------
+    Conditions                      10         9         1    90.00%
+
+================================Condition Details================================
+
+Condition Coverage for instance /tb/dut/u_m3 --
+
+  File ./rtl/packet_proc_core.sv
+----------------Focused Condition View-------------------
+Line       65 Item    1  (len <= 4)
+Condition totals: 1 of 1 input term covered = 100.00%
+
+----------------Focused Condition View-------------------
+Line       68 Item    1  (len >= 32)
+Condition totals: 1 of 1 input term covered = 100.00%
+
+----------------Focused Condition View-------------------
+Line       77 Item    1  (len > 32)
+Condition totals: 1 of 1 input term covered = 100.00%
+
+----------------Focused Condition View-------------------
+Line       119 Item    1  (start_i && ~busy_r)
+Condition totals: 1 of 2 input terms covered = 50.00%
+
+  Input Term   Covered  Reason for no coverage   Hint
+ -----------  --------  -----------------------  --------------
+     start_i         Y
+      busy_r         N  '_1' not hit             Hit '_1'
+
+     Rows:       Hits  FEC Target            Non-masking condition(s)      
+ ---------  ---------  --------------------  -------------------------     
+  Row   1:         39  start_i_0             -                             
+  Row   2:         24  start_i_1             ~busy_r                       
+  Row   3:         24  busy_r_0              start_i                       
+  Row   4:    ***0***  busy_r_1              start_i                       
+
+----------------Focused Condition View-------------------
+Line       166 Item    1  (word_idx_r == 0)
+Condition totals: 1 of 1 input term covered = 100.00%
+
+----------------Focused Condition View-------------------
+Line       186 Item    1  (((word_idx_r * 4) + j) < word_len_v)
+Condition totals: 1 of 1 input term covered = 100.00%
+
+----------------Focused Condition View-------------------
+Line       195 Item    1  (word_idx_r == 0)
+Condition totals: 1 of 1 input term covered = 100.00%
+
+----------------Focused Condition View-------------------
+Line       196 Item    1  (words_for_len(mem_rd_data_i[7:0]) == 1)
+Condition totals: 1 of 1 input term covered = 100.00%
+
+----------------Focused Condition View-------------------
+Line       208 Item    1  ((word_idx_r + 1) >= words_for_len(pkt_len_r))
+Condition totals: 1 of 1 input term covered = 100.00%
+
+
+Expression Coverage:
+    Enabled Coverage              Bins   Covered    Misses  Coverage
+    ----------------              ----      ----    ------  --------
+    Expressions                      9         7         2    77.77%
+
+================================Expression Details================================
+
+Expression Coverage for instance /tb/dut/u_m3 --
+
+  File ./rtl/packet_proc_core.sv
+----------------Focused Expression View-----------------
+Line       170 Item    1  (((mem_rd_data_i[7:0] < 4) || (mem_rd_data_i[7:0] > 32)) || ((exp_len_r != 0) && (mem_rd_data_i[7:0] != exp_len_r)))
+Expression totals: 2 of 4 input terms covered = 50.00%
+
+                         Input Term   Covered  Reason for no coverage   Hint
+                        -----------  --------  -----------------------  --------------
+           (mem_rd_data_i[7:0] < 4)         Y
+          (mem_rd_data_i[7:0] > 32)         Y
+                   (exp_len_r != 0)         N  '_1' not hit             Hit '_1'
+  (mem_rd_data_i[7:0] != exp_len_r)         N  '_1' not hit             Hit '_1'
+
+     Rows:       Hits  FEC Target                           Non-masking condition(s)      
+ ---------  ---------  --------------------                 -------------------------     
+  Row   1:         24  (mem_rd_data_i[7:0] < 4)_0           (~((exp_len_r != 0) && (mem_rd_data_i[7:0] != exp_len_r)) && ~(mem_rd_data_i[7:0] > 32))
+  Row   2:          3  (mem_rd_data_i[7:0] < 4)_1           -                             
+  Row   3:         24  (mem_rd_data_i[7:0] > 32)_0          (~((exp_len_r != 0) && (mem_rd_data_i[7:0] != exp_len_r)) && ~(mem_rd_data_i[7:0] < 4))
+  Row   4:          3  (mem_rd_data_i[7:0] > 32)_1          ~(mem_rd_data_i[7:0] < 4)     
+  Row   5:          6  (exp_len_r != 0)_0                   ~((mem_rd_data_i[7:0] < 4) || (mem_rd_data_i[7:0] > 32))
+  Row   6:    ***0***  (exp_len_r != 0)_1                   (~((mem_rd_data_i[7:0] < 4) || (mem_rd_data_i[7:0] > 32)) && (mem_rd_data_i[7:0] != exp_len_r))
+  Row   7:         21  (mem_rd_data_i[7:0] != exp_len_r)_0  (~((mem_rd_data_i[7:0] < 4) || (mem_rd_data_i[7:0] > 32)) && (exp_len_r != 0))
+  Row   8:    ***0***  (mem_rd_data_i[7:0] != exp_len_r)_1  (~((mem_rd_data_i[7:0] < 4) || (mem_rd_data_i[7:0] > 32)) && (exp_len_r != 0))
+
+----------------Focused Expression View-----------------
+Line       174 Item    1  (algo_mode_r && (mem_rd_data_i[31:24] != ((mem_rd_data_i[7:0] ^ mem_rd_data_i[15:8]) ^ mem_rd_data_i[23:16])))
+Expression totals: 2 of 2 input terms covered = 100.00%
+
+----------------Focused Expression View-----------------
+Line       181 Item    1  ((le_v || te_v) ~| ce_v)
+Expression totals: 3 of 3 input terms covered = 100.00%
+
+
+FSM Coverage:
+    Enabled Coverage              Bins      Hits    Misses  Coverage
+    ----------------              ----      ----    ------  --------
+    FSM States                       3         3         0   100.00%
+    FSM Transitions                  5         5         0   100.00%
+
+================================FSM Details================================
+
+FSM Coverage for instance /tb/dut/u_m3 --
+
+FSM_ID: state
+    Current State Object : state
+    ----------------------
+    State Value MapInfo :
+    ---------------------
+Line          State Name               Value
+----          ----------               -----
+ 120              S_IDLE                   0
+ 147           S_PROCESS                   1
+ 120              S_DONE                   2
+    Covered States :
+    ----------------
+                   State           Hit_count
+                   -----           ---------
+                  S_IDLE                  90          
+               S_PROCESS                  93          
+                  S_DONE                  90          
+    Covered Transitions :
+    ---------------------
+Line            Trans_ID           Hit_count          Transition          
+----            --------           ---------          ----------          
+ 120                   0                  27          S_IDLE -> S_PROCESS           
+ 209                   1                  90          S_PROCESS -> S_DONE           
+ 100                   2                   3          S_PROCESS -> S_IDLE           
+ 120                   3                  66          S_DONE -> S_PROCESS           
+ 100                   4                   3          S_DONE -> S_IDLE              
+
+
+    Summary                       Bins      Hits    Misses  Coverage
+    -------                       ----      ----    ------  --------
+        FSM States                   3         3         0   100.00%
+        FSM Transitions              5         5         0   100.00%
+Statement Coverage:
+    Enabled Coverage              Bins      Hits    Misses  Coverage
+    ----------------              ----      ----    ------  --------
+    Statements                      94        89         5    94.68%
+
+================================Statement Details================================
+
+Statement Coverage for instance /tb/dut/u_m3 --
+
+    Line         Item                      Count     Source 
+    ----         ----                      -----     ------ 
+  File ./rtl/packet_proc_core.sv
+    66              1                         11     
+    69              1                        139     
+    72              1                        241     
+    78              1                         21     
+    81              1                        277     
+    90              1                         20     
+    91              1                         15     
+    92              1                         22     
+    93              1                         27     
+    94              1                          9     
+    98              1                       1169     
+    100             1                         90     
+    101             1                         90     
+    102             1                         90     
+    103             1                         90     
+    104             1                         90     
+    105             1                         90     
+    106             1                         90     
+    107             1                         90     
+    108             1                         90     
+    109             1                         90     
+    110             1                         90     
+    111             1                         90     
+    112             1                         90     
+    113             1                         90     
+    114             1                         90     
+    115             1                         90     
+    116             1                         90     
+    117             1                         90     
+    120             1                         93     
+    121             1                         93     
+    122             1                         93     
+    123             1                         93     
+    124             1                         93     
+    125             1                         93     
+    126             1                         93     
+    127             1                         93     
+    128             1                         93     
+    129             1                         93     
+    130             1                         93     
+    131             1                         93     
+    132             1                         93     
+    133             1                         93     
+    134             1                         93     
+    135             1                         93     
+    136             1                         93     
+    137             1                         93     
+    142             1                         78     
+    143             1                         78     
+    144             1                         78     
+    149             1                        394     
+    150             1                        394     
+    162             1                        391     
+    163             1                        391     
+    164             1                        391     
+    167             1                         93     
+    168             1                         93     
+    170             1                         93     
+    173             1                         93     
+    174             1                         93     
+    178             1                         93     
+    179             1                         93     
+    180             1                         93     
+    181             1                         93     
+    184             1                        298     
+    185             1                        298     
+    185             2                       1192     
+    187             1                       1130     
+    188             1                       1130     
+    191             1                        298     
+    192             1                        298     
+    197             1                         11     
+    198             1                         11     
+    199             1                         11     
+    200             1                         11     
+    203             1                         82     
+    204             1                         82     
+    205             1                         82     
+    209             1                         79     
+    210             1                         79     
+    211             1                         79     
+    212             1                         79     
+    215             1                        219     
+    216             1                        219     
+    217             1                        219     
+    224             1                        123     
+    225             1                        123     
+    226             1                        123     
+    227             1                        123     
+    231             1                    ***0***     
+    232             1                    ***0***     
+    233             1                    ***0***     
+    234             1                    ***0***     
+    235             1                    ***0***     
+Toggle Coverage:
+    Enabled Coverage              Bins      Hits    Misses  Coverage
+    ----------------              ----      ----    ------  --------
+    Toggles                        285       272        13    95.43%
+
+================================Toggle Details================================
+
+Toggle Coverage for instance /tb/dut/u_m3 --
+
+                                              Node      1H->0L      0L->1H                          "Coverage"
+                                              ---------------------------------------------------------------
+                                    exp_len_r[0-1]           0           0                                0.00 
+                                      exp_len_r[4]           0           3                               50.00 
+                                     pkt_type_r[4]           0           0                                0.00 
+                                     pkt_type_r[6]           0           0                                0.00 
+                                 res_pkt_type_o[4]           0           0                                0.00 
+                                 res_pkt_type_o[6]           0           0                                0.00 
+                                             state               ENUM type       Value       Count 
+
+Total Node Count     =        144 
+Toggled Node Count   =        137 
+Untoggled Node Count =          7 
+
+Toggle Coverage      =      95.43% (272 of 285 bins)
+
+=================================================================================
+=== Instance: /tb/dut
+=== Design Unit: work.ppa_top
+=================================================================================
+Toggle Coverage:
+    Enabled Coverage              Bins      Hits    Misses  Coverage
+    ----------------              ----      ----    ------  --------
+    Toggles                        480       460        20    95.83%
+
+================================Toggle Details================================
+
+Toggle Coverage for instance /tb/dut --
+
+                                              Node      1H->0L      0L->1H                          "Coverage"
+                                              ---------------------------------------------------------------
+                                        PADDR[0-1]           0           0                                0.00 
+                                       PADDR[7-11]           0           0                                0.00 
+                                            PREADY           0           0                                0.00 
+                                   res_pkt_type[4]           0           0                                0.00 
+                                   res_pkt_type[6]           0           0                                0.00 
+
+Total Node Count     =        240 
+Toggled Node Count   =        230 
+Untoggled Node Count =         10 
+
+Toggle Coverage      =      95.83% (460 of 480 bins)
+
+
+Total Coverage By Instance (filtered view): 96.48%
+
+End time: 10:25:48 on Nov 02,2026, Elapsed time: 0:00:00
+Errors: 0, Warnings: 0
