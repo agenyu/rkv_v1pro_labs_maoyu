@@ -1,5 +1,28 @@
 package ppa_pkg;
 
+  // ======================================================================
+  // ======================================================================
+  // 评分细目索引 —— 验收/答辩时在本文件搜 "[评分" 即可定位每一个计分点
+  // 标签格式：[评分 实验号-必做/选做大项.子项 | 分值]
+  //
+  //   实验1  必做1~3 / 选做4~5     对照 lab1/实验1_验收对照.md
+  //     必做1 APB 读写时序   1-必做1.1 ~ 1-必做1.3
+  //     必做2 PKT_MEM 映射   1-必做2.1 ~ 1-必做2.3
+  //     必做3 RES_* 读通路   1-必做3.1 ~ 1-必做3.3
+  //     选做4 PSLVERR        1-选做4.1 ~ 1-选做4.3
+  //     选做5 IRQ            1-选做5.1 ~ 1-选做5.3
+  //   实验2  必做1~3 / 选做4~5     对照 lab2/实验2_验收对照.md
+  //     必做1 合法包 / 必做2 长度越界 / 必做3 busy-done 时序   2-必做X.Y
+  //     选做4 type 与 mask / 选做5 hdr_chk 校验                2-选做X.Y
+  //   实验3  必做1~3 / 选做4~5     对照 lab3/实验3_验收对照.md
+  //     必做1 端到端 / 必做2 连续两帧 / 必做3 STATUS 通路      3-必做X.Y
+  //     选做4 busy 写保护 / 选做5 中断闭环                     3-选做X.Y
+  //   实验4  必做1~3 / 选做4~5     对照 lab4/实验4_验收对照.md
+  //     必做1 一键回归 / 必做2 覆盖率 / 必做3 testplan         4-必做X.Y
+  //     选做4 过滤登记表 / 选做5 选做项回归                    4-选做X.Y
+  //   标"验收质量 / 口述"的子项没有独立代码，写在对应用例类的头部注释里。
+  // ======================================================================
+
   typedef enum int {
     RESULT_OK    = 0,
     RESULT_LEN   = 1,
@@ -502,6 +525,15 @@ package ppa_pkg;
       apb_bus.put(1);
     endtask
 
+    // ---------------- [评分 1-必做1.2 | 5分] APB 两段式时序（波形抽查点）--------
+    //   第 1 个 negedge : PSEL=1, PENABLE=0，摆好 PADDR/PWDATA   <- SETUP
+    //   第 2 个 negedge : PENABLE=1                             <- ACCESS
+    //   随后的 posedge + #1 : 采样 PREADY/PSLVERR/PRDATA（避开竞争）
+    //   最后 negedge    : PSEL=0, PENABLE=0                     <- 收尾
+    //   RTL : rtl/apb_slave_if.sv:70-71（access = PSEL && PENABLE）、77（PREADY 恒 1）、
+    //         82（PKT_MEM 读使能在 SETUP 相位就给出）
+    //   波形: lab1/wave_ppa/lab1_defaults_test.wlf 第 2 组
+    // -----------------------------------------------------------------------
     task automatic lab1_apb_write(
       input logic [11:0] addr,
       input logic [31:0] data,
@@ -571,6 +603,8 @@ package ppa_pkg;
     task automatic start_top();
       apb_write(12'h000, 32'h0000_0003, 1'b0);
       @(negedge vif.PCLK);
+      // [评分 3-必做2.2 | 5分] 被接受的 start 必须同拍抬起 busy、同拍清掉 done
+      //   RTL: rtl/packet_proc_core.sv:119-133
       check(vif.busy_o === 1'b1, "busy_o did not assert after accepted start");
       check(vif.done_o === 1'b0, "done_o did not clear after accepted start");
     endtask
@@ -604,6 +638,16 @@ package ppa_pkg;
       apb_read(12'h028, err_flag, 1'b0);
     endtask
 
+    // ---------------- [评分 3-必做1.1/1.3 | 10+5分] -----------------------
+    // 端到端六步，就是 M1 -> M2 -> M3 -> M1 的完整链路：
+    //   1) write_packet_to_apb : APB 写 0x040~0x05C -> u_m1.pkt_mem_* -> u_m2 写口
+    //   2) configure_top       : CFG(algo_mode/type_mask) + PKT_LEN_EXP + CTRL.enable
+    //   3) start_top           : CTRL.start=1 -> u_m1.start_o -> u_m3.start_i
+    //   4) wait_top_done       : 轮询 STATUS.done（u_m3.done_o -> u_m1.done_i）
+    //   5) read_top_results    : 读 STATUS / RES_* / ERR_FLAG 六个寄存器
+    //   6) 逐项比对            : res_* / status / err_flag 对参考模型
+    //   RTL: rtl/ppa_top.sv:80-91(m2 写口) 96(m3.start_i) 100-102(read) 103-108(回 M1)
+    // ----------------------------------------------------------------------
     task automatic run_packet_top(
       input packet_item pkt,
       input bit algo_mode,
@@ -663,6 +707,13 @@ package ppa_pkg;
       m3vif.start_i = 1'b0;
     endtask
 
+    // ---------------- [评分 2-必做1.1/必做2.3 | 10+5分] -----------------------
+    // 实验2 的公共驱动：把包灌进 /tb/u_m3_standalone 的 mem_words，拉 start，
+    // 等 done_o，然后比对 res_pkt_len_o/res_pkt_type_o/sum/xor 与四个错误位。
+    // 越界包（len=3 / 33）也必须能正常走到 done —— 报错不等于挂死。
+    //   RTL : rtl/packet_proc_core.sv:166-168（结果寄存器只写一次）
+    //         195-221（读到最后一个字跳 DONE）
+    // ----------------------------------------------------------------------
     task automatic run_packet_m3(
       input packet_item pkt,
       input bit algo_mode,
@@ -717,6 +768,23 @@ package ppa_pkg;
     endtask
   endclass
 
+  // ======================================================================
+  // [评分 1] 实验1 —— 必做/选做各项位置（都在本文件）
+  //   必做1 APB 读写时序  1-必做1.1~1.3
+  //         1.1 寄存器默认值  lab1_defaults_test.run() 开头 7 行
+  //         1.2 两段式时序    lab1_apb_write() / lab1_apb_read()
+  //         1.3 PRDATA 存放在哪（口述）—— [评分 1-必做1.3]
+  //             PRDATA 是组合输出：写进 always_ff 的 *_r，读走 always_comb 的 case
+  //   必做2 PKT_MEM 映射  1-必做2.1~2.3   lab1_pkt_mem_test
+  //   必做3 RES_* 读通路  1-必做3.1~3.3   lab1_defaults_test 中段 + lab4_code_cov_test
+  //         3.1 四个 RES 寄存器  3.2 地址译码完整  3.3 [评分 1-必做3.3] 口述三区：
+  //         CSR 区 0x000-0x028（11 个）/ PKT_MEM 区 0x040-0x05C（8 字）/ 其余非法
+  //   选做4 PSLVERR       1-选做4.1~4.3   lab1_pslverr_test
+  //         4.3 [评分 1-选做4.3] 口述四个来源：写不可写 / 读不可读 / busy 写 / 未使能 start
+  //   选做5 IRQ           1-选做5.1~5.3   lab3_irq_test（在实验3 那一段里）
+  //   运行 make lab1   波形 make wave1 -> lab1/wave_ppa/*.wlf
+  //   对照文档 lab1/实验1_验收对照.md
+  // ======================================================================
   class lab1_defaults_test extends base_test;
     function new(
       input string test_name,
@@ -730,6 +798,14 @@ package ppa_pkg;
     virtual task run();
       logic [31:0] data;
       reset_system();
+      // ---------------- [评分 1-必做1.1 | 10分] CTRL/CFG/STATUS 默认值 ----------------
+      // 期望 CTRL=0x0000_0000、CFG=0x0000_00F1、STATUS=0x0000_0000，
+      // IRQ_EN / IRQ_STA / PKT_LEN_EXP / ERR_FLAG 的复位值也都是 0。
+      //   RTL : rtl/apb_slave_if.sv:156-167（复位分支）
+      //   提示: CFG 的 0xF1 在 RTL 里没有字面量，是 141 行拼出来的
+      //         {24'b0, cfg_type_mask_r(4'hF), 3'b0, cfg_algo_mode_r(1)} = 0xF1
+      //   波形: lab1/wave_ppa/lab1_defaults_test.wlf 第 3 组（wave/ppa_wave_lab1.do）
+      // -------------------------------------------------------------------------
       lab1_apb_read(12'h000, data, 0); check(data === 32'h0000_0000, "CTRL reset");
       lab1_apb_read(12'h004, data, 0); check(data === 32'h0000_00F1, "CFG reset");
       lab1_apb_read(12'h008, data, 0); check(data === 32'h0000_0000, "STATUS reset");
@@ -737,6 +813,13 @@ package ppa_pkg;
       lab1_apb_read(12'h010, data, 0); check(data === 32'h0000_0000, "IRQ_STA reset");
       lab1_apb_read(12'h014, data, 0); check(data === 32'h0000_0000, "PKT_LEN_EXP reset");
       lab1_apb_read(12'h028, data, 0); check(data === 32'h0000_0000, "ERR_FLAG reset");
+      // ---------------- [评分 1-必做3.1 | 10分] RES_* 读通路 --------------------
+      // 桩值故意选 2A/A5/3C/96 四个互不相同、且和地址不对应的数，
+      // 避免"读错地址也碰巧对"；PKT_MEM 窗口另给 0xC001_2345。
+      //   RTL : rtl/apb_slave_if.sv:146-149（四个 RES 寄存器是组合直通输入口）
+      //   连线: tb/tb.sv:62-65 把 m1_apb.*_stub 接到 M1 的输入端口
+      //   波形: lab1_defaults_test.wlf 第 5 组
+      // -------------------------------------------------------------------
       m1vif.res_pkt_len_stub     = 6'h2A;
       m1vif.res_pkt_type_stub    = 8'hA5;
       m1vif.res_payload_sum_stub = 8'h3C;
@@ -757,6 +840,13 @@ package ppa_pkg;
     endtask
   endclass
 
+  // [评分 1-必做2.1 | 10分] PKT_MEM 8 个 word 写入后逐个回读，全部正确
+  // [评分 1-必做2.2 | 5分]  地址计算：0x040 -> addr[2:0]=0 ... 0x05C -> 7
+  // [评分 1-必做2.3 | 5分]  口述：窗口 0x040~0x05C 共 8 字；we 的三个与项；wdata 直通不寄存
+  //   RTL : rtl/apb_slave_if.sv:72(窗口判断) 79(addr=PADDR[5:2]) 80(wdata) 81(we)
+  //   波形: lab1/wave_ppa/lab1_pkt_mem_test.wlf —— 注意这个用例走主通路 dut，
+  //         必须用 wave/ppa_wave.do 打开（看 dut/u_m1 与 dut/u_m2/mem）
+  //   模式 0xA500_0000+i：高 24 位不变、低字节递增，波形上 addr 与 data 一一对应
   class lab1_pkt_mem_test extends base_test;
     function new(
       input string test_name,
@@ -783,6 +873,12 @@ package ppa_pkg;
     endtask
   endclass
 
+  // [评分 1-选做4.1 | 10分] 写 RO 寄存器 -> PSLVERR=1，且寄存器值保持不变
+  // [评分 1-选做4.2 | 5分]  读写未定义地址 0x02C -> 同样返回 PSLVERR=1
+  // [评分 1-选做4.3 | 5分]  口述：PSLVERR 四个来源 = 写不可写 / 读不可读 /
+  //                     busy 时写 PKT_MEM / 未使能就写 start 位
+  //   RTL : rtl/apb_slave_if.sv:101-108（可写表）118-121（写拒绝）127-129（读拒绝）
+  //   波形: lab1/wave_ppa/lab1_pslverr_test.wlf（wave/ppa_wave_lab1.do）
   class lab1_pslverr_test extends base_test;
     function new(
       input string test_name,
@@ -796,10 +892,20 @@ package ppa_pkg;
     virtual task run();
       logic [31:0] data;
       reset_system();
+      // ---------------- [评分 1-选做4.1/4.2 | 10+5分] ----------------------
+      // 三个非法写：STATUS(0x008, RO)、RES_PKT_LEN(0x018, RO)、未映射(0x02C)，
+      // 第三个参数 1 表示期望 PSLVERR=1；随后 0x02C 的读也期望报错。
+      // 写被拒后必须没有任何寄存器更新 —— 下面的回读就是"值不变"的证据。
+      // ---------------------------------------------------------------------
       lab1_apb_write(12'h008, 32'hFFFF_FFFF, 1);
       lab1_apb_write(12'h018, 32'hFFFF_FFFF, 1);
       lab1_apb_write(12'h02C, 32'hFFFF_FFFF, 1);
       lab1_apb_read(12'h02C, data, 1);
+      // RO 写被拒绝后，寄存器内容必须保持原值（评分项：写 RO -> PSLVERR=1 且值不变）
+      lab1_apb_read(12'h008, data, 0);
+      check(data === 32'h0000_0000, "STATUS changed after illegal write");
+      lab1_apb_read(12'h018, data, 0);
+      check(data === 32'h0000_0000, "RES_PKT_LEN changed after illegal write");
       lab1_apb_write(12'h000, 32'h0000_0002, 1);
       lab1_apb_write(12'h000, 32'h0000_0001, 0);
       lab1_apb_write(12'h000, 32'h0000_0003, 0);
@@ -807,6 +913,26 @@ package ppa_pkg;
     endtask
   endclass
 
+  // ======================================================================
+  // [评分 2] 实验2 —— 必做/选做各项位置（全部驱动 /tb/u_m3_standalone，不走 APB）
+  //   必做1 合法包处理   2-必做1.1~1.3   lab2_valid_test + run_packet_m3
+  //   必做2 长度越界     2-必做2.1~2.3   lab2_errors_test 第 1/2 包
+  //   必做3 busy/done    2-必做3.1~3.2   lab2_valid_test 末尾 + run_packet_m3
+  //   选做4 type/mask    2-选做4.1~4.2   lab2_errors_test 第 3/4 包
+  //   选做5 hdr_chk      2-选做5.1~5.3   lab2_errors_test 第 5/6 包 + run_packet_m3
+  //   运行 make lab2   波形 make wave2 -> lab2/wave_ppa/*.wlf（wave/ppa_wave_m3.do）
+  //   对照文档 lab2/实验2_验收对照.md
+  // ----------------------------------------------------------------------
+  // [评分 2-必做1.1 | 10分] 合法包结果正确：4 种长度(4/8/16/32) x 4 种合法类型
+  // [评分 2-必做1.2 | 5分]  FSM 波形 IDLE -> PROCESS -> DONE
+  //                     （wave/ppa_wave_m3.do 第 3 组，state 按符号名显示）
+  // [评分 2-必做1.3 | 5分]  口述：每读一个字在 PROCESS 停一拍，首字 4 字节是包头
+  // [评分 2-必做3.1 | 10分] start_i 之后第 1 拍 busy_o 必须为 1（零延迟响应）
+  // [评分 2-必做3.2 | 5分]  DONE 态 done_o 持续保持，再次 start 同拍清零
+  //   RTL : rtl/packet_proc_core.sv:119-138（启动分支）132（busy_r 同拍置位）
+  //         223-228（S_DONE 每拍保持 done_r=1）
+  //   波形: lab2/wave_ppa/lab2_valid_test.wlf
+  // ======================================================================
   class lab2_valid_test extends base_test;
     function new(
       input string test_name,
@@ -828,10 +954,48 @@ package ppa_pkg;
         pkt.build(lens[i], types[i], 0);
         run_packet_m3(pkt, 1'b1, 4'hF, 6'd0);
       end
+
+      // ---- [评分 2-必做3.2 | 5分] DONE 态 done_o 是电平保持（连续 3 拍仍为 1），
+      //      再次 start 的同一拍 done_o 必须清 0，busy_o 同时抬起 ----
+      // ---- 评分项：DONE 态 done_o 持续保持，再次 start 后清零 ----
+      repeat (3) @(posedge m3vif.clk);
+      #1;
+      check(m3vif.done_o === 1'b1, "done_o did not hold while in DONE");
+      check(m3vif.busy_o === 1'b0, "busy_o not low while in DONE");
+
+      // 再次 start：busy_o 必须在采样 start 的那一拍就起来，done_o 同时清 0
+      @(negedge m3vif.clk);
+      m3vif.start_i       = 1'b1;
+      m3vif.algo_mode_i   = 1'b1;
+      m3vif.type_mask_i   = 4'hF;
+      m3vif.exp_pkt_len_i = 6'd0;
+      @(posedge m3vif.clk);
+      #1;
+      // [评分 2-必做3.1 | 10分] start_i 在 negedge 摆好，posedge 采样，再过 1ns 检查：
+      //   期望 busy_o 在采样 start 的同一拍就为 1，中间没有额外延迟。
+      //   RTL: rtl/packet_proc_core.sv:132 —— busy_r 与 start 判定在同一个 always_ff 里
+      check(m3vif.busy_o === 1'b1, "busy_o not asserted on the first cycle after start_i");
+      check(m3vif.done_o === 1'b0, "done_o not cleared by re-start");
+      @(negedge m3vif.clk);
+      m3vif.start_i = 1'b0;
+
       finish();
     endtask
   endclass
 
+  // ======================================================================
+  // [评分 2-必做2.1 | 5分]  len=3  下溢（<4）  -> length_error，仍正常 done
+  // [评分 2-必做2.2 | 5分]  len=33 上溢（>32） -> length_error，仍正常 done
+  // [评分 2-必做2.3 | 5分]  两种越界情形 done_o 都必须拉高（不挂死）
+  // [评分 2-选做4.1 | 10分] type=0x03 不是 one-hot -> type_error（任何 mask 都非法）
+  // [评分 2-选做4.2 | 5分]  type=0x01 合法，但 type_mask=4'b1110 关掉 bit0 -> type_error
+  // [评分 2-选做5.1 | 8分]  hdr_chk 错误且 algo_mode=1 -> chk_error=1
+  // [评分 2-选做5.2 | 7分]  同一个坏包、algo_mode=0 -> chk_error=0（旁路不校验）
+  // [评分 2-选做5.3 | 5分]  payload sum/XOR 与参考模型一致（首字 4 字节是包头，不计入）
+  //   RTL : rtl/packet_proc_core.sv:170-172(长度判定) 85-96(类型合法) 174-176(校验)
+  //         183-193(payload 累加/异或)
+  //   波形: lab2/wave_ppa/lab2_errors_test.wlf 第 6 组
+  // ======================================================================
   class lab2_errors_test extends base_test;
     function new(
       input string test_name,
@@ -874,6 +1038,22 @@ package ppa_pkg;
     endtask
   endclass
 
+  // ======================================================================
+  // [评分 3] 实验3 —— 必做/选做各项位置（全部走主通路 dut/ppa_top）
+  //   必做1 端到端链路   3-必做1.1~1.3   lab3_e2e_test + run_packet_top
+  //   必做2 连续两帧     3-必做2.1~2.2   lab3_two_frames_test + start_top
+  //   必做3 STATUS 通路  3-必做3.1~3.2   lab3_busy_protect_test
+  //   选做4 busy 写保护  3-选做4.1~4.2   lab3_busy_protect_test 中段
+  //   选做5 中断闭环     3-选做5.1~5.2   lab3_irq_test
+  //   运行 make lab3   波形 make wave3 -> lab3/wave_ppa/*.wlf（wave/ppa_wave.do）
+  //   对照文档 lab3/实验3_验收对照.md
+  // ----------------------------------------------------------------------
+  // [评分 3-必做1.1 | 10分] 端到端：写 8 字节包 -> 启动 -> 等 done -> 读回 RES_*
+  // [评分 3-必做1.2 | 5分]  APB 组与 M3 的 busy/done 同屏可看（wave/ppa_wave.do）
+  // [评分 3-必做1.3 | 5分]  口述：M1 -> M3 的信号连接，见 run_packet_top 头部注释
+  //   RTL : rtl/ppa_top.sv:80-108（线网连接）apb_slave_if.sv:142,146-149
+  //   波形: lab3/wave_ppa/lab3_e2e_test.wlf 第 2/6 组
+  // ======================================================================
   class lab3_e2e_test extends base_test;
     function new(
       input string test_name,
@@ -897,6 +1077,10 @@ package ppa_pkg;
     endtask
   endclass
 
+  // [评分 3-必做2.1 | 10分] 连续两帧：len 4 -> 32，两帧的 RES_PKT_LEN 各自正确
+  // [评分 3-必做2.2 | 5分]  两帧之间 done_o 有可见的清零过程（第二帧 start 同拍落 0）
+  //   RTL : rtl/packet_proc_core.sv:133(done_r 在启动分支清零) 166-168(结果刷新)
+  //   波形: lab3/wave_ppa/lab3_two_frames_test.wlf，done_o 一屏可见掉 0
   class lab3_two_frames_test extends base_test;
     function new(
       input string test_name,
@@ -921,6 +1105,15 @@ package ppa_pkg;
     endtask
   endclass
 
+  // ======================================================================
+  // [评分 3-必做3.1 | 10分] busy 期间读 STATUS，[1:0] = 2'b01（处理中）
+  // [评分 3-必做3.2 | 5分]  done 期间读 STATUS，[1:0] = 2'b10（完成）
+  // [评分 3-选做4.1 | 15分] busy 时写 PKT_MEM：PSLVERR=1 且 SRAM 原值不变
+  // [评分 3-选做4.2 | 5分]  口述：写脉冲与 PSLVERR 由同一条件控制，不会"报了错还写进去"
+  //   RTL : rtl/apb_slave_if.sv:142(STATUS 位定义) 113-116(busy 写报错)
+  //         81(we = write_access && window && !busy)
+  //   波形: lab3/wave_ppa/lab3_busy_protect_test.wlf 第 2/4 组
+  // ======================================================================
   class lab3_busy_protect_test extends base_test;
     function new(
       input string test_name,
@@ -946,6 +1139,8 @@ package ppa_pkg;
       apb_read(12'h008, status, 0);
       check(status[1:0] === 2'b01, "STATUS busy encoding mismatch");
       apb_read(12'h044, word_before, 0);
+      // [评分 3-选做4.1 | 15分] 三项合一：PSLVERR 拉高（第三个参数 1）+ 写入被丢弃
+      //   + 原值不变（下面 word_before / word_after 比对）
       apb_write(12'h044, 32'hDEAD_BEEF, 1);
       apb_read(12'h044, word_after, 0);
       check(word_before === word_after, "PKT_MEM changed during busy write-protect test");
@@ -956,6 +1151,19 @@ package ppa_pkg;
     endtask
   endclass
 
+  // ======================================================================
+  // [评分 1-选做5.1 | 10分] IRQ_EN 读写 / IRQ_STA RW1C（实验1 选做5）
+  //   覆盖四条行为：EN 写 11/00 各回读一次；RW1C 写 1 清 0；
+  //   同一次写里位值为 0 的那一位必须保持；两位可分别清除、互不影响。
+  // [评分 1-选做5.2 | 5分]  irq_o = done_irq_sta | err_irq_sta（电平，不是脉冲）
+  //   两位都置时 irq_o=1；只清 bit0 时 irq_o 仍为 1；两位都清才落 0。
+  // [评分 1-选做5.3 | 5分]  口述：写 1 清 0、写 0 保持；irq_o 或的是 STA 不是 EN，
+  //                     EN 只门控 STA 能否被置位（用例末尾关掉 done_en 复验）
+  // [评分 3-选做5.1 | 10分] 实验3 选做5：done 触发 irq、W1C 后 irq_o 落回 0
+  // [评分 3-选做5.2 | 5分]  写 IRQ_STA.done_irq=1 后下一拍 irq_o=0
+  //   RTL : rtl/apb_slave_if.sv:90(irq_o) 180-183(EN) 188-195(STA 置位) 197-204(RW1C)
+  //   波形: lab3/wave_ppa/lab3_irq_test.wlf 第 5 组（wave/ppa_wave.do）
+  // ======================================================================
   class lab3_irq_test extends base_test;
     function new(
       input string test_name,
@@ -970,12 +1178,21 @@ package ppa_pkg;
       packet_item pkt;
       logic [31:0] data;
       reset_system();
+      // ---- [评分 1-选做5.1 | 10分] IRQ_EN 是普通可读写寄存器：写 3 读回 3、写 0 读回 0 ----
       apb_write(12'h00C, 32'h0000_0003, 0);
+      apb_read (12'h00C, data, 0);
+      check(data[1:0] === 2'b11, "IRQ_EN readback: expect both enables set");
+      apb_write(12'h00C, 32'h0000_0000, 0);
+      apb_read (12'h00C, data, 0);
+      check(data[1:0] === 2'b00, "IRQ_EN readback: expect both enables cleared");
+      apb_write(12'h00C, 32'h0000_0003, 0);   // 两位都打开，下一步一次置起两位 STA
 
+      // ---- 一个坏包同时满足 done 与 error：两位 STA 应在同一拍置起 ----
       pkt = new();
-      pkt.build(8, 8'h02, 0);
+      pkt.build(12, 8'h04, 1);
+      pkt.force_bad_checksum();
       write_packet_to_apb(pkt);
-      configure_top(1'b1, 4'hF, 6'd8);
+      configure_top(1'b1, 4'hF, 6'd12);
       apb_write(12'h000, 32'h0000_0003, 0);
       fork
         begin
@@ -989,12 +1206,29 @@ package ppa_pkg;
       disable fork;
       #1;
       apb_read(12'h010, data, 0);
-      check(data[0] === 1'b1, "done_irq did not set");
-      check(vif.irq_o === 1'b1, "irq_o did not assert for done_irq");
+      check(data[1:0] === 2'b11, "both STA bits should be set by one error packet");
+      check(vif.irq_o === 1'b1, "irq_o did not assert with both STA bits set");
+
+      // ---- [评分 1-选做5.1 | 10分] RW1C 之"写 1 清 0"：只清 bit0 ----
       apb_write(12'h010, 32'h0000_0001, 0);
-      apb_read(12'h010, data, 0);
-      check(data[0] === 1'b0, "done_irq did not clear");
-      apb_write(12'h00C, 32'h0000_0002, 0);
+      apb_read (12'h010, data, 0);
+      check(data[0] === 1'b0, "done_irq did not clear by W1C");
+      // ---- [评分 1-选做5.1 | 10分] RW1C 之"写 0 保持"：这一拍只写了 bit0，
+      //      bit1 位置上是 0，err_irq 必须原样保持 1，irq_o 也继续为 1 ----
+      check(data[1] === 1'b1, "err_irq must hold when W1C writes 0 to its bit");
+      check(vif.irq_o === 1'b1, "irq_o must stay high while err_irq still set");
+
+      // ---- 再清 bit1，irq_o 才落回 0：证明两位互相独立、irq_o 是两位的或 ----
+      apb_write(12'h010, 32'h0000_0002, 0);
+      apb_read (12'h010, data, 0);
+      check(data[1] === 1'b0, "err_irq did not clear by W1C");
+      check(vif.irq_o === 1'b0, "irq_o did not deassert after err_irq W1C");
+
+      // ---- [评分 1-选做5.3 | 5分] EN 只门控"能不能置位"，不参与 irq_o：
+      //      关掉 done_en 后跑同样的坏包，done 照样发生，但 done_irq 必须保持 0 ----
+      apb_write(12'h00C, 32'h0000_0002, 0);   // done_en=0, err_en=1
+      apb_read (12'h00C, data, 0);
+      check(data[1:0] === 2'b10, "IRQ_EN readback after partial enable");
 
       pkt = new();
       pkt.build(12, 8'h04, 1);
@@ -1005,15 +1239,20 @@ package ppa_pkg;
       while (vif.done_o !== 1'b1) @(posedge vif.PCLK);
       #1;
       apb_read(12'h010, data, 0);
-      check(data[1] === 1'b1, "err_irq did not set");
+      check(data[0] === 1'b0, "done_irq must not set when done_irq_en=0");
+      check(data[1] === 1'b1, "err_irq must set when err_irq_en=1");
       check(vif.irq_o === 1'b1, "irq_o did not assert for err_irq");
       apb_write(12'h010, 32'h0000_0002, 0);
-      apb_read(12'h010, data, 0);
-      check(data[1] === 1'b0, "err_irq did not clear");
+      apb_read (12'h010, data, 0);
+      check(data[1] === 1'b0, "err_irq did not clear in second round");
+      check(vif.irq_o === 1'b0, "irq_o did not deassert in second round");
       finish();
     endtask
   endclass
 
+  // [附加证据 非单独计分] 复位安全：PROCESS 中途拉低 PRESETn，恢复后
+  //   busy_o/done_o 必须归 0；DONE 之后复位，RES_PKT_LEN/TYPE 必须归 0。
+  //   RTL: rtl/packet_proc_core.sv:32-38, apb_slave_if.sv:156-167
   class lab3_reset_recovery_test extends base_test;
     function new(
       input string test_name,
@@ -1066,6 +1305,23 @@ package ppa_pkg;
     endtask
   endclass
 
+  // ======================================================================
+  // [评分 4] 实验4 —— 必做/选做各项位置（代码只管跑，报告类在别的文件）
+  //   必做1 一键回归     4-必做1.1~1.3   Makefile regress 目标 + 本文件 14 个用例
+  //   必做2 覆盖率       4-必做2.1~2.2   Makefile report/filtercov + lab4_code_cov_test
+  //   必做3 testplan     4-必做3.1       工程根 testplan.md（Markdown，不在本文件）
+  //   选做4 过滤登记表   4-选做4.1~4.2   coverage_filter_register.csv <-> cov_exclude.do
+  //   选做5 选做项回归   4-选做5.1       REGRESS_TESTS + lab4_closure_test
+  //   运行 make regress / make report
+  //   对照文档 lab4/实验4_验收对照.md
+  // ----------------------------------------------------------------------
+  // [评分 4-必做1.1 | 10分] 14 个用例全部进 REGRESS_TESTS，3 个 seed 共 42 次全 PASS
+  // [评分 4-必做1.2 | 5分]  Lab1~3 必做场景各有至少 1 条 testcase（见 Makefile 变量）
+  // [评分 4-必做2.1 | 15分] 覆盖率来源：lab1~3 的用例 + 本文件的 lab4 用例合并后
+  //                     原始 98.73%，再按 cov_exclude.do 过滤到五类 100%
+  // [评分 4-选做5.1 | 10分] 选做项（PSLVERR / IRQ / busy 保护 / reset）都在回归里
+  //   testplan 条目见 testplan.md，对照文档见 lab4/实验4_验收对照.md
+  // ======================================================================
   class lab4_random_test extends base_test;
     function new(
       input string test_name,
@@ -1170,6 +1426,9 @@ package ppa_pkg;
     endtask
   endclass
 
+  // [评分 4-选做5.1 | 10分] 交叉闭合：5 种数据模式 x 8 字 PKT_MEM 全读回，
+  //   再补 PKT_MEM 边界地址(0x03C/0x060)、CFG/CTRL 全 1 全 0、重复 start、
+  //   错误包 IRQ 闭环，最后把 CFG 写回 0xF1 复位默认值。
   class lab4_closure_test extends base_test;
     function new(
       input string test_name,
@@ -1248,6 +1507,84 @@ package ppa_pkg;
     endtask
   endclass
 
+  // ------------------------------------------------------------------
+  // 定向补覆盖用例
+  //
+  // [评分 1-必做3.2 | 5分] 地址译码完整（实验1 必做3-3.2）：本类用顶层 APB 把
+  //   11 个可读 CSR、非对齐地址、未映射高地址全扫一遍，落在 CSR 区 /
+  //   PKT_MEM 区 / 非法区三段的 decode 上，见 rtl/apb_slave_if.sv:92-108。
+  // [评分 4-必做2.1 | 15分] 覆盖率补洞（实验4 必做2）：本类就是为把 M1 集成后的
+  //   分支/翻转空洞补上而加的，跑完 make regress 后 mergecov 会把它算进分母。
+  //
+  // 原有 13 个用例已经覆盖了全部功能点，但集成后的 M1（/tb/dut/u_m1）
+  // 有几条通路从来没被走过，原因是 lab1 的三个用例走的是 TB 里独立例化的
+  // M1 stub（m1vif），那部分实例不在 /tb/dut 的覆盖率统计范围里。
+  // 这里用顶层 APB 把这几类访问补上：
+  //   1) 顶层读全部可读 CSR，覆盖 readable_csr 的 CTRL/CFG/PKT_LEN_EXP 分支
+  //   2) 非字对齐地址与未映射高地址，覆盖 PADDR 低位/高位翻转和 default 分支
+  //   3) 非法类型 0x10/0x40，覆盖结果类型寄存器 bit4/bit6 的双向翻转
+  //   4) 边界 exp_len（5/6/7/32/16/8），覆盖 exp_len_r 低位与 bit4/bit5
+  // ------------------------------------------------------------------
+  class lab4_code_cov_test extends base_test;
+    function new(
+      input string test_name,
+      input virtual apb_intf main_vif,
+      input virtual apb_intf lab1_vif,
+      input virtual m3_intf standalone_vif
+    );
+      super.new(test_name, main_vif, lab1_vif, standalone_vif);
+    endfunction
+
+    virtual task run();
+      logic [31:0] data;
+      logic [11:0] addr;
+      packet_item pkt;
+
+      reset_system();
+
+      // (1) 顶层把 11 个可读 CSR 全读一遍
+      for (int a = 0; a < 11; a = a + 1) begin
+        apb_read(12'h000 + (a * 4), data, 1'b0);
+      end
+      check(data === 32'h0000_0000, "ERR_FLAG clean after reset");
+
+      // (2) 非字对齐地址：PADDR[1:0] 必须能翻转
+      apb_read(12'h001, data, 1'b1);
+      apb_read(12'h002, data, 1'b1);
+      apb_read(12'h003, data, 1'b1);
+      apb_write(12'h001, 32'h0000_0001, 1'b1);
+      apb_write(12'h002, 32'h0000_0001, 1'b1);
+
+      // (2b) 未映射高地址：把 PADDR[7:11] 每个 bit 都置 1 再归零
+      for (int b = 7; b <= 11; b = b + 1) begin
+        addr = 12'h001 << b;
+        apb_read(addr, data, 1'b1);
+        apb_write(addr, 32'h0000_0000, 1'b1);
+      end
+      apb_read(12'hFFC, data, 1'b1);
+
+      // (3) 非法类型：0x10 -> bit4，0x40 -> bit6，再用合法类型清回 0
+      pkt = new(); pkt.build(8, 8'h10, 1);
+      run_packet_top(pkt, 1'b1, 4'hF, 6'd0);
+
+      pkt = new(); pkt.build(8, 8'h40, 1);
+      run_packet_top(pkt, 1'b1, 4'hF, 6'd0);
+
+      pkt = new(); pkt.build(8, 8'h01, 1);
+      run_packet_top(pkt, 1'b1, 4'hF, 6'd8);
+
+      // (4) exp_len 边界：低位 bit0/bit1、bit4 的置位与清零都要走到
+      pkt = new(); pkt.build(4, 8'h01, 0); run_packet_top(pkt, 1'b1, 4'hF, 6'd5);
+      pkt = new(); pkt.build(4, 8'h01, 0); run_packet_top(pkt, 1'b1, 4'hF, 6'd6);
+      pkt = new(); pkt.build(4, 8'h01, 0); run_packet_top(pkt, 1'b1, 4'hF, 6'd7);
+      pkt = new(); pkt.build(4, 8'h01, 0); run_packet_top(pkt, 1'b1, 4'hF, 6'd32);
+      pkt = new(); pkt.build(4, 8'h01, 0); run_packet_top(pkt, 1'b1, 4'hF, 6'd16);
+      pkt = new(); pkt.build(8, 8'h01, 0); run_packet_top(pkt, 1'b1, 4'hF, 6'd8);
+
+      finish();
+    endtask
+  endclass
+
   function automatic base_test create_test(
     input string test_name,
     input virtual apb_intf main_vif,
@@ -1267,6 +1604,7 @@ package ppa_pkg;
     lab4_random_test       t_random;
     lab4_error_mix_test    t_error_mix;
     lab4_closure_test      t_closure;
+    lab4_code_cov_test     t_code_cov;
 
     case (test_name)
       "lab1_defaults_test": begin
@@ -1320,6 +1658,10 @@ package ppa_pkg;
       "lab4_closure_test": begin
         t_closure = new("lab4_closure_test", main_vif, lab1_vif, standalone_vif);
         return t_closure;
+      end
+      "lab4_code_cov_test": begin
+        t_code_cov = new("lab4_code_cov_test", main_vif, lab1_vif, standalone_vif);
+        return t_code_cov;
       end
       default: begin
         $fatal(1, "[TESTNAME] unknown test: %s", test_name);

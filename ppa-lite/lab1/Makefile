@@ -42,6 +42,17 @@ reg:
 	  grep -q "Errors: 0" run_$$t.log || { echo "*** $$t FAILED"; exit 1; }; \
 	done
 
+# 生成带信号数据的波形文件（lab1/wave/*.wlf）
+# 注意：-c 命令行模式下光加 -wlf 是不够的，不 log 任何对象的话 wlf 里没有波形数据，
+#       必须先 log -r 把层次里的信号登记成要记录的对象。
+wave:
+	@mkdir -p wave
+	@for t in mcdt_basic_test mcdt_burst_test mcdt_fifo_full_test; do \
+	  echo "========== dumping waveform for $$t =========="; \
+	  $(RUN_BASE) -wlf wave/$$t.wlf -sv_seed $(SEED) +TESTNAME=$$t \
+	              -c -do "log -r sim:/tb/*; run -all; quit -f" || exit 1; \
+	done
+
 clean:
 	rm -rf VRMDATA vrmhtmlreport
 	rm -rf *.log* work *.wlf *.ucdb

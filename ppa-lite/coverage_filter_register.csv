@@ -1,3 +1,9 @@
-object,object_type,item_count,reason,conclusion,evidence
-/tb/u_lab1_m1,Testbench M1 helper,624,Standalone M1 used only for Lab1 RES_* stub checks.,Excluded from DUT coverage denominator.,make report -> /tb/dut scope
-/tb/u_m3_standalone,Testbench M3 helper,435,Standalone M3 used only for Lab2 module-level checks without M1.,Excluded from DUT coverage denominator.,make report -> /tb/dut scope
+object,object_type,location,item_count,exclude_ref,reason,conclusion
+/tb/u_lab1_m1,Testbench helper instance,tb/tb.sv:33-67,624,vcover report -instance /tb/dut,Standalone M1 used only for the Lab1 RES_* stub and PSLVERR checks; it is not part of the DUT.,Excluded from the DUT coverage denominator by hierarchy scope.
+/tb/u_m3_standalone,Testbench helper instance,tb/tb.sv:69-89,435,vcover report -instance /tb/dut,Standalone M3 used only for the Lab2 module-level algorithm checks without M1; it is not part of the DUT.,Excluded from the DUT coverage denominator by hierarchy scope.
+/tb/dut/u_m3 FSM default branch,Defensive RTL code,rtl/packet_proc_core.sv:230,2,cov_exclude.do:12,state is 2-bit but only 3 values are defined; encoding 2'b11 is reachable only through an illegal transition. Kept as SEU / X-state protection.,Excluded from the denominator as structurally unreachable.
+/tb/dut/u_m3 FSM default statements,Defensive RTL code,rtl/packet_proc_core.sv:231-236,5,cov_exclude.do:12,The five assignments inside the FSM default branch; same reason as above.,Excluded from the denominator as structurally unreachable.
+/tb/dut/u_m3 condition busy_r=1,Unreachable combination,rtl/packet_proc_core.sv:119,1,cov_exclude.do:17,"start_i && ~busy_r: a start arriving while busy is ignored by protocol, the two terms are mutually exclusive.",Excluded from the denominator as structurally unreachable.
+/tb/dut/u_m1 PREADY,Constant output toggle,rtl/apb_slave_if.sv:77,2,cov_exclude.do:21,Zero-wait-state APB: assign PREADY = 1'b1 so the 1->0 transition cannot occur.,Excluded from the denominator as structurally unreachable.
+/tb/dut PREADY (top port),Constant output toggle,rtl/ppa_top.sv:74,2,cov_exclude.do:25,Top level passes PREADY straight through from u_m1; same reason as above.,Excluded from the denominator as structurally unreachable.
+/tb/dut/u_m3 if/else-if all-false branch,Branch all-false bin,rtl/packet_proc_core.sv:148,1,cov_exclude.do:30,"In S_PROCESS, issue_read_r and wait_read_r are never both 0: the FSM sets issue_read_r on entry and alternates the two, so the all-false path cannot be taken.",Excluded from the denominator as structurally unreachable.

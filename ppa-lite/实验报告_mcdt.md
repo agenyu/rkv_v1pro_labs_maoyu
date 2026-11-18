@@ -1,7 +1,8 @@
 # MCDT 参考实验复现与 PPA-Lite 课程要求对照报告（2026 秋季修订）
 
 课程：西电 SV+UVM 系统验证课程（路科验证 × 西电）
-实验对象：`mcdt-lab` 中的 MCDT（三个 slave_fifo + 一个轮询 arbiter）DUT
+实验对象：`ppa-lite/mcdt/` 中的 MCDT（三个 slave_fifo + 一个轮询 arbiter）DUT，
+         四个实验目录 `ppa-lite/lab0` ~ `ppa-lite/lab4` 与 PPA-Lite 工程放在一起
 工具：QuestaSim 2021.1（vlog / vsim / vcover）+ GNU Make
 修订日期：2026-11-02
 
@@ -78,18 +79,24 @@ cd lab4 && make report               # 合并覆盖率并生成 HTML 报告
 make cov / make mergecov` 应在后续 PPA 工程中另行实现，不能直接拿这些旧入口名称
 作为新版验收证据。
 
-**（2）Windows 中文路径会让 QuestaSim 直接崩。** 工程原本放在
-`C:\Users\maoyu\Desktop\实验\...` 下，`vlog` 会把路径里的“实验”按 GBK 解码成
-`ʵ��`，然后报：
+**（2）中文路径会让编译库建不出来。** 工程原先放在
+`C:\Users\maoyu\Desktop\实验\...` 下，`vlog -work ./work` 报：
 
 ```
-init_dbinfo() DATABASE ERROR: (sqlite3_open .../ʵ��/.../work/_lib.qdb): unable to open database file
-** Fatal: (vlog-9) Problem while writing internal... file
+init_dbinfo() DATABASE ERROR: (sqlite3_open .../work/_lib.qdb): unable to open database file
+mtiLibWrite(): INTERNAL ERROR: Unexpected null object encountered
+** Fatal: (vlog-9) Problem while writing internal ... file
 ```
 
-这不是代码问题，是 QuestaSim 不支持非 ASCII 路径。解决办法二选一：
-把整个 `mcdt-lab` 拷到纯英文路径（例如 `C:\mcdt_sim\`）再跑，或者在 Linux 服务器上跑。
-本报告所有数据都是在纯英文路径（`C:\mcdt_run1`、`C:\mcdt_run2`）下跑出来的。
+原因不是源码，而是编译库：`work/_lib.qdb` 是个 sqlite 数据库，路径含非 ASCII
+字符时 sqlite 建不了文件，`vlib` 只留下一个 `_info` 空壳，之后每次 `vlog` 都死。
+**源码放中文路径其实没关系**，只要 `-work` 指向英文目录就能编（实测
+`vlog -work C:/_zh_probe ...` 在中文目录下 0 error）。
+
+本工程现已整体迁到 **`C:\rkv_v1pro_labs\ppa-lite\`**（`lab0`~`lab4` 与 `mcdt/`
+设计目录并排放在 ppa 工程下，git 历史随之保留），
+`make` 不再需要任何同步/复制步骤。报告里的历史数据是在
+`C:\mcdt_run1`、`C:\mcdt_run2` 等英文路径下跑出来的，迁移后已在新位置复跑验证过。
 
 **（3）四个实验的改动全在验证平台侧**（每个 lab 的 `mcdt_pkg.sv` / `tb.sv` /
 `Makefile` 三处），**没有改 DUT 一行 RTL**：
@@ -677,8 +684,8 @@ analysis port 是**广播 + 不阻塞**的：`write()` 立刻返回，一个 por
 ## 5 复现清单
 
 ```bash
-# 0) 先确认路径是纯英文！中文路径会让vlog崩在sqlite
-cd /path/to/mcdt-lab
+# 0) 建议在纯英文路径下跑，原因见 5.2
+cd /d C:\rkv_v1pro_labs\ppa-lite
 
 # Lab1
 cd lab1 && make comp && make reg
@@ -710,3 +717,90 @@ lab2/cov/merged.txt       # 明细文本，2.5 里的那些数字都能在里面
 lab2/cov/html/index.html  # HTML 报告（branch/statement/toggle/covergroup/断言 全都有）
 lab4/cov/…                # 同上
 ```
+
+### 5.1 不用 make、手工跑一遍
+
+以 Lab1 为例，四步就是 Makefile 里 `comp` / `run` 展开后的样子：
+
+```bash
+cd lab1
+vlib work                       # 建编译库，已存在会打警告，无害
+
+# 先编 RTL：TB 要例化这些 module，必须先于 TB 编译
+vlog -work work -sv -timescale=1ns/1ps \
+     ../mcdt/arbiter.v ../mcdt/slave_fifo.v ../mcdt/mcdt.v
+
+# 再编 package 和 tb：package 必须在 tb 前，因为 tb 要 import
+vlog -work work -sv -timescale=1ns/1ps mcdt_pkg.sv tb.sv
+
+# 跑：-c 命令行模式，-do 是进 vsim 之后自动执行的命令
+vsim -c -voptargs=+acc -work work tb -sv_seed 1 +TESTNAME=mcdt_basic_test \
+     -do "run -all; quit -f"
+```
+
+- `-voptargs=+acc` 不能省。省了优化器会删掉“没人用”的信号，波形里全是 `No Data`。
+- Lab1/Lab2 的 `tb.sv` 自己解析 `+TESTNAME=`；Lab3/Lab4 用 UVM 的 `run_test()`，要传 `+UVM_TESTNAME=`。传错了会掉到默认用例上。
+- 想看波形有两条路。一是直接进 GUI 现场跑：`make rung`，在 Transcript 敲 `run -all`，再 `do wave.do` 把信号加出来。二是用已经dump好的离线波形（见下）。
+- **注意 `-c` 命令行模式下只加 `-wlf` 是不够的**。不 `log` 任何对象的话，wlf 里只有结构没有数据，打开是空的一条线。要先生成波形数据，得显式登记：
+
+  ```bash
+  cd lab1 && make wave
+  # 等价于对每个用例执行：
+  # vsim -c -voptargs=+acc -wlf wave/<用例>.wlf work.tb +TESTNAME=<用例> \
+  #      -do "log -r sim:/tb/*; run -all; quit -f"
+  ```
+
+  产物是 `lab1/wave/mcdt_basic_test.wlf`、`mcdt_burst_test.wlf`、`mcdt_fifo_full_test.wlf`，三者都是 0 error 跑完后 dump 的。
+- 打开离线波形：
+
+  ```bash
+  cd lab1
+  vsim -view wave/mcdt_burst_test.wlf -do wave.do
+  ```
+
+  `wave.do` 已经把三路通道的 `ch_valid/ch_data/ch_ready/ch_margin`、输出侧 `mcdt_val/mcdt_data/mcdt_id`、还有 arbiter 的 `c_state/n_state` 都加好了，时间轴默认缩到前 20µs。wlf 只存数据不存窗口布局，所以必须配 `wave.do`（或者在 GUI 里 `do wave.do`），不然打开是一张空表。
+
+
+覆盖率单独两步，因为 `.ucdb` 要先合并：
+
+```bash
+cd lab2
+vcover merge -out cov/merged.ucdb cov/runs/*.ucdb
+vcover report -details cov/merged.ucdb                   # 打屏
+vcover report -html -output cov/html cov/merged.ucdb     # 网页版
+```
+
+有个坑：`-do "...; quit -f"` 里的 `quit -f` 会把退出码强制成 0，所以**用例真挂了、make 照样返回成功**。判断跑没跑好只能看日志里有没有 `Errors: 0`。现在三个 Makefile 的 `reg` 目标里都加了 `grep -q "Errors: 0"`，一旦有不匹配就立刻以非 0 退出。
+
+另外，如果 `work` 库里留着旧的编译单元，重编之前先 `make clean` 或 `rm -rf work`，否则可能加载到过期的类定义，出现“源码明明对、仿真却报错”的怪现象。
+
+### 5.2 中文路径下开图形界面会弹的 `map(实)` 报错（已随迁移消失）
+
+工程原先放在 `桌面\实验\` 下时，`make rung` 关窗口会弹出：
+
+```
+can't read "map(实)": no such element in array
+    while executing
+"subst -nocommands $string" (procedure "encode" line 11)
+    invoked from within "encode $ukey"
+    (procedure "setMTIProperty" line 10)
+    invoked from within "setMTIProperty $key layout"
+    (procedure "SaveLayout" line 47)
+    invoked from within "SaveLayout $currentLayout $Quitting"
+    (procedure "Layout::SavePaneData" line 5)
+    invoked from within "Layout::SavePaneData quit"
+    (procedure "really_quit" line 131)
+```
+
+读法是从下往上：关窗口 → `really_quit` → 保存每个 `layout` 的 pane 数据 → `setMTIProperty` 把工程路径当 ini key 存 → `encode` 逐字符编码 → 查表时遇上“实”字，表里没有非 ASCII 条目，报错。
+
+**这只影响存界面布局，不影响仿真结果**，代码和波形都是对的，点“确定”关掉就行。
+
+工程迁到 `C:\rkv_v1pro_labs\` 之后路径全是 ASCII，这个框不会再出现，
+也不再需要任何同步脚本。这里只留下成因记录：`SaveLayout` 把工程路径当作
+ini 文件的 key，`encode` 用一张只覆盖 ASCII 的字符映射表逐字符编码，
+遇到“实”字查不到条目就报错。
+
+以后若又把工程挪回中文目录，三个选择：换回英文路径；只用命令行模式
+（`make comp` / `make run` / `make reg`，不启动 GUI 就不会存 layout）；
+或者点掉那个“确定”，除了每次关窗烦一下没有别的副作用。

@@ -1,2 +1,2 @@
-var g_data = {"6":["work.apb_slave_if",99.12,1],"8":["work.packet_proc_core",96.22,1],"7":["work.packet_sram",92.32,1],"3":["work.ppa_pkg",100.00,1],"5":["work.ppa_top",95.83,1]};
+var g_data = {"6":["work.apb_slave_if",99.91,1],"8":["work.packet_proc_core",96.82,1],"7":["work.packet_sram",100.00,1],"3":["work.ppa_pkg",100.00,1],"5":["work.ppa_top",99.58,1]};
 processDuLinks(g_data);

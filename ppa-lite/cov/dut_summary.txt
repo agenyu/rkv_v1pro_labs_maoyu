@@ -1,18 +1,18 @@
 QuestaSim-64 vcover 2021.1 Coverage Utility 2021.01 Jan 19 2021
-Start time: 10:25:48 on Nov 02,2026
-vcover report -summary cov/dut_merged.ucdb 
+Start time: 15:31:58 on Nov 17,2026
+vcover report -summary cov/dut_filtered.ucdb 
 Coverage Report Totals BY INSTANCES: Number of Instances 5
 
     Enabled Coverage              Bins      Hits    Misses    Weight  Coverage
     ----------------              ----      ----    ------    ------  --------
-    Branches                       103        98         5         1    95.14%
-    Conditions                      28        27         1         1    96.42%
-    Expressions                     35        33         2         1    94.28%
+    Branches                       101       101         0         1   100.00%
+    Conditions                      28        28         0         1   100.00%
+    Expressions                     35        35         0         1   100.00%
     FSM States                       3         3         0         1   100.00%
     FSM Transitions                  5         5         0         1   100.00%
-    Statements                     163       158         5         1    96.93%
-    Toggles                       1393      1290       103         1    92.60%
-Total coverage (filtered view): 96.48%
+    Statements                     158       158         0         1   100.00%
+    Toggles                       1325      1325         0         1   100.00%
+Total coverage (filtered view): 100.00%
 
-End time: 10:25:48 on Nov 02,2026, Elapsed time: 0:00:00
+End time: 15:31:58 on Nov 17,2026, Elapsed time: 0:00:00
 Errors: 0, Warnings: 0

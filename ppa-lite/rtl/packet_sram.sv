@@ -15,11 +15,12 @@ module packet_sram (
 );
 
   logic [31:0] mem [0:7];
-  integer i;
 
   always_ff @(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
-      for (i = 0; i < 8; i = i + 1) begin
+      // 循环变量用块内 automatic 形式声明：合成时会完全展开、不产生硬件，
+      // 放在模块级会多出一个 32 位变量节点，被覆盖率工具当成真实硬件统计
+      for (int i = 0; i < 8; i = i + 1) begin
         mem[i] <= 32'h0000_0000;
       end
     end

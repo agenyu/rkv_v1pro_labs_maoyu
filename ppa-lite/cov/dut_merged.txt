@@ -1,5 +1,5 @@
 QuestaSim-64 vcover 2021.1 Coverage Utility 2021.01 Jan 19 2021
-Start time: 10:25:48 on Nov 02,2026
+Start time: 15:31:58 on Nov 17,2026
 vcover report -details cov/dut_merged.ucdb 
 Coverage Report by instance with details
 
@@ -10,7 +10,7 @@ Coverage Report by instance with details
 Branch Coverage:
     Enabled Coverage              Bins      Hits    Misses  Coverage
     ----------------              ----      ----    ------  --------
-    Branches                        65        62         3    95.38%
+    Branches                        65        65         0   100.00%
 
 ================================Branch Details================================
 
@@ -20,132 +20,132 @@ Branch Coverage for instance /tb/dut/u_m1
     ----         ----                      -----     ------ 
   File ./rtl/apb_slave_if.sv
 ------------------------------------CASE Branch------------------------------------
-    93                                       757     Count coming in to CASE
-    94              1                    ***0***     
-    94              2                    ***0***     
-    94              3                        352     
-    94              4                          3     
-    94              5                         15     
-    95              1                    ***0***     
-    95              2                         78     
-    95              3                         78     
-    95              4                         75     
-    96              1                         75     
-    96              2                         75     
-    97              1                          6     
-Branch totals: 9 hits of 12 branches = 75.00%
+    93                                      1018     Count coming in to CASE
+    94              1                          3     
+    94              2                          3     
+    94              3                        421     
+    94              4                          6     
+    94              5                         18     
+    95              1                          3     
+    95              2                        108     
+    95              3                        108     
+    95              4                        105     
+    96              1                        105     
+    96              2                        105     
+    97              1                         33     
+Branch totals: 12 hits of 12 branches = 100.00%
 
 ------------------------------------CASE Branch------------------------------------
-    102                                      522     Count coming in to CASE
-    103             1                        294     
-    103             2                        102     
+    102                                      678     Count coming in to CASE
+    103             1                        375     
+    103             2                        129     
     103             3                         12     
     103             4                          9     
-    103             5                         99     
-    105             1                          6     
+    103             5                        126     
+    105             1                         27     
 Branch totals: 6 hits of 6 branches = 100.00%
 
 ------------------------------------IF Branch------------------------------------
-    112                                     6694     Count coming in to IF
-    112             1                       2320     
-                                            4374     All False Count
+    112                                     8518     Count coming in to IF
+    112             1                       2953     
+                                            5565     All False Count
 Branch totals: 2 hits of 2 branches = 100.00%
 
 ------------------------------------IF Branch------------------------------------
-    113                                     2320     Count coming in to IF
-    113             1                       1041     
-    118             1                        522     
-    127             1                          6     
-                                             751     All False Count
+    113                                     2953     Count coming in to IF
+    113             1                       1257     
+    118             1                        678     
+    127             1                         33     
+                                             985     All False Count
 Branch totals: 4 hits of 4 branches = 100.00%
 
 ------------------------------------IF Branch------------------------------------
-    114                                     1041     Count coming in to IF
-    114             1                        891     
+    114                                     1257     Count coming in to IF
+    114             1                       1107     
                                              150     All False Count
 Branch totals: 2 hits of 2 branches = 100.00%
 
 ------------------------------------IF Branch------------------------------------
-    119                                      522     Count coming in to IF
-    119             1                          6     
+    119                                      678     Count coming in to IF
+    119             1                         27     
     122             1                          6     
-                                             510     All False Count
+                                             645     All False Count
 Branch totals: 3 hits of 3 branches = 100.00%
 
 ------------------------------------IF Branch------------------------------------
-    135                                     2608     Count coming in to IF
-    135             1                       1086     
-    138             1                       1522     
+    135                                     3229     Count coming in to IF
+    135             1                       1302     
+    138             1                       1927     
 Branch totals: 2 hits of 2 branches = 100.00%
 
 ------------------------------------CASE Branch------------------------------------
-    139                                     1522     Count coming in to CASE
-    140             1                        408     
-    141             1                        120     
-    142             1                        373     
-    143             1                         27     
-    144             1                         18     
-    145             1                        141     
-    146             1                         78     
-    147             1                         78     
-    148             1                         75     
-    149             1                         75     
-    150             1                         78     
-    151             1                         51     
+    139                                     1927     Count coming in to CASE
+    140             1                        498     
+    141             1                        150     
+    142             1                        415     
+    143             1                         30     
+    144             1                         21     
+    145             1                        192     
+    146             1                        108     
+    147             1                        108     
+    148             1                        105     
+    149             1                        105     
+    150             1                        108     
+    151             1                         87     
 Branch totals: 12 hits of 12 branches = 100.00%
 
 ------------------------------------IF Branch------------------------------------
-    157                                     4978     Count coming in to IF
-    157             1                         90     
-    169             1                       4888     
+    157                                     6295     Count coming in to IF
+    157             1                         96     
+    169             1                       6199     
 Branch totals: 2 hits of 2 branches = 100.00%
 
 ------------------------------------IF Branch------------------------------------
-    173                                     4888     Count coming in to IF
-    173             1                        201     
-                                            4687     All False Count
+    173                                     6199     Count coming in to IF
+    173             1                        255     
+                                            5944     All False Count
 Branch totals: 2 hits of 2 branches = 100.00%
 
 ------------------------------------IF Branch------------------------------------
-    176                                     4888     Count coming in to IF
-    176             1                        102     
-                                            4786     All False Count
+    176                                     6199     Count coming in to IF
+    176             1                        129     
+                                            6070     All False Count
 Branch totals: 2 hits of 2 branches = 100.00%
 
 ------------------------------------IF Branch------------------------------------
-    180                                     4888     Count coming in to IF
+    180                                     6199     Count coming in to IF
     180             1                         12     
-                                            4876     All False Count
+                                            6187     All False Count
 Branch totals: 2 hits of 2 branches = 100.00%
 
 ------------------------------------IF Branch------------------------------------
-    184                                     4888     Count coming in to IF
-    184             1                         99     
-                                            4789     All False Count
+    184                                     6199     Count coming in to IF
+    184             1                        126     
+                                            6073     All False Count
 Branch totals: 2 hits of 2 branches = 100.00%
 
 ------------------------------------IF Branch------------------------------------
-    188                                     4888     Count coming in to IF
-    188             1                         90     
-                                            4798     All False Count
+    188                                     6199     Count coming in to IF
+    188             1                        117     
+                                            6082     All False Count
 Branch totals: 2 hits of 2 branches = 100.00%
 
 ------------------------------------IF Branch------------------------------------
-    189                                       90     Count coming in to IF
+    189                                      117     Count coming in to IF
     189             1                         12     
-                                              78     All False Count
+                                             105     All False Count
 Branch totals: 2 hits of 2 branches = 100.00%
 
 ------------------------------------IF Branch------------------------------------
-    192                                       90     Count coming in to IF
+    192                                      117     Count coming in to IF
     192             1                          9     
-                                              81     All False Count
+                                             108     All False Count
 Branch totals: 2 hits of 2 branches = 100.00%
 
 ------------------------------------IF Branch------------------------------------
-    197                                     4888     Count coming in to IF
+    197                                     6199     Count coming in to IF
     197             1                          9     
-                                            4879     All False Count
+                                            6190     All False Count
 Branch totals: 2 hits of 2 branches = 100.00%
 
 ------------------------------------IF Branch------------------------------------
@@ -267,61 +267,61 @@ Statement Coverage for instance /tb/dut/u_m1 --
     Line         Item                      Count     Source 
     ----         ----                      -----     ------ 
   File ./rtl/apb_slave_if.sv
-    70              1                       6627     
-    71              1                       7111     
-    72              1                       1911     
-    73              1                        111     
-    74              1                       4695     
-    75              1                        625     
-    78              1                        687     
-    79              1                       1881     
-    81              1                       3180     
-    82              1                       6867     
-    90              1                         99     
-    96              1                        751     
-    97              1                          6     
-    104             1                        516     
-    106             1                          6     
-    110             1                       6694     
-    111             1                       6694     
-    115             1                        891     
-    120             1                          6     
+    70              1                       8412     
+    71              1                       8995     
+    72              1                       2439     
+    73              1                        159     
+    74              1                       5943     
+    75              1                        736     
+    78              1                        822     
+    79              1                       2382     
+    81              1                       3990     
+    82              1                       8709     
+    90              1                        105     
+    96              1                        985     
+    97              1                         33     
+    104             1                        651     
+    106             1                         27     
+    110             1                       8518     
+    111             1                       8518     
+    115             1                       1107     
+    120             1                         27     
     124             1                          6     
-    128             1                          6     
-    133             1                       2608     
-    134             1                       2608     
-    136             1                       1086     
-    140             1                        408     
-    141             1                        120     
-    142             1                        373     
-    143             1                         27     
-    144             1                         18     
-    145             1                        141     
-    146             1                         78     
-    147             1                         78     
-    148             1                         75     
-    149             1                         75     
-    150             1                         78     
-    151             1                         51     
-    156             1                       4978     
-    158             1                         90     
-    159             1                         90     
-    160             1                         90     
-    161             1                         90     
-    162             1                         90     
-    163             1                         90     
-    164             1                         90     
-    165             1                         90     
-    166             1                         90     
-    167             1                         90     
-    170             1                       4888     
-    171             1                       4888     
-    174             1                        201     
-    177             1                        102     
-    178             1                        102     
+    128             1                         33     
+    133             1                       3229     
+    134             1                       3229     
+    136             1                       1302     
+    140             1                        498     
+    141             1                        150     
+    142             1                        415     
+    143             1                         30     
+    144             1                         21     
+    145             1                        192     
+    146             1                        108     
+    147             1                        108     
+    148             1                        105     
+    149             1                        105     
+    150             1                        108     
+    151             1                         87     
+    156             1                       6295     
+    158             1                         96     
+    159             1                         96     
+    160             1                         96     
+    161             1                         96     
+    162             1                         96     
+    163             1                         96     
+    164             1                         96     
+    165             1                         96     
+    166             1                         96     
+    167             1                         96     
+    170             1                       6199     
+    171             1                       6199     
+    174             1                        255     
+    177             1                        129     
+    178             1                        129     
     181             1                         12     
     182             1                         12     
-    185             1                         99     
+    185             1                        126     
     190             1                         12     
     193             1                          9     
     199             1                          3     
@@ -329,7 +329,7 @@ Statement Coverage for instance /tb/dut/u_m1 --
 Toggle Coverage:
     Enabled Coverage              Bins      Hits    Misses  Coverage
     ----------------              ----      ----    ------  --------
-    Toggles                        456       436        20    95.61%
+    Toggles                        456       454         2    99.56%
 
 ================================Toggle Details================================
 
@@ -337,17 +337,13 @@ Toggle Coverage for instance /tb/dut/u_m1 --
 
                                               Node      1H->0L      0L->1H                          "Coverage"
                                               ---------------------------------------------------------------
-                                        PADDR[0-1]           0           0                                0.00 
-                                       PADDR[7-11]           0           0                                0.00 
                                             PREADY           0           0                                0.00 
-                                 res_pkt_type_i[4]           0           0                                0.00 
-                                 res_pkt_type_i[6]           0           0                                0.00 
 
 Total Node Count     =        228 
-Toggled Node Count   =        218 
-Untoggled Node Count =         10 
+Toggled Node Count   =        227 
+Untoggled Node Count =          1 
 
-Toggle Coverage      =      95.61% (436 of 456 bins)
+Toggle Coverage      =      99.56% (454 of 456 bins)
 
 =================================================================================
 === Instance: /tb/dut/u_m2
@@ -366,28 +362,28 @@ Branch Coverage for instance /tb/dut/u_m2
     ----         ----                      -----     ------ 
   File ./rtl/packet_sram.sv
 ------------------------------------IF Branch------------------------------------
-    21                                      3855     Count coming in to IF
-    21              1                         90     
-    26              1                        888     
-                                            2877     All False Count
+    20                                      4824     Count coming in to IF
+    20              1                         96     
+    27              1                       1104     
+                                            3624     All False Count
 Branch totals: 3 hits of 3 branches = 100.00%
 
 ------------------------------------IF Branch------------------------------------
-    32                                      3375     Count coming in to IF
-    32              1                         90     
-    36              1                       3285     
+    33                                      3969     Count coming in to IF
+    33              1                         96     
+    37              1                       3873     
 Branch totals: 2 hits of 2 branches = 100.00%
 
 ------------------------------------IF Branch------------------------------------
-    37                                      3285     Count coming in to IF
-    37              1                        394     
-                                            2891     All False Count
+    38                                      3873     Count coming in to IF
+    38              1                        433     
+                                            3440     All False Count
 Branch totals: 2 hits of 2 branches = 100.00%
 
 ------------------------------------IF Branch------------------------------------
-    40                                      3285     Count coming in to IF
-    40              1                        150     
-                                            3135     All False Count
+    41                                      3873     Count coming in to IF
+    41              1                        150     
+                                            3723     All False Count
 Branch totals: 2 hits of 2 branches = 100.00%
 
 
@@ -403,20 +399,20 @@ Statement Coverage for instance /tb/dut/u_m2 --
     Line         Item                      Count     Source 
     ----         ----                      -----     ------ 
   File ./rtl/packet_sram.sv
-    20              1                       3855     
-    22              1                         90     
-    22              2                        720     
-    23              1                        720     
-    27              1                        888     
-    31              1                       3375     
-    33              1                         90     
-    34              1                         90     
-    38              1                        394     
-    41              1                        150     
+    19              1                       4824     
+    23              1                         96     
+    23              2                        768     
+    24              1                        768     
+    28              1                       1104     
+    32              1                       3969     
+    34              1                         96     
+    35              1                         96     
+    39              1                        433     
+    42              1                        150     
 Toggle Coverage:
     Enabled Coverage              Bins      Hits    Misses  Coverage
     ----------------              ----      ----    ------  --------
-    Toggles                        278       214        64    76.97%
+    Toggles                        214       214         0   100.00%
 
 ================================Toggle Details================================
 
@@ -424,13 +420,12 @@ Toggle Coverage for instance /tb/dut/u_m2 --
 
                                               Node      1H->0L      0L->1H                          "Coverage"
                                               ---------------------------------------------------------------
-                                           i[0-31]           0           0                                0.00 
 
-Total Node Count     =        139 
+Total Node Count     =        107 
 Toggled Node Count   =        107 
-Untoggled Node Count =         32 
+Untoggled Node Count =          0 
 
-Toggle Coverage      =      76.97% (214 of 278 bins)
+Toggle Coverage      =     100.00% (214 of 214 bins)
 
 =================================================================================
 === Instance: /tb/dut/u_m3
@@ -449,72 +444,72 @@ Branch Coverage for instance /tb/dut/u_m3
     ----         ----                      -----     ------ 
   File ./rtl/packet_proc_core.sv
 ------------------------------------IF Branch------------------------------------
-    65                                       391     Count coming in to IF
-    65              1                         11     
+    65                                       430     Count coming in to IF
+    65              1                         26     
     68              1                        139     
-    71              1                        241     
+    71              1                        265     
 Branch totals: 3 hits of 3 branches = 100.00%
 
 ------------------------------------IF Branch------------------------------------
-    77                                       298     Count coming in to IF
+    77                                       310     Count coming in to IF
     77              1                         21     
-    80              1                        277     
+    80              1                        289     
 Branch totals: 2 hits of 2 branches = 100.00%
 
 ------------------------------------CASE Branch------------------------------------
-    89                                        93     Count coming in to CASE
-    90              1                         20     
+    89                                       120     Count coming in to CASE
+    90              1                         41     
     91              1                         15     
     92              1                         22     
     93              1                         27     
-    94              1                          9     
+    94              1                         15     
 Branch totals: 5 hits of 5 branches = 100.00%
 
 ------------------------------------IF Branch------------------------------------
-    99                                      1169     Count coming in to IF
-    99              1                         90     
-    119             1                         93     
-    139             1                        986     
+    99                                      1331     Count coming in to IF
+    99              1                         96     
+    119             1                        120     
+    139             1                       1115     
 Branch totals: 3 hits of 3 branches = 100.00%
 
 ------------------------------------CASE Branch------------------------------------
-    140                                      986     Count coming in to CASE
-    141             1                         78     
-    147             1                        785     
-    223             1                        123     
+    140                                     1115     Count coming in to CASE
+    141             1                         81     
+    147             1                        863     
+    223             1                        171     
     230             1                    ***0***     
 Branch totals: 3 hits of 4 branches = 75.00%
 
 ------------------------------------IF Branch------------------------------------
-    148                                      785     Count coming in to IF
-    148             1                        394     
-    152             1                        391     
+    148                                      863     Count coming in to IF
+    148             1                        433     
+    152             1                        430     
                                          ***0***     All False Count
 Branch totals: 2 hits of 3 branches = 66.66%
 
 ------------------------------------IF Branch------------------------------------
-    166                                      391     Count coming in to IF
-    166             1                         93     
-    183             1                        298     
+    166                                      430     Count coming in to IF
+    166             1                        120     
+    183             1                        310     
 Branch totals: 2 hits of 2 branches = 100.00%
 
 ------------------------------------IF Branch------------------------------------
-    186                                     1192     Count coming in to IF
-    186             1                       1130     
+    186                                     1240     Count coming in to IF
+    186             1                       1178     
                                               62     All False Count
 Branch totals: 2 hits of 2 branches = 100.00%
 
 ------------------------------------IF Branch------------------------------------
-    195                                      391     Count coming in to IF
-    195             1                         93     
-    208             1                         79     
+    195                                      430     Count coming in to IF
+    195             1                        120     
+    208             1                         91     
     214             1                        219     
 Branch totals: 3 hits of 3 branches = 100.00%
 
 ------------------------------------IF Branch------------------------------------
-    196                                       93     Count coming in to IF
-    196             1                         11     
-    202             1                         82     
+    196                                      120     Count coming in to IF
+    196             1                         26     
+    202             1                         94     
 Branch totals: 2 hits of 2 branches = 100.00%
 
 
@@ -551,9 +546,9 @@ Condition totals: 1 of 2 input terms covered = 50.00%
 
      Rows:       Hits  FEC Target            Non-masking condition(s)      
  ---------  ---------  --------------------  -------------------------     
-  Row   1:         39  start_i_0             -                             
-  Row   2:         24  start_i_1             ~busy_r                       
-  Row   3:         24  busy_r_0              start_i                       
+  Row   1:         42  start_i_0             -                             
+  Row   2:         27  start_i_1             ~busy_r                       
+  Row   3:         27  busy_r_0              start_i                       
   Row   4:    ***0***  busy_r_1              start_i                       
 
 ----------------Focused Condition View-------------------
@@ -580,7 +575,7 @@ Condition totals: 1 of 1 input term covered = 100.00%
 Expression Coverage:
     Enabled Coverage              Bins   Covered    Misses  Coverage
     ----------------              ----      ----    ------  --------
-    Expressions                      9         7         2    77.77%
+    Expressions                      9         9         0   100.00%
 
 ================================Expression Details================================
 
@@ -589,25 +584,7 @@ Expression Coverage for instance /tb/dut/u_m3 --
   File ./rtl/packet_proc_core.sv
 ----------------Focused Expression View-----------------
 Line       170 Item    1  (((mem_rd_data_i[7:0] < 4) || (mem_rd_data_i[7:0] > 32)) || ((exp_len_r != 0) && (mem_rd_data_i[7:0] != exp_len_r)))
-Expression totals: 2 of 4 input terms covered = 50.00%
-
-                         Input Term   Covered  Reason for no coverage   Hint
-                        -----------  --------  -----------------------  --------------
-           (mem_rd_data_i[7:0] < 4)         Y
-          (mem_rd_data_i[7:0] > 32)         Y
-                   (exp_len_r != 0)         N  '_1' not hit             Hit '_1'
-  (mem_rd_data_i[7:0] != exp_len_r)         N  '_1' not hit             Hit '_1'
-
-     Rows:       Hits  FEC Target                           Non-masking condition(s)      
- ---------  ---------  --------------------                 -------------------------     
-  Row   1:         24  (mem_rd_data_i[7:0] < 4)_0           (~((exp_len_r != 0) && (mem_rd_data_i[7:0] != exp_len_r)) && ~(mem_rd_data_i[7:0] > 32))
-  Row   2:          3  (mem_rd_data_i[7:0] < 4)_1           -                             
-  Row   3:         24  (mem_rd_data_i[7:0] > 32)_0          (~((exp_len_r != 0) && (mem_rd_data_i[7:0] != exp_len_r)) && ~(mem_rd_data_i[7:0] < 4))
-  Row   4:          3  (mem_rd_data_i[7:0] > 32)_1          ~(mem_rd_data_i[7:0] < 4)     
-  Row   5:          6  (exp_len_r != 0)_0                   ~((mem_rd_data_i[7:0] < 4) || (mem_rd_data_i[7:0] > 32))
-  Row   6:    ***0***  (exp_len_r != 0)_1                   (~((mem_rd_data_i[7:0] < 4) || (mem_rd_data_i[7:0] > 32)) && (mem_rd_data_i[7:0] != exp_len_r))
-  Row   7:         21  (mem_rd_data_i[7:0] != exp_len_r)_0  (~((mem_rd_data_i[7:0] < 4) || (mem_rd_data_i[7:0] > 32)) && (exp_len_r != 0))
-  Row   8:    ***0***  (mem_rd_data_i[7:0] != exp_len_r)_1  (~((mem_rd_data_i[7:0] < 4) || (mem_rd_data_i[7:0] > 32)) && (exp_len_r != 0))
+Expression totals: 4 of 4 input terms covered = 100.00%
 
 ----------------Focused Expression View-----------------
 Line       174 Item    1  (algo_mode_r && (mem_rd_data_i[31:24] != ((mem_rd_data_i[7:0] ^ mem_rd_data_i[15:8]) ^ mem_rd_data_i[23:16])))
@@ -642,17 +619,17 @@ Line          State Name               Value
     ----------------
                    State           Hit_count
                    -----           ---------
-                  S_IDLE                  90          
-               S_PROCESS                  93          
-                  S_DONE                  90          
+                  S_IDLE                  96          
+               S_PROCESS                 120          
+                  S_DONE                 117          
     Covered Transitions :
     ---------------------
 Line            Trans_ID           Hit_count          Transition          
 ----            --------           ---------          ----------          
- 120                   0                  27          S_IDLE -> S_PROCESS           
- 209                   1                  90          S_PROCESS -> S_DONE           
+ 120                   0                  30          S_IDLE -> S_PROCESS           
+ 209                   1                 117          S_PROCESS -> S_DONE           
  100                   2                   3          S_PROCESS -> S_IDLE           
- 120                   3                  66          S_DONE -> S_PROCESS           
+ 120                   3                  90          S_DONE -> S_PROCESS           
  100                   4                   3          S_DONE -> S_IDLE              
 
 
@@ -672,95 +649,95 @@ Statement Coverage for instance /tb/dut/u_m3 --
     Line         Item                      Count     Source 
     ----         ----                      -----     ------ 
   File ./rtl/packet_proc_core.sv
-    66              1                         11     
+    66              1                         26     
     69              1                        139     
-    72              1                        241     
+    72              1                        265     
     78              1                         21     
-    81              1                        277     
-    90              1                         20     
+    81              1                        289     
+    90              1                         41     
     91              1                         15     
     92              1                         22     
     93              1                         27     
-    94              1                          9     
-    98              1                       1169     
-    100             1                         90     
-    101             1                         90     
-    102             1                         90     
-    103             1                         90     
-    104             1                         90     
-    105             1                         90     
-    106             1                         90     
-    107             1                         90     
-    108             1                         90     
-    109             1                         90     
-    110             1                         90     
-    111             1                         90     
-    112             1                         90     
-    113             1                         90     
-    114             1                         90     
-    115             1                         90     
-    116             1                         90     
-    117             1                         90     
-    120             1                         93     
-    121             1                         93     
-    122             1                         93     
-    123             1                         93     
-    124             1                         93     
-    125             1                         93     
-    126             1                         93     
-    127             1                         93     
-    128             1                         93     
-    129             1                         93     
-    130             1                         93     
-    131             1                         93     
-    132             1                         93     
-    133             1                         93     
-    134             1                         93     
-    135             1                         93     
-    136             1                         93     
-    137             1                         93     
-    142             1                         78     
-    143             1                         78     
-    144             1                         78     
-    149             1                        394     
-    150             1                        394     
-    162             1                        391     
-    163             1                        391     
-    164             1                        391     
-    167             1                         93     
-    168             1                         93     
-    170             1                         93     
-    173             1                         93     
-    174             1                         93     
-    178             1                         93     
-    179             1                         93     
-    180             1                         93     
-    181             1                         93     
-    184             1                        298     
-    185             1                        298     
-    185             2                       1192     
-    187             1                       1130     
-    188             1                       1130     
-    191             1                        298     
-    192             1                        298     
-    197             1                         11     
-    198             1                         11     
-    199             1                         11     
-    200             1                         11     
-    203             1                         82     
-    204             1                         82     
-    205             1                         82     
-    209             1                         79     
-    210             1                         79     
-    211             1                         79     
-    212             1                         79     
+    94              1                         15     
+    98              1                       1331     
+    100             1                         96     
+    101             1                         96     
+    102             1                         96     
+    103             1                         96     
+    104             1                         96     
+    105             1                         96     
+    106             1                         96     
+    107             1                         96     
+    108             1                         96     
+    109             1                         96     
+    110             1                         96     
+    111             1                         96     
+    112             1                         96     
+    113             1                         96     
+    114             1                         96     
+    115             1                         96     
+    116             1                         96     
+    117             1                         96     
+    120             1                        120     
+    121             1                        120     
+    122             1                        120     
+    123             1                        120     
+    124             1                        120     
+    125             1                        120     
+    126             1                        120     
+    127             1                        120     
+    128             1                        120     
+    129             1                        120     
+    130             1                        120     
+    131             1                        120     
+    132             1                        120     
+    133             1                        120     
+    134             1                        120     
+    135             1                        120     
+    136             1                        120     
+    137             1                        120     
+    142             1                         81     
+    143             1                         81     
+    144             1                         81     
+    149             1                        433     
+    150             1                        433     
+    162             1                        430     
+    163             1                        430     
+    164             1                        430     
+    167             1                        120     
+    168             1                        120     
+    170             1                        120     
+    173             1                        120     
+    174             1                        120     
+    178             1                        120     
+    179             1                        120     
+    180             1                        120     
+    181             1                        120     
+    184             1                        310     
+    185             1                        310     
+    185             2                       1240     
+    187             1                       1178     
+    188             1                       1178     
+    191             1                        310     
+    192             1                        310     
+    197             1                         26     
+    198             1                         26     
+    199             1                         26     
+    200             1                         26     
+    203             1                         94     
+    204             1                         94     
+    205             1                         94     
+    209             1                         91     
+    210             1                         91     
+    211             1                         91     
+    212             1                         91     
     215             1                        219     
     216             1                        219     
     217             1                        219     
-    224             1                        123     
-    225             1                        123     
-    226             1                        123     
-    227             1                        123     
+    224             1                        171     
+    225             1                        171     
+    226             1                        171     
+    227             1                        171     
     231             1                    ***0***     
     232             1                    ***0***     
     233             1                    ***0***     
@@ -769,7 +746,7 @@ Statement Coverage for instance /tb/dut/u_m3 --
 Toggle Coverage:
     Enabled Coverage              Bins      Hits    Misses  Coverage
     ----------------              ----      ----    ------  --------
-    Toggles                        285       272        13    95.43%
+    Toggles                        285       285         0   100.00%
 
 ================================Toggle Details================================
 
@@ -777,19 +754,13 @@ Toggle Coverage for instance /tb/dut/u_m3 --
 
                                               Node      1H->0L      0L->1H                          "Coverage"
                                               ---------------------------------------------------------------
-                                    exp_len_r[0-1]           0           0                                0.00 
-                                      exp_len_r[4]           0           3                               50.00 
-                                     pkt_type_r[4]           0           0                                0.00 
-                                     pkt_type_r[6]           0           0                                0.00 
-                                 res_pkt_type_o[4]           0           0                                0.00 
-                                 res_pkt_type_o[6]           0           0                                0.00 
                                              state               ENUM type       Value       Count 
 
 Total Node Count     =        144 
-Toggled Node Count   =        137 
-Untoggled Node Count =          7 
+Toggled Node Count   =        144 
+Untoggled Node Count =          0 
 
-Toggle Coverage      =      95.43% (272 of 285 bins)
+Toggle Coverage      =     100.00% (285 of 285 bins)
 
 =================================================================================
 === Instance: /tb/dut
@@ -798,7 +769,7 @@ Toggle Coverage      =      95.43% (272 of 285 bins)
 Toggle Coverage:
     Enabled Coverage              Bins      Hits    Misses  Coverage
     ----------------              ----      ----    ------  --------
-    Toggles                        480       460        20    95.83%
+    Toggles                        480       478         2    99.58%
 
 ================================Toggle Details================================
 
@@ -806,20 +777,16 @@ Toggle Coverage for instance /tb/dut --
 
                                               Node      1H->0L      0L->1H                          "Coverage"
                                               ---------------------------------------------------------------
-                                        PADDR[0-1]           0           0                                0.00 
-                                       PADDR[7-11]           0           0                                0.00 
                                             PREADY           0           0                                0.00 
-                                   res_pkt_type[4]           0           0                                0.00 
-                                   res_pkt_type[6]           0           0                                0.00 
 
 Total Node Count     =        240 
-Toggled Node Count   =        230 
-Untoggled Node Count =         10 
+Toggled Node Count   =        239 
+Untoggled Node Count =          1 
 
-Toggle Coverage      =      95.83% (460 of 480 bins)
+Toggle Coverage      =      99.58% (478 of 480 bins)
 
 
-Total Coverage By Instance (filtered view): 96.48%
+Total Coverage By Instance (filtered view): 98.73%
 
-End time: 10:25:48 on Nov 02,2026, Elapsed time: 0:00:00
+End time: 15:31:58 on Nov 17,2026, Elapsed time: 0:00:00
 Errors: 0, Warnings: 0

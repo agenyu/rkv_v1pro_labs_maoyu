@@ -1,5 +1,5 @@
 QuestaSim-64 vcover 2021.1 Coverage Utility 2021.01 Jan 19 2021
-Start time: 10:25:48 on Nov 02,2026
+Start time: 15:31:58 on Nov 17,2026
 vcover report -cvg -details cov/merged.ucdb 
 Coverage Report by instance with details
 
@@ -24,8 +24,8 @@ Covergroup                                             Metric       Goal       B
         covered/total bins:                                 6          6          -                      
         missing/total bins:                                 0          6          -                      
         % Hit:                                        100.00%        100          -                      
-        bin min_len                                         8          1          -    Covered              
-        bin short_len                                      19          1          -    Covered              
+        bin min_len                                        23          1          -    Covered              
+        bin short_len                                      31          1          -    Covered              
         bin mid_len                                        48          1          -    Covered              
         bin max_len                                        11          1          -    Covered              
         bin under                                          12          1          -    Covered              
@@ -34,41 +34,41 @@ Covergroup                                             Metric       Goal       B
         covered/total bins:                                 5          5          -                      
         missing/total bins:                                 0          5          -                      
         % Hit:                                        100.00%        100          -                      
-        bin type1                                          32          1          -    Covered              
+        bin type1                                          53          1          -    Covered              
         bin type2                                          18          1          -    Covered              
         bin type4                                          25          1          -    Covered              
         bin type8                                          21          1          -    Covered              
-        bin bad                                            15          1          -    Covered              
+        bin bad                                            21          1          -    Covered              
     Coverpoint cp_result                              100.00%        100          -    Covered              
         covered/total bins:                                 5          5          -                      
         missing/total bins:                                 0          5          -                      
         % Hit:                                        100.00%        100          -                      
-        bin ok                                             75          1          -    Covered              
-        bin len_e                                          12          1          -    Covered              
-        bin typ_e                                           9          1          -    Covered              
+        bin ok                                             81          1          -    Covered              
+        bin len_e                                          27          1          -    Covered              
+        bin typ_e                                          15          1          -    Covered              
         bin chk_e                                           6          1          -    Covered              
         bin multi                                           9          1          -    Covered              
     Coverpoint cp_cfg                                 100.00%        100          -    Covered              
         covered/total bins:                                 2          2          -                      
         missing/total bins:                                 0          2          -                      
         % Hit:                                        100.00%        100          -                      
-        bin check                                         102          1          -    Covered              
+        bin check                                         129          1          -    Covered              
         bin bypass                                          9          1          -    Covered              
     Coverpoint cp_status                              100.00%        100          -    Covered              
         covered/total bins:                                 2          2          -                      
         missing/total bins:                                 0          2          -                      
         % Hit:                                        100.00%        100          -                      
-        bin ok                                             75          1          -    Covered              
-        bin err                                            36          1          -    Covered              
+        bin ok                                             81          1          -    Covered              
+        bin err                                            57          1          -    Covered              
     Cross cross_status_cfg                            100.00%        100          -    Covered              
         covered/total bins:                                 4          4          -                      
         missing/total bins:                                 0          4          -                      
         % Hit:                                        100.00%        100          -                      
         Auto, Default and User Defined Bins:
             bin <err,bypass>                                3          1          -    Covered              
-            bin <ok,check>                                 69          1          -    Covered              
+            bin <ok,check>                                 75          1          -    Covered              
             bin <ok,bypass>                                 6          1          -    Covered              
-            bin <err,check>                                33          1          -    Covered              
+            bin <err,check>                                54          1          -    Covered              
  Covergroup instance \/ppa_pkg::coverage_collector::cg_ppa  
                                                       100.00%        100          -    Covered              
     covered/total bins:                                    24         24          -                      
@@ -78,8 +78,8 @@ Covergroup                                             Metric       Goal       B
         covered/total bins:                                 6          6          -                      
         missing/total bins:                                 0          6          -                      
         % Hit:                                        100.00%        100          -                      
-        bin min_len                                         8          1          -    Covered              
-        bin short_len                                      19          1          -    Covered              
+        bin min_len                                        23          1          -    Covered              
+        bin short_len                                      31          1          -    Covered              
         bin mid_len                                        48          1          -    Covered              
         bin max_len                                        11          1          -    Covered              
         bin under                                          12          1          -    Covered              
@@ -88,41 +88,41 @@ Covergroup                                             Metric       Goal       B
         covered/total bins:                                 5          5          -                      
         missing/total bins:                                 0          5          -                      
         % Hit:                                        100.00%        100          -                      
-        bin type1                                          32          1          -    Covered              
+        bin type1                                          53          1          -    Covered              
         bin type2                                          18          1          -    Covered              
         bin type4                                          25          1          -    Covered              
         bin type8                                          21          1          -    Covered              
-        bin bad                                            15          1          -    Covered              
+        bin bad                                            21          1          -    Covered              
     Coverpoint cp_result                              100.00%        100          -    Covered              
         covered/total bins:                                 5          5          -                      
         missing/total bins:                                 0          5          -                      
         % Hit:                                        100.00%        100          -                      
-        bin ok                                             75          1          -    Covered              
-        bin len_e                                          12          1          -    Covered              
-        bin typ_e                                           9          1          -    Covered              
+        bin ok                                             81          1          -    Covered              
+        bin len_e                                          27          1          -    Covered              
+        bin typ_e                                          15          1          -    Covered              
         bin chk_e                                           6          1          -    Covered              
         bin multi                                           9          1          -    Covered              
     Coverpoint cp_cfg                                 100.00%        100          -    Covered              
         covered/total bins:                                 2          2          -                      
         missing/total bins:                                 0          2          -                      
         % Hit:                                        100.00%        100          -                      
-        bin check                                         102          1          -    Covered              
+        bin check                                         129          1          -    Covered              
         bin bypass                                          9          1          -    Covered              
     Coverpoint cp_status                              100.00%        100          -    Covered              
         covered/total bins:                                 2          2          -                      
         missing/total bins:                                 0          2          -                      
         % Hit:                                        100.00%        100          -                      
-        bin ok                                             75          1          -    Covered              
-        bin err                                            36          1          -    Covered              
+        bin ok                                             81          1          -    Covered              
+        bin err                                            57          1          -    Covered              
     Cross cross_status_cfg                            100.00%        100          -    Covered              
         covered/total bins:                                 4          4          -                      
         missing/total bins:                                 0          4          -                      
         % Hit:                                        100.00%        100          -                      
         Auto, Default and User Defined Bins:
             bin <err,bypass>                                3          1          -    Covered              
-            bin <ok,check>                                 69          1          -    Covered              
+            bin <ok,check>                                 75          1          -    Covered              
             bin <ok,bypass>                                 6          1          -    Covered              
-            bin <err,check>                                33          1          -    Covered              
+            bin <err,check>                                54          1          -    Covered              
 
 COVERGROUP COVERAGE:
 ----------------------------------------------------------------------------------------------------------
@@ -137,8 +137,8 @@ Covergroup                                             Metric       Goal       B
         covered/total bins:                                 6          6          -                      
         missing/total bins:                                 0          6          -                      
         % Hit:                                        100.00%        100          -                      
-        bin min_len                                         8          1          -    Covered              
-        bin short_len                                      19          1          -    Covered              
+        bin min_len                                        23          1          -    Covered              
+        bin short_len                                      31          1          -    Covered              
         bin mid_len                                        48          1          -    Covered              
         bin max_len                                        11          1          -    Covered              
         bin under                                          12          1          -    Covered              
@@ -147,41 +147,41 @@ Covergroup                                             Metric       Goal       B
         covered/total bins:                                 5          5          -                      
         missing/total bins:                                 0          5          -                      
         % Hit:                                        100.00%        100          -                      
-        bin type1                                          32          1          -    Covered              
+        bin type1                                          53          1          -    Covered              
         bin type2                                          18          1          -    Covered              
         bin type4                                          25          1          -    Covered              
         bin type8                                          21          1          -    Covered              
-        bin bad                                            15          1          -    Covered              
+        bin bad                                            21          1          -    Covered              
     Coverpoint cp_result                              100.00%        100          -    Covered              
         covered/total bins:                                 5          5          -                      
         missing/total bins:                                 0          5          -                      
         % Hit:                                        100.00%        100          -                      
-        bin ok                                             75          1          -    Covered              
-        bin len_e                                          12          1          -    Covered              
-        bin typ_e                                           9          1          -    Covered              
+        bin ok                                             81          1          -    Covered              
+        bin len_e                                          27          1          -    Covered              
+        bin typ_e                                          15          1          -    Covered              
         bin chk_e                                           6          1          -    Covered              
         bin multi                                           9          1          -    Covered              
     Coverpoint cp_cfg                                 100.00%        100          -    Covered              
         covered/total bins:                                 2          2          -                      
         missing/total bins:                                 0          2          -                      
         % Hit:                                        100.00%        100          -                      
-        bin check                                         102          1          -    Covered              
+        bin check                                         129          1          -    Covered              
         bin bypass                                          9          1          -    Covered              
     Coverpoint cp_status                              100.00%        100          -    Covered              
         covered/total bins:                                 2          2          -                      
         missing/total bins:                                 0          2          -                      
         % Hit:                                        100.00%        100          -                      
-        bin ok                                             75          1          -    Covered              
-        bin err                                            36          1          -    Covered              
+        bin ok                                             81          1          -    Covered              
+        bin err                                            57          1          -    Covered              
     Cross cross_status_cfg                            100.00%        100          -    Covered              
         covered/total bins:                                 4          4          -                      
         missing/total bins:                                 0          4          -                      
         % Hit:                                        100.00%        100          -                      
         Auto, Default and User Defined Bins:
             bin <err,bypass>                                3          1          -    Covered              
-            bin <ok,check>                                 69          1          -    Covered              
+            bin <ok,check>                                 75          1          -    Covered              
             bin <ok,bypass>                                 6          1          -    Covered              
-            bin <err,check>                                33          1          -    Covered              
+            bin <err,check>                                54          1          -    Covered              
  Covergroup instance \/ppa_pkg::coverage_collector::cg_ppa  
                                                       100.00%        100          -    Covered              
     covered/total bins:                                    24         24          -                      
@@ -191,8 +191,8 @@ Covergroup                                             Metric       Goal       B
         covered/total bins:                                 6          6          -                      
         missing/total bins:                                 0          6          -                      
         % Hit:                                        100.00%        100          -                      
-        bin min_len                                         8          1          -    Covered              
-        bin short_len                                      19          1          -    Covered              
+        bin min_len                                        23          1          -    Covered              
+        bin short_len                                      31          1          -    Covered              
         bin mid_len                                        48          1          -    Covered              
         bin max_len                                        11          1          -    Covered              
         bin under                                          12          1          -    Covered              
@@ -201,45 +201,45 @@ Covergroup                                             Metric       Goal       B
         covered/total bins:                                 5          5          -                      
         missing/total bins:                                 0          5          -                      
         % Hit:                                        100.00%        100          -                      
-        bin type1                                          32          1          -    Covered              
+        bin type1                                          53          1          -    Covered              
         bin type2                                          18          1          -    Covered              
         bin type4                                          25          1          -    Covered              
         bin type8                                          21          1          -    Covered              
-        bin bad                                            15          1          -    Covered              
+        bin bad                                            21          1          -    Covered              
     Coverpoint cp_result                              100.00%        100          -    Covered              
         covered/total bins:                                 5          5          -                      
         missing/total bins:                                 0          5          -                      
         % Hit:                                        100.00%        100          -                      
-        bin ok                                             75          1          -    Covered              
-        bin len_e                                          12          1          -    Covered              
-        bin typ_e                                           9          1          -    Covered              
+        bin ok                                             81          1          -    Covered              
+        bin len_e                                          27          1          -    Covered              
+        bin typ_e                                          15          1          -    Covered              
         bin chk_e                                           6          1          -    Covered              
         bin multi                                           9          1          -    Covered              
     Coverpoint cp_cfg                                 100.00%        100          -    Covered              
         covered/total bins:                                 2          2          -                      
         missing/total bins:                                 0          2          -                      
         % Hit:                                        100.00%        100          -                      
-        bin check                                         102          1          -    Covered              
+        bin check                                         129          1          -    Covered              
         bin bypass                                          9          1          -    Covered              
     Coverpoint cp_status                              100.00%        100          -    Covered              
         covered/total bins:                                 2          2          -                      
         missing/total bins:                                 0          2          -                      
         % Hit:                                        100.00%        100          -                      
-        bin ok                                             75          1          -    Covered              
-        bin err                                            36          1          -    Covered              
+        bin ok                                             81          1          -    Covered              
+        bin err                                            57          1          -    Covered              
     Cross cross_status_cfg                            100.00%        100          -    Covered              
         covered/total bins:                                 4          4          -                      
         missing/total bins:                                 0          4          -                      
         % Hit:                                        100.00%        100          -                      
         Auto, Default and User Defined Bins:
             bin <err,bypass>                                3          1          -    Covered              
-            bin <ok,check>                                 69          1          -    Covered              
+            bin <ok,check>                                 75          1          -    Covered              
             bin <ok,bypass>                                 6          1          -    Covered              
-            bin <err,check>                                33          1          -    Covered              
+            bin <err,check>                                54          1          -    Covered              
 
 TOTAL COVERGROUP COVERAGE: 100.00%  COVERGROUP TYPES: 1
 
 Total Coverage By Instance (filtered view): 100.00%
 
-End time: 10:25:48 on Nov 02,2026, Elapsed time: 0:00:00
+End time: 15:31:58 on Nov 17,2026, Elapsed time: 0:00:00
 Errors: 0, Warnings: 0

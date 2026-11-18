@@ -61,47 +61,50 @@ Lab1–Lab4 完成代码、统一回归、功能覆盖率、五类代码覆盖�
 ```
 rkv_v1pro_labs/
 ├── ppa-lite/               # 2026 秋季 PPA-Lite 正式实验工程
-├── lecture/                 # 课程讲义配套代码示例
-│   ├── lec1/               # 第1讲：SystemVerilog 基础
-│   │   ├── data_type.sv           # 数据类型
-│   │   ├── interface_type.sv      # 接口类型
-│   │   ├── string_type.sv         # 字符串类型
-│   │   └── sv_for_design.sv       # SV 设计语法
-│   ├── lec2/               # 第2讲：面向对象与包
-│   │   ├── array_type.sv          # 数组类型
-│   │   ├── class_encapsulation.sv  # 类封装
-│   │   ├── class_inheritance.sv   # 类继承
-│   │   └── package_usage.sv       # 包的使用
-│   ├── lec3/               # 第3讲：验证方法学基础
-│   │   ├── constrained_random.sv  # 约束随机
-│   │   ├── virtual_methods.sv      # 虚方法
-│   │   ├── interprocess_sync.sv   # 进程同步
-│   │   ├── thread_control.sv      # 线程控制
-│   │   └── task_and_function.sv   # 任务与函数
-│   └── excercises/         # 课堂练习
-│       ├── array_assignment.sv           # 数组赋值练习
-│       ├── constraint_dynamic_control.sv  # 约束动态控制
-│       └── data_types_verilog_diff_sv.sv   # Verilog 与 SV 数据类型对比
+│   ├── rtl/  tb/  cov/     # PPA-Lite APB DUT、验证平台与覆盖率数据库
+│   ├── mcdt/               # MCDT 模块 RTL 代码（四个 MCDT 实验共用）
+│   │   ├── mcdt.v          # MCDT 顶层模块
+│   │   ├── arbiter.v       # 仲裁器模块
+│   │   └── slave_fifo.v    # 从机 FIFO 模块
+│   ├── lab0/               # 实验0：Verilog 验证入门
+│   ├── lab1/               # 实验1：基础验证环境搭建
+│   ├── lab2/               # 实验2：激励生成与数据比对
+│   ├── lab3/               # 实验3：UVM 验证环境（带参考代码）
+│   ├── lab4/               # 实验4：综合验证
+│   └── 实验报告_mcdt.md     # MCDT 四个实验的复现报告
 │
-└── mcdt-lab/               # MCDT 参考实验代码
-    ├── mcdt/               # MCDT 模块 RTL 代码（已提供）
-    │   ├── mcdt.v          # MCDT 顶层模块
-    │   ├── arbiter.v       # 仲裁器模块
-    │   └── slave_fifo.v    # 从机 FIFO 模块
-    ├── lab0/               # 实验0：Verilog 验证入门
-    ├── lab1/               # 实验1：基础验证环境搭建
-    ├── lab2/               # 实验2：激励生成与数据比对
-    ├── lab3/               # 实验3：UVM 验证环境（带参考代码）
-    └── lab4/               # 实验4：综合验证
+└── lecture/                 # 课程讲义配套代码示例
+    ├── lec1/               # 第1讲：SystemVerilog 基础
+    │   ├── data_type.sv           # 数据类型
+    │   ├── interface_type.sv      # 接口类型
+    │   ├── string_type.sv         # 字符串类型
+    │   └── sv_for_design.sv       # SV 设计语法
+    ├── lec2/               # 第2讲：面向对象与包
+    │   ├── array_type.sv          # 数组类型
+    │   ├── class_encapsulation.sv  # 类封装
+    │   ├── class_inheritance.sv   # 类继承
+    │   └── package_usage.sv       # 包的使用
+    ├── lec3/               # 第3讲：验证方法学基础
+    │   ├── constrained_random.sv  # 约束随机
+    │   ├── virtual_methods.sv      # 虚方法
+    │   ├── interprocess_sync.sv   # 进程同步
+    │   ├── thread_control.sv      # 线程控制
+    │   └── task_and_function.sv   # 任务与函数
+    └── excercises/         # 课堂练习
+        ├── array_assignment.sv           # 数组赋值练习
+        ├── constraint_dynamic_control.sv  # 约束动态控制
+        └── data_types_verilog_diff_sv.sv   # Verilog 与 SV 数据类型对比
 ```
 
 ### 3.1 lecture/ 目录说明
 
 `lecture/` 目录包含课程各讲次的配套代码示例，旨在帮助同学理解 SystemVerilog 语言特性和验证方法。每个子目录对应一个讲次，包含多个 `.sv` 源文件，可在 Questasim 等仿真器中直接运行学习。
 
-### 3.2 mcdt-lab/ 目录说明
+### 3.2 PPA-Lite 中的 MCDT 实验目录
 
-`mcdt-lab/` 目录提供 MCDT（Multi-Channel Data Transfer）模块的参考验证代码。该模块是一个简单的内存控制器数据通路模块，用于验证实践教学。
+四个 MCDT 实验（`lab0` ~ `lab4`）现已并入 `ppa-lite/`，与 PPA-Lite 的 `rtl/`、
+`tb/`、`cov/` 并排存放。MCDT（Multi-Channel Data Transfer）是一个简单的内存
+控制器数据通路模块，用于验证实践教学。
 
 - **mcdt/ 子目录**：包含 MCDT 模块的 RTL 代码（Verilog），这部分代码由课程预先提供，学生在此基础上编写验证代码。
 - **lab0 ~ lab4 子目录**：对应从易到难的 5 个实验阶段，每个实验包含：
@@ -110,6 +113,9 @@ rkv_v1pro_labs/
   - `tb.sv` 或 `tb1.v`：测试文件
   - `mcdt_pkg.sv`（部分实验）：验证包
   - `mcdt_pkg_ref.sv`（部分实验）：参考实现
+
+每个 lab 的 Makefile 都按 `$(SIMDIR)/../mcdt` 引用设计代码，因此 lab 目录必须
+保持在 `mcdt/` 的下一层，不要单独把一个 lab 移走。
 
 #### 实验内容概览
 
@@ -151,12 +157,12 @@ make regress SEEDS="1 2 3"
 make report
 ```
 
-以 `mcdt-lab/lab1` 为例：
+以 `ppa-lite/lab1` 为例：
 
 ```bash
-cd mcdt-lab/lab1
+cd ppa-lite/lab1
 make comp
-make run
+make reg
 ```
 
 ---
